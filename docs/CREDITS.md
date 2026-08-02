@@ -27,6 +27,12 @@ Project-original production assets:
 - Investigator visual blockout: obscured coat, hat, boots, satchel, and lantern silhouette.
   - Source: `res://assets/source/blender/investigator/investigator_blockout.blend`.
   - Export: `res://assets/hd2d/characters/investigator_blockout.glb`.
+- Ashdown procedural audio set: house tone, fire pressure, boiler machinery,
+  wood/tile/metal footsteps, doors, paper, puzzle confirms, alarm, whispers,
+  smoke surge, interface cues, and release chord.
+  - Source: `res://scripts/audio/audio_manager.gd`.
+  - License/ownership: original project code and generated waveforms; no external
+    samples are embedded.
 
 Future imports should record:
 

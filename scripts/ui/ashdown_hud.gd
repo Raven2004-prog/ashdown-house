@@ -14,6 +14,13 @@ signal resume_requested
 @onready var quality_value: Label = %QualityValue
 @onready var brightness_slider: HSlider = %BrightnessSlider
 @onready var text_scale_slider: HSlider = %TextScaleSlider
+@onready var master_volume_slider: HSlider = %MasterVolumeSlider
+@onready var music_volume_slider: HSlider = %MusicVolumeSlider
+@onready var ambience_volume_slider: HSlider = %AmbienceVolumeSlider
+@onready var sfx_volume_slider: HSlider = %SFXVolumeSlider
+@onready var ui_volume_slider: HSlider = %UIVolumeSlider
+@onready var voice_volume_slider: HSlider = %VoiceVolumeSlider
+@onready var mute_toggle: CheckButton = %MuteToggle
 @onready var fullscreen_toggle: CheckButton = %FullscreenToggle
 @onready var fog_toggle: CheckButton = %FogToggle
 @onready var shadows_toggle: CheckButton = %ShadowsToggle
@@ -29,13 +36,22 @@ func _ready() -> void:
 	%NativeButton.pressed.connect(func(): GraphicsSettings.set_world_quality(GraphicsSettings.WorldQuality.NATIVE))
 	brightness_slider.value_changed.connect(GraphicsSettings.set_brightness)
 	text_scale_slider.value_changed.connect(GraphicsSettings.set_text_scale)
+	master_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"Master", value))
+	music_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"Music", value))
+	ambience_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"Ambience", value))
+	sfx_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"SFX", value))
+	ui_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"UI", value))
+	voice_volume_slider.value_changed.connect(func(value: float): AudioManager.set_bus_level(&"Voice", value))
+	mute_toggle.toggled.connect(AudioManager.set_master_muted)
 	fullscreen_toggle.toggled.connect(GraphicsSettings.set_fullscreen)
 	fog_toggle.toggled.connect(GraphicsSettings.set_fog_enabled)
 	shadows_toggle.toggled.connect(GraphicsSettings.set_shadows_enabled)
 	flashing_toggle.toggled.connect(GraphicsSettings.set_reduced_flashing)
 	%ResumeButton.pressed.connect(func(): resume_requested.emit())
 	GraphicsSettings.settings_changed.connect(sync_settings)
+	AudioManager.audio_settings_changed.connect(sync_audio_settings)
 	sync_settings()
+	sync_audio_settings()
 
 func set_pause_visible(value: bool) -> void:
 	pause_layer.visible = value
@@ -52,6 +68,15 @@ func sync_settings() -> void:
 	shadows_toggle.set_pressed_no_signal(GraphicsSettings.shadows_enabled)
 	flashing_toggle.set_pressed_no_signal(GraphicsSettings.reduced_flashing)
 	_apply_text_scale(GraphicsSettings.text_scale)
+
+func sync_audio_settings() -> void:
+	master_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"Master"))
+	music_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"Music"))
+	ambience_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"Ambience"))
+	sfx_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"SFX"))
+	ui_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"UI"))
+	voice_volume_slider.set_value_no_signal(AudioManager.get_bus_level(&"Voice"))
+	mute_toggle.set_pressed_no_signal(AudioManager.master_muted)
 
 func _cache_font_sizes(node: Node) -> void:
 	if node is Control:

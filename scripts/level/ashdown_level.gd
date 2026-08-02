@@ -78,6 +78,8 @@ func _ready() -> void:
 		call_deferred("_run_boiler_final_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--character-animation-self-test"):
 		call_deferred("_run_character_animation_self_test")
+	elif OS.get_cmdline_user_args().has("--audio-system-self-test"):
+		call_deferred("_run_audio_system_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -96,6 +98,9 @@ func _ready() -> void:
 		call_deferred("_capture_character_phase8")
 
 func _process(delta: float) -> void:
+	if level_state != null and player != null:
+		var pressure_fraction := clampf(smoke_elapsed_seconds / smoke_budget_seconds, 0.0, 1.0)
+		AudioManager.update_house_state(player.global_position, level_state.flags, pressure_fraction)
 	if level_state == null or not level_state.has_flag(&"fire_started"):
 		return
 	if level_state.state == level_state.COMPLETE or pressure_failure_active or _pressure_is_paused():
@@ -721,6 +726,43 @@ func _run_character_animation_self_test() -> void:
 		print("CHARACTER_ANIMATION_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_audio_system_self_test() -> void:
+	var failures: Array[String] = []
+	for bus_name in [&"Master", &"Music", &"Ambience", &"SFX", &"UI", &"Voice"]:
+		if AudioServer.get_bus_index(bus_name) < 0:
+			failures.append("audio bus %s is missing" % bus_name)
+	if AudioManager.ambience_player == null or not AudioManager.ambience_player.playing:
+		failures.append("house ambience did not start")
+	if AudioManager._stream(&"footstep_wood").data.is_empty():
+		failures.append("procedural footstep stream is empty")
+	if AudioManager._stream(&"whisper").data.is_empty():
+		failures.append("procedural whisper stream is empty")
+	var investigator := player.get_node_or_null(^"VisualRoot/InvestigatorVisual") as InvestigatorVisual
+	if investigator == null or not investigator.footstep.is_connected(_on_investigator_footstep):
+		failures.append("investigator footsteps are not routed to AudioManager")
+	for slider_name in ["MasterVolumeSlider", "MusicVolumeSlider", "AmbienceVolumeSlider", "SFXVolumeSlider", "UIVolumeSlider", "VoiceVolumeSlider"]:
+		if hud.find_child(slider_name, true, false) == null:
+			failures.append("pause audio control %s is missing" % slider_name)
+	var old_master := AudioManager.get_bus_level(&"Master")
+	AudioManager.set_bus_level(&"Master", 0.61)
+	if not is_equal_approx(AudioManager.get_bus_level(&"Master"), 0.61):
+		failures.append("audio bus level did not update")
+	AudioManager.set_bus_level(&"Master", old_master)
+	level_state.start_fire()
+	AudioManager.update_house_state(Vector3.ZERO, level_state.flags, 0.5)
+	if not AudioManager.fire_player.playing:
+		failures.append("fire pressure loop did not react to fire state")
+	AudioManager.stop_all_for_test()
+	await get_tree().process_frame
+	if failures.is_empty():
+		print("AUDIO_SYSTEM_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Audio system self-test: %s" % failure)
+		print("AUDIO_SYSTEM_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if pressure_failure_active:
 		if event is InputEventKey and event.is_pressed() and not event.is_echo():
@@ -910,7 +952,13 @@ func _setup_ui() -> void:
 	player.target_changed.connect(_on_reticle_target_changed)
 	if hud != null:
 		hud.resume_requested.connect(func(): _set_pause_visible(false))
+	var investigator := player.get_node_or_null(^"VisualRoot/InvestigatorVisual") as InvestigatorVisual
+	if investigator != null and not investigator.footstep.is_connected(_on_investigator_footstep):
+		investigator.footstep.connect(_on_investigator_footstep)
 	GraphicsSettings.settings_changed.connect(_apply_graphics_settings)
+
+func _on_investigator_footstep(_surface_hint: StringName) -> void:
+	AudioManager.play_footstep(player.global_position)
 
 func _add_room_content_scenes() -> void:
 	for room_variant in level_data.get("rooms", []):
@@ -1063,6 +1111,7 @@ func _handle_interaction(target) -> void:
 	_update_journal_text()
 
 func _collect_evidence(target) -> void:
+	AudioManager.play_world_cue(&"paper", target.global_position, -7.0)
 	var added: bool = inventory_manager.collect_evidence(target.interaction_id, target.display_name, target.observation)
 	journal_manager.record_clue(target.interaction_id, target.display_name, target.observation)
 	if target.has_meta("flag"):
@@ -1075,6 +1124,7 @@ func _collect_evidence(target) -> void:
 	_refresh_final_deduction_state()
 
 func _handle_doll_interaction(target) -> void:
+	AudioManager.play_world_cue(&"whisper", target.global_position, -8.0, &"Voice")
 	var doll_id: StringName = target.interaction_id
 	journal_manager.record_whisper(doll_id, target.display_name)
 	if level_state.state == level_state.FINAL_DEDUCTION:
@@ -1118,6 +1168,7 @@ func _handle_cradle_interaction(target) -> void:
 		_show_subtitle("The inscription is clear now. Choose the child who counted everyone but was counted by none.")
 		return
 	if chosen != &"nila":
+		AudioManager.play_world_cue(&"smoke_surge", target.global_position, -3.0)
 		smoke_elapsed_seconds = minf(smoke_budget_seconds, smoke_elapsed_seconds + 90.0)
 		level_state.return_carried_doll()
 		if player.has_method("play_stumble"):
@@ -1126,6 +1177,7 @@ func _handle_cradle_interaction(target) -> void:
 		_show_subtitle("The memory rejects that name. The doll returns to its alcove as smoke surges through the hall.")
 		return
 	level_state.complete_final_choice()
+	AudioManager.play_world_cue(&"release", target.global_position, -1.0, &"Music")
 	completion_active = true
 	if player.has_method("play_ending"):
 		player.play_ending()
@@ -1165,6 +1217,7 @@ func _clear_interaction_target_deferred() -> void:
 		interaction_manager.clear_target()
 
 func _handle_door(target) -> void:
+	AudioManager.play_world_cue(&"door", target.global_position, -5.0)
 	var state := String(target.get_meta("state", "unknown"))
 	_show_subtitle(level_state.describe_door(target.display_name, state))
 
@@ -1178,6 +1231,7 @@ func _handle_trigger(target) -> void:
 	if target.interaction_id == &"H04":
 		if not level_state.has_flag(&"fire_started"):
 			level_state.start_fire()
+			AudioManager.play_world_cue(&"alarm", target.global_position, -2.0)
 			_collect_evidence(target)
 			_save_checkpoint()
 			_show_subtitle(target.observation)
@@ -1221,6 +1275,7 @@ func _handle_code_input(event: InputEvent) -> void:
 				_update_code_text()
 
 func _complete_active_code_puzzle() -> void:
+	AudioManager.play_ui_cue(&"puzzle")
 	match String(active_code_puzzle.get("id", "")):
 		"assign_identity":
 			var doll_id := StringName(active_code_puzzle.get("doll_id", &""))
@@ -1389,6 +1444,7 @@ func _set_player_input_locked(value: bool) -> void:
 func _set_pause_visible(value: bool) -> void:
 	if hud == null:
 		return
+	AudioManager.play_ui_cue(&"select")
 	hud.set_pause_visible(value)
 	_set_player_input_locked(value)
 	if player != null and player.has_method("set_mouse_captured"):
