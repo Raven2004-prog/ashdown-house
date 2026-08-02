@@ -25,12 +25,14 @@ The Library is the scale benchmark and lives in `res://scenes/levels/ashdown/roo
 
 The complete house blockout is serialized in `res://scenes/levels/ashdown/AshdownHouseBlockout.tscn` and instanced by the main level. Room floors, walls, blockers, doors, dolls, clue markers, labels, and collisions are visible in the editor. Other rooms remain visually simple blockouts until the Library scale and camera presentation are accepted.
 
+The editor-authored conversion is complete through Phase 5. The player's visible placeholder is lowered independently of its collision body, and the Library uses a 4.2 m visual shell with ceiling fixtures and lights aligned to the raised ceiling. Permanent geometry must remain editor-authored; runtime scripts are controllers and validators only.
+
 ## Next Work
 
-1. Lower the visible player/camera presentation slightly.
-2. Raise the Library ceiling, correct shifted props, and confirm D03-D05 traversal.
-3. Manually play the catalog, desk, shelf, hidden-clue, and classroom-key sequence.
-4. Author the next detailed room only after the Library corrections are accepted.
+1. Manually review the final Library camera framing and D03-D05 traversal in the editor build.
+2. Correct individual prop placement directly in `LibraryBenchmark.tscn` when playtesting identifies a specific obstruction.
+3. Author the next detailed room using the Library's scene structure and persistent-ID anchors.
+4. Keep final character art, sound, fire VFX, and release lighting for their dedicated passes.
 
 ## Verification
 

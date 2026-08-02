@@ -48,22 +48,22 @@ uv1_scale = Vector3(5, 2, 1)
 texture_filter = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_ylw6s"]
-size = Vector3(15.7, 3.35, 0.04)
+size = Vector3(15.7, 4.15, 0.04)
 
 [sub_resource type="BoxMesh" id="BoxMesh_06e52"]
-size = Vector3(0.04, 3.35, 13.7)
+size = Vector3(0.04, 4.15, 13.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_2x1ns"]
-size = Vector3(0.04, 3.35, 5.35)
+size = Vector3(0.04, 4.15, 5.35)
 
 [sub_resource type="BoxMesh" id="BoxMesh_0kv88"]
-size = Vector3(0.04, 3.35, 5.35)
+size = Vector3(0.04, 4.15, 5.35)
 
 [sub_resource type="BoxMesh" id="BoxMesh_djvac"]
-size = Vector3(6.5, 3.35, 0.04)
+size = Vector3(6.5, 4.15, 0.04)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3fmbt"]
-size = Vector3(6.5, 3.35, 0.04)
+size = Vector3(6.5, 4.15, 0.04)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jh40p"]
 albedo_color = Color(0.18, 0.095, 0.055, 1)
@@ -3927,49 +3927,49 @@ material_override = SubResource("StandardMaterial3D_emhs3")
 mesh = SubResource("BoxMesh_wx2ds")
 
 [node name="LibraryCeiling" type="Node3D" parent="Architecture" unique_id=512415353]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 3.38, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 4.18, 2)
 
 [node name="@MeshInstance3D@3" type="MeshInstance3D" parent="Architecture/LibraryCeiling" unique_id=562814817]
 material_override = SubResource("StandardMaterial3D_jbp8e")
 mesh = SubResource("BoxMesh_we7v6")
 
 [node name="NorthWallFinish" type="Node3D" parent="Architecture" unique_id=1911892845]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 1.7, 8.82)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 2.1, 8.82)
 
 [node name="@MeshInstance3D@4" type="MeshInstance3D" parent="Architecture/NorthWallFinish" unique_id=815541603]
 material_override = SubResource("StandardMaterial3D_82gym")
 mesh = SubResource("BoxMesh_ylw6s")
 
 [node name="WestWallFinish" type="Node3D" parent="Architecture" unique_id=1209819083]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.82, 1.7, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.82, 2.1, 2)
 
 [node name="@MeshInstance3D@5" type="MeshInstance3D" parent="Architecture/WestWallFinish" unique_id=1442396677]
 material_override = SubResource("StandardMaterial3D_82gym")
 mesh = SubResource("BoxMesh_06e52")
 
 [node name="EastWallNorthFinish" type="Node3D" parent="Architecture" unique_id=1999105450]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.18, 1.7, 6.15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.18, 2.1, 6.15)
 
 [node name="@MeshInstance3D@6" type="MeshInstance3D" parent="Architecture/EastWallNorthFinish" unique_id=350781098]
 material_override = SubResource("StandardMaterial3D_82gym")
 mesh = SubResource("BoxMesh_2x1ns")
 
 [node name="EastWallSouthFinish" type="Node3D" parent="Architecture" unique_id=383322061]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.18, 1.7, -2.15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.18, 2.1, -2.15)
 
 [node name="@MeshInstance3D@7" type="MeshInstance3D" parent="Architecture/EastWallSouthFinish" unique_id=1672886628]
 material_override = SubResource("StandardMaterial3D_82gym")
 mesh = SubResource("BoxMesh_0kv88")
 
 [node name="SouthWallWestFinish" type="Node3D" parent="Architecture" unique_id=736063122]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6, 1.7, -4.82)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6, 2.1, -4.82)
 
 [node name="@MeshInstance3D@8" type="MeshInstance3D" parent="Architecture/SouthWallWestFinish" unique_id=968986829]
 material_override = SubResource("StandardMaterial3D_82gym")
 mesh = SubResource("BoxMesh_djvac")
 
 [node name="SouthWallEastFinish" type="Node3D" parent="Architecture" unique_id=832927368]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 1.7, -4.82)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 2.1, -4.82)
 
 [node name="@MeshInstance3D@9" type="MeshInstance3D" parent="Architecture/SouthWallEastFinish" unique_id=599502591]
 material_override = SubResource("StandardMaterial3D_82gym")
@@ -7115,19 +7115,19 @@ material_override = SubResource("StandardMaterial3D_2cbaf")
 mesh = SubResource("BoxMesh_2sksg")
 
 [node name="CeilingFixture" type="Node3D" parent="Furniture" unique_id=457004641]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3.2, 4.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 4, 4.8)
 
 [node name="Visual" type="Node3D" parent="Furniture/CeilingFixture" unique_id=868331265 instance=ExtResource("14_4q026")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="@Node3D@65" type="Node3D" parent="Furniture" unique_id=1040786971]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 3.2, 1.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 4, 1.8)
 
 [node name="Visual" type="Node3D" parent="Furniture/@Node3D@65" unique_id=1800472446 instance=ExtResource("14_4q026")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="@Node3D@67" type="Node3D" parent="Furniture" unique_id=1434694590]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.2, -2.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 4, -2.2)
 
 [node name="Visual" type="Node3D" parent="Furniture/@Node3D@67" unique_id=1550978442 instance=ExtResource("14_4q026")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -7304,21 +7304,21 @@ metadata/visual_path = NodePath("../../Furniture/L26_BoilerCode")
 [node name="Lighting" type="Node3D" parent="." unique_id=718395207]
 
 [node name="@OmniLight3D@64" type="OmniLight3D" parent="Lighting" unique_id=1505459854]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3.05, 4.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3.85, 4.8)
 light_color = Color(0.76, 0.66, 0.48, 1)
 light_energy = 1.55
 shadow_enabled = true
 omni_range = 7.0
 
 [node name="@OmniLight3D@66" type="OmniLight3D" parent="Lighting" unique_id=830342814]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 3.05, 1.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 3.85, 1.8)
 light_color = Color(0.68, 0.63, 0.5, 1)
 light_energy = 1.45
 shadow_enabled = true
 omni_range = 7.0
 
 [node name="@OmniLight3D@68" type="OmniLight3D" parent="Lighting" unique_id=427609843]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.05, -2.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.85, -2.2)
 light_color = Color(0.72, 0.6, 0.43, 1)
 light_energy = 1.5
 shadow_enabled = true

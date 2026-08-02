@@ -88,6 +88,21 @@ func _run_library_benchmark_self_test() -> void:
 				failures.append("missing authored Library branch %s" % branch)
 		if library_content.has_method("build_if_needed"):
 			failures.append("Library runtime geometry builder is still active")
+		var ceiling := library_content.get_node_or_null(^"Architecture/LibraryCeiling") as Node3D
+		if ceiling == null or not is_equal_approx(ceiling.position.y, 4.18):
+			failures.append("Library ceiling is not aligned to the 4.2 m shell")
+		for wall_path in [
+			^"Architecture/NorthWallFinish", ^"Architecture/WestWallFinish",
+			^"Architecture/EastWallNorthFinish", ^"Architecture/EastWallSouthFinish",
+			^"Architecture/SouthWallWestFinish", ^"Architecture/SouthWallEastFinish"
+		]:
+			var wall := library_content.get_node_or_null(wall_path) as Node3D
+			if wall == null or not is_equal_approx(wall.position.y, 2.1):
+				failures.append("Library wall is not aligned to raised ceiling: %s" % wall_path)
+		for fixture_path in [^"Furniture/CeilingFixture", ^"Furniture/@Node3D@65", ^"Furniture/@Node3D@67"]:
+			var fixture := library_content.get_node_or_null(fixture_path) as Node3D
+			if fixture == null or not is_equal_approx(fixture.position.y, 4.0):
+				failures.append("Library ceiling fixture is shifted: %s" % fixture_path)
 	var required_anchors: Array[StringName] = [
 		&"L05", &"L07", &"L13", &"L14", &"L18", &"L19", &"L20",
 		&"L21", &"L22", &"L23", &"L24", &"L25", &"L26", &"L27", &"L28",
@@ -99,6 +114,13 @@ func _run_library_benchmark_self_test() -> void:
 			failures.append("missing authored anchor %s" % id)
 		if not interactables_by_id.has(id):
 			failures.append("missing interactable %s" % id)
+		elif authored_anchors_by_id.has(id):
+			var anchor := authored_anchors_by_id[id] as Node3D
+			var interactable = interactables_by_id[id]
+			if anchor != null and interactable.authored_visual != null:
+				var anchor_gap := anchor.global_position.distance_to(interactable.authored_visual.global_position)
+				if anchor_gap > 1.6:
+					failures.append("interaction anchor %s is %.2f m from its prop" % [id, anchor_gap])
 	var library_scene_found := false
 	for room_variant in level_data.get("rooms", []):
 		var room: Dictionary = room_variant
@@ -110,6 +132,12 @@ func _run_library_benchmark_self_test() -> void:
 		failures.append("camera spring length is not 2.65 m")
 	if not is_equal_approx(float(player.get("camera_pivot_height")), 1.48):
 		failures.append("camera pivot is not 1.48 m")
+	var player_visual_root := player.get_node_or_null(^"VisualRoot") as Node3D
+	if player_visual_root == null or not is_equal_approx(player_visual_root.position.y, -0.14):
+		failures.append("player visual root is not using the lowered presentation offset")
+	var player_collision := player.get_node_or_null(^"CollisionShape3D") as CollisionShape3D
+	if player_collision == null or not is_equal_approx(player_collision.position.y, 0.82):
+		failures.append("player collision moved during the presentation-only scale correction")
 	var evidence_before: int = journal_manager.discovered_clues.size()
 	journal_manager.record_observation(&"SELF_TEST_OBSERVATION", "Optional inspection")
 	if journal_manager.discovered_clues.size() != evidence_before:
