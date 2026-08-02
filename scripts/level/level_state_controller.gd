@@ -25,6 +25,13 @@ const REQUIRED_SAVE_FLAGS: Array[StringName] = [
 	&"dormitory_unlocked",
 	&"bathroom_unlocked",
 	&"kitchen_fire_extinguished",
+	&"kitchen_weight_solved",
+	&"pantry_opened",
+	&"towel_cabinet_opened",
+	&"drain_closed",
+	&"drain_accessed",
+	&"wringer_crank_collected",
+	&"wringer_operated",
 	&"dormitory_music_solved",
 	&"boiler_wheel_installed",
 	&"boiler_disabled",
@@ -65,6 +72,13 @@ func complete_classroom_fuses() -> void:
 
 func complete_classroom_seating() -> void:
 	set_flag(&"classroom_seating_solved", true)
+
+func complete_bathroom_cabinet() -> void:
+	set_flag(&"towel_cabinet_opened", true)
+
+func complete_kitchen_scale() -> void:
+	set_flag(&"kitchen_weight_solved", true)
+	set_flag(&"pantry_opened", true)
 
 func complete_dormitory_music() -> void:
 	set_flag(&"dormitory_music_solved", true)

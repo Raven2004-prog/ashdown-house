@@ -58,6 +58,8 @@ func _ready() -> void:
 		call_deferred("_run_classroom_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--dormitory-slice-self-test"):
 		call_deferred("_run_dormitory_slice_self_test")
+	elif OS.get_cmdline_user_args().has("--wet-service-slice-self-test"):
+		call_deferred("_run_wet_service_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -68,6 +70,8 @@ func _ready() -> void:
 		call_deferred("_capture_classroom_phase4")
 	elif OS.get_cmdline_user_args().has("--capture-dormitory-phase5"):
 		call_deferred("_capture_dormitory_phase5")
+	elif OS.get_cmdline_user_args().has("--capture-wet-service-phase6"):
+		call_deferred("_capture_wet_service_phase6")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -377,6 +381,132 @@ func _run_dormitory_slice_self_test() -> void:
 		print("DORMITORY_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_wet_service_slice_self_test() -> void:
+	var failures: Array[String] = []
+	failures.append_array(_collect_authored_validation_errors())
+	var bathroom := content_root.get_node_or_null("BathroomLaundryContent")
+	var kitchen := content_root.get_node_or_null("KitchenContent")
+	for content_pair in [["Bathroom/Laundry", bathroom], ["Kitchen", kitchen]]:
+		var content_name: String = content_pair[0]
+		var content: Node = content_pair[1]
+		if content == null:
+			failures.append("authored %s content was not instantiated" % content_name)
+			continue
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Interactables", ^"Lighting", ^"Atmosphere"]:
+			if content.get_node_or_null(branch) == null:
+				failures.append("missing authored %s branch %s" % [content_name, branch])
+	var required: Array[StringName] = [
+		&"B03", &"B07", &"B08", &"B09", &"B10", &"B11", &"B12", &"B13", &"B14", &"B17",
+		&"K05", &"K06", &"K07", &"K08", &"K09", &"K10", &"K11", &"K12", &"K13", &"K15", &"K17"
+	]
+	for id in required:
+		if not authored_anchors_by_id.has(id):
+			failures.append("missing wet-service anchor %s" % id)
+		if not interactables_by_id.has(id):
+			failures.append("missing wet-service interactable %s" % id)
+		elif interactables_by_id[id].authored_visual == null:
+			failures.append("wet-service interactable %s has no bound prop" % id)
+
+	level_state.set_flag(&"bathroom_unlocked", true)
+	level_state.set_flag(&"hooked_pointer_collected", true)
+	level_state.set_flag(&"steam_routed_to_bathroom", true)
+	_refresh_interactable_visibility()
+	var mirror = interactables_by_id.get(&"B03")
+	if mirror == null or not mirror.visible:
+		failures.append("steamed mirror did not unlock after steam routing")
+	else:
+		_handle_container(mirror)
+	if not level_state.has_flag(&"mirror_message_revealed"):
+		failures.append("wiping the mirror did not reveal the circle sequence")
+	var cabinet = interactables_by_id.get(&"B10")
+	if cabinet == null or not cabinet.visible:
+		failures.append("towel cabinet puzzle did not unlock after mirror reveal")
+	level_state.complete_bathroom_cabinet()
+	_refresh_interactable_visibility()
+	var sana_cloth = interactables_by_id.get(&"B11")
+	if sana_cloth == null or not sana_cloth.visible:
+		failures.append("Sana's cloth did not unlock after the towel cabinet")
+	else:
+		_collect_evidence(sana_cloth)
+	var drain_lever = interactables_by_id.get(&"B08")
+	if drain_lever != null:
+		_handle_container(drain_lever)
+	var drain = interactables_by_id.get(&"B07")
+	if drain == null or not drain.visible:
+		failures.append("floor drain did not unlock after lever and hook")
+	else:
+		_handle_container(drain)
+	var shoe = interactables_by_id.get(&"B09")
+	if shoe == null or not shoe.visible:
+		failures.append("Leela's shoe did not unlock after draining")
+	else:
+		_collect_evidence(shoe)
+	var wringer = interactables_by_id.get(&"B12")
+	if wringer != null and wringer.visible:
+		failures.append("laundry wringer was usable before finding its crank")
+
+	level_state.set_flag(&"kitchen_fire_extinguished", true)
+	_refresh_interactable_visibility()
+	for weight_id in [&"K06", &"K07", &"K08", &"K09"]:
+		var weight = interactables_by_id.get(weight_id)
+		if weight == null or not weight.visible:
+			failures.append("kitchen weight %s did not become collectible" % weight_id)
+		else:
+			_collect_evidence(weight)
+	var scale = interactables_by_id.get(&"K05")
+	if scale == null or not scale.visible:
+		failures.append("pantry scale did not unlock after collecting all weights")
+	level_state.complete_kitchen_scale()
+	_refresh_interactable_visibility()
+	for reward_id in [&"K11", &"K12", &"K13"]:
+		var reward = interactables_by_id.get(reward_id)
+		if reward == null or not reward.visible:
+			failures.append("pantry reward %s did not unlock" % reward_id)
+		elif reward_id == &"K12" or reward_id == &"K13":
+			_collect_evidence(reward)
+	if not level_state.has_flag(&"boiler_wheel_installed"):
+		failures.append("service valve wheel did not unlock the boiler route")
+	if not level_state.has_flag(&"wringer_crank_collected"):
+		failures.append("pantry crank was not stored for the laundry wringer")
+	_refresh_interactable_visibility()
+	if wringer == null or not wringer.visible:
+		failures.append("laundry wringer did not unlock after collecting the crank")
+	else:
+		_handle_container(wringer)
+	var wage_slip = interactables_by_id.get(&"B14")
+	if wage_slip == null or not wage_slip.visible:
+		failures.append("Nila wage slip did not emerge from the wringer")
+	else:
+		_collect_evidence(wage_slip)
+	for evidence_id in [&"B11", &"B09", &"B14", &"K12", &"K13"]:
+		if not inventory_manager.has_evidence(evidence_id):
+			failures.append("cross-room evidence %s was not stored" % evidence_id)
+	if bathroom != null:
+		var message := bathroom.get_node_or_null(^"Furniture/B03_SteamedMirror/Message") as Node3D
+		var door := bathroom.get_node_or_null(^"Furniture/B10_TowelCabinet/Door") as Node3D
+		var handle := bathroom.get_node_or_null(^"Furniture/B12_Wringer/Handle") as Node3D
+		if message == null or not message.visible:
+			failures.append("mirror message did not become visible")
+		if door == null or is_zero_approx(door.rotation_degrees.y):
+			failures.append("towel cabinet did not visibly open")
+		if handle == null or is_zero_approx(handle.rotation_degrees.z):
+			failures.append("wringer did not visibly turn")
+	if kitchen != null:
+		var pantry_door := kitchen.get_node_or_null(^"Furniture/K04_Pantry/LeftDoor") as Node3D
+		var scale_beam := kitchen.get_node_or_null(^"Furniture/K05_Scale/Beam") as Node3D
+		if pantry_door == null or is_zero_approx(pantry_door.rotation_degrees.y):
+			failures.append("pantry did not visibly open")
+		if scale_beam == null or not is_zero_approx(scale_beam.rotation_degrees.z):
+			failures.append("balanced scale did not settle level")
+	if failures.is_empty():
+		print("WET_SERVICE_SLICE_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Wet service slice self-test: %s" % failure)
+		print("WET_SERVICE_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if code_mode:
 		_handle_code_input(event)
@@ -528,6 +658,10 @@ func _spawn_player() -> void:
 		start = {"x": 12.2, "y": 0.05, "z": 2.0, "yaw": 270.0}
 	elif args.has("--dormitory-benchmark"):
 		start = {"x": -15.2, "y": 0.05, "z": -14.4, "yaw": 270.0} if args.has("--dormitory-solved") else {"x": -17.0, "y": 0.05, "z": -8.8, "yaw": 0.0}
+	elif args.has("--bathroom-benchmark"):
+		start = {"x": 12.0, "y": 0.05, "z": -8.2, "yaw": 270.0}
+	elif args.has("--kitchen-benchmark"):
+		start = {"x": 21.5, "y": 0.05, "z": -8.0, "yaw": 180.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -800,6 +934,12 @@ func _complete_active_code_puzzle() -> void:
 		"classroom_seating":
 			level_state.complete_classroom_seating()
 			_close_code_panel("Six cards settle into two rows. The unlabelled seventh desk remains, and the teacher drawer opens.")
+		"bathroom_cabinet":
+			level_state.complete_bathroom_cabinet()
+			_close_code_panel("The 4-2-7 circle lock releases. Sana's labelled wet cloth is inside.")
+		"kitchen_scale":
+			level_state.complete_kitchen_scale()
+			_close_code_panel("The scale balances at 10.5 portions. The pantry cabinet unlocks.")
 		"dormitory_music":
 			level_state.complete_dormitory_music()
 			_close_code_panel("The toy trunk opens. Mira's ribbon and Dev's train wheel are now reachable.")
@@ -968,6 +1108,39 @@ func _capture_dormitory_phase5() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase5_dormitory_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("DORMITORY_PHASE5_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_wet_service_phase6() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "bathroom"
+	level_state.set_flag(&"bathroom_unlocked", true)
+	level_state.set_flag(&"kitchen_fire_extinguished", true)
+	if args.has("--kitchen-benchmark"):
+		view = "kitchen"
+	if args.has("--service-solved"):
+		view += "_solved"
+		level_state.start_fire()
+		level_state.set_flag(&"hooked_pointer_collected", true)
+		level_state.set_flag(&"steam_routed_to_bathroom", true)
+		level_state.set_flag(&"mirror_message_revealed", true)
+		level_state.complete_bathroom_cabinet()
+		level_state.set_flag(&"drain_closed", true)
+		level_state.set_flag(&"drain_accessed", true)
+		level_state.complete_kitchen_scale()
+		level_state.set_flag(&"wringer_crank_collected", true)
+		level_state.set_flag(&"wringer_operated", true)
+	_refresh_interactable_visibility()
+	if args.has("--service-solved"):
+		await get_tree().create_timer(0.9).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase6_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("WET_SERVICE_PHASE6_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:
