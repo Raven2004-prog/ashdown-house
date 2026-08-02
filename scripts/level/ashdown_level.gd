@@ -70,6 +70,15 @@ func _run_library_benchmark_self_test() -> void:
 	for node_path in required_player_nodes:
 		if player.get_node_or_null(node_path) == null:
 			failures.append("missing authored player node %s" % node_path)
+	var library_content := content_root.get_node_or_null("LibraryContent")
+	if library_content == null:
+		failures.append("authored Library content was not instantiated")
+	else:
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Lighting", ^"Atmosphere"]:
+			if library_content.get_node_or_null(branch) == null:
+				failures.append("missing authored Library branch %s" % branch)
+		if library_content.has_method("build_if_needed"):
+			failures.append("Library runtime geometry builder is still active")
 	var required_anchors: Array[StringName] = [
 		&"L05", &"L07", &"L13", &"L14", &"L18", &"L19", &"L20",
 		&"L21", &"L22", &"L23", &"L24", &"L25", &"L26", &"L27", &"L28",
@@ -410,12 +419,15 @@ func _add_room_content_scenes() -> void:
 		var scene_path := String(room.get("content_scene", ""))
 		if scene_path.is_empty():
 			continue
+		var content_name := "%sContent" % String(room.get("id", "Room")).to_pascal_case()
+		if content_root.get_node_or_null(content_name) != null:
+			continue
 		var packed := load(scene_path) as PackedScene
 		if packed == null:
 			push_error("Could not load authored room content: %s" % scene_path)
 			continue
 		var content := packed.instantiate()
-		content.name = "%sContent" % String(room.get("id", "Room")).to_pascal_case()
+		content.name = content_name
 		content_root.add_child(content)
 	_index_authored_anchors()
 
@@ -442,7 +454,8 @@ func _bind_authored_interactable(area, id: StringName) -> void:
 		marker.queue_free()
 	var visual: Node3D = null
 	if anchor.has_meta("visual_path"):
-		visual = get_node_or_null(NodePath(String(anchor.get_meta("visual_path")))) as Node3D
+		var visual_path := NodePath(String(anchor.get_meta("visual_path")))
+		visual = (get_node_or_null(visual_path) if visual_path.is_absolute() else anchor.get_node_or_null(visual_path)) as Node3D
 	if visual != null and area.has_method("bind_authored_visual"):
 		area.bind_authored_visual(
 			visual,
