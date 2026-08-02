@@ -76,6 +76,8 @@ func _ready() -> void:
 		call_deferred("_run_wet_service_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--boiler-final-slice-self-test"):
 		call_deferred("_run_boiler_final_slice_self_test")
+	elif OS.get_cmdline_user_args().has("--character-animation-self-test"):
+		call_deferred("_run_character_animation_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -90,6 +92,8 @@ func _ready() -> void:
 		call_deferred("_capture_wet_service_phase6")
 	elif OS.get_cmdline_user_args().has("--capture-boiler-phase7"):
 		call_deferred("_capture_boiler_phase7")
+	elif OS.get_cmdline_user_args().has("--capture-character-phase8"):
+		call_deferred("_capture_character_phase8")
 
 func _process(delta: float) -> void:
 	if level_state == null or not level_state.has_flag(&"fire_started"):
@@ -655,6 +659,68 @@ func _run_boiler_final_slice_self_test() -> void:
 		print("BOILER_FINAL_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_character_animation_self_test() -> void:
+	# Authored binding retires legacy markers with queue_free during startup.
+	await get_tree().process_frame
+	var failures: Array[String] = []
+	var character := player.get_node_or_null(^"VisualRoot/InvestigatorVisual") as InvestigatorVisual
+	if character == null:
+		failures.append("authored investigator wrapper is missing")
+	else:
+		for method_name in [&"set_locomotion", &"play_interaction", &"play_stumble", &"play_ending"]:
+			if not character.has_method(method_name):
+				failures.append("investigator is missing animation method %s" % method_name)
+		var model := character.get_node_or_null(^"InvestigatorModel") as Node3D
+		if model == null or not is_equal_approx(model.scale.x, 0.84):
+			failures.append("investigator visual scale is not the authored 0.84 silhouette")
+		for part_name in ["M_CoatTorso", "M_LeftArm", "M_RightArm", "M_LeftBoot", "M_RightBoot", "M_LanternBody"]:
+			if model == null or model.find_child(part_name, true, false) == null:
+				failures.append("investigator model is missing animated part %s" % part_name)
+
+	var expected_positions := {
+		&"mira": Vector3(-6.8, 0.72, 5.45),
+		&"leela": Vector3(-6.8, 0.72, 1.75),
+		&"arun": Vector3(-6.8, 0.72, -2.0),
+		&"dev": Vector3(6.8, 0.72, 5.45),
+		&"sana": Vector3(6.8, 0.72, 1.75),
+		&"kabir": Vector3(6.8, 0.72, -2.0),
+		&"nila": Vector3(0, 0.72, -5.25),
+	}
+	var required_accessories := {
+		&"mira": "RedRibbonTailLeft",
+		&"leela": "RightShoe",
+		&"arun": "BrassStar",
+		&"dev": "TrainWheel",
+		&"sana": "FoldedCloth",
+		&"kabir": "BlueMarble",
+		&"nila": "CountingBead_6",
+	}
+	for doll_id in expected_positions:
+		var area = interactables_by_id.get(doll_id)
+		if area == null:
+			failures.append("doll interactable %s is missing" % doll_id)
+			continue
+		if area.global_position.distance_to(expected_positions[doll_id]) > 0.01:
+			failures.append("doll %s interaction coordinate changed" % doll_id)
+		if area.get_node_or_null("Marker") != null:
+			failures.append("doll %s still uses its sphere marker" % doll_id)
+		var visual: Node3D = area.get("authored_visual") as Node3D
+		if visual == null:
+			failures.append("doll %s has no authored visual" % doll_id)
+		elif visual.find_child(required_accessories[doll_id], true, false) == null:
+			failures.append("doll %s is missing signature accessory %s" % [doll_id, required_accessories[doll_id]])
+	var leela_visual: Node3D = interactables_by_id[&"leela"].get("authored_visual") as Node3D
+	if leela_visual != null and leela_visual.find_child("LeftShoe", true, false) != null:
+		failures.append("Leela incorrectly has the intentionally missing left shoe")
+	if failures.is_empty():
+		print("CHARACTER_ANIMATION_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Character/animation self-test: %s" % failure)
+		print("CHARACTER_ANIMATION_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if pressure_failure_active:
 		if event is InputEventKey and event.is_pressed() and not event.is_echo():
@@ -830,6 +896,10 @@ func _spawn_player() -> void:
 		start = {"x": 21.5, "y": 0.05, "z": -8.0, "yaw": 180.0}
 	elif args.has("--boiler-benchmark"):
 		start = {"x": -4.2, "y": 0.05, "z": -10.4, "yaw": -28.0}
+	elif args.has("--doll-benchmark"):
+		start = {"x": 0.0, "y": 0.05, "z": 4.8, "yaw": 0.0}
+	elif args.has("--character-benchmark"):
+		start = {"x": -14.5, "y": 0.05, "z": 2.0, "yaw": 90.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -1050,11 +1120,15 @@ func _handle_cradle_interaction(target) -> void:
 	if chosen != &"nila":
 		smoke_elapsed_seconds = minf(smoke_budget_seconds, smoke_elapsed_seconds + 90.0)
 		level_state.return_carried_doll()
+		if player.has_method("play_stumble"):
+			player.play_stumble()
 		_update_pressure_presentation()
 		_show_subtitle("The memory rejects that name. The doll returns to its alcove as smoke surges through the hall.")
 		return
 	level_state.complete_final_choice()
 	completion_active = true
+	if player.has_method("play_ending"):
+		player.play_ending()
 	_update_pressure_presentation()
 	_set_player_input_locked(true)
 	code_panel.visible = true
@@ -1257,6 +1331,8 @@ func _show_pressure_failure() -> void:
 	if pressure_failure_active or level_state.state == level_state.COMPLETE:
 		return
 	pressure_failure_active = true
+	if player.has_method("play_stumble"):
+		player.play_stumble()
 	level_state.set_state(level_state.FAILED)
 	_set_player_input_locked(true)
 	code_panel.visible = true
@@ -1483,6 +1559,21 @@ func _capture_boiler_phase7() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase7_boiler_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("BOILER_PHASE7_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_character_phase8() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var view := "investigator"
+	if OS.get_cmdline_user_args().has("--doll-benchmark"):
+		view = "dolls"
+	await get_tree().create_timer(0.8).timeout
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase8_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("CHARACTER_PHASE8_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:

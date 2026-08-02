@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/ashdown_player.gd" id="1_player"]
-[ext_resource type="PackedScene" path="res://assets/hd2d/characters/investigator_blockout.glb" id="2_investigator"]
+[ext_resource type="PackedScene" path="res://scenes/characters/InvestigatorCharacter.tscn" id="2_investigator"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape_player"]
 radius = 0.32

@@ -36,6 +36,15 @@ func _build_materials() -> void:
 		"fabric": _material("DustyFabric", Color("62504b"), 1.0),
 		"soot": _material("Soot", Color("100e0d"), 1.0),
 		"red": _material("AlarmRed", Color("6d2420"), 0.88),
+		"doll_cloth": _material("DollAgedCloth", Color("8d8068"), 0.98),
+		"doll_skin": _material("DollPaintedPorcelain", Color("b6aa8c"), 0.86),
+		"doll_dark": _material("DollSootDamage", Color("292321"), 1.0),
+		"doll_blue": _material("DollFadedBlue", Color("334b68"), 0.94),
+		"doll_teal": _material("DollWashedTeal", Color("426a68"), 0.94),
+		"doll_red": _material("DollFadedRed", Color("7f3540"), 0.94),
+		"doll_amber": _material("DollMustard", Color("8c6c32"), 0.94),
+		"doll_violet": _material("DollBruisedViolet", Color("5a4668"), 0.94),
+		"doll_green": _material("DollMossGreen", Color("40533f"), 0.94),
 	}
 
 func _material(name: String, color: Color, roughness: float, metallic := 0.0) -> StandardMaterial3D:
@@ -137,6 +146,15 @@ func _create_main_hall() -> Node3D:
 	_make_bench(furniture, "WestWaitingBench", Vector3(-7.1, 0, 4.6), 2.2, 90)
 	_make_bench(furniture, "EastWaitingBench", Vector3(7.1, 0, 4.6), 2.2, 90)
 
+	var dolls := _branch(furniture, "Dolls")
+	_make_doll(dolls, "Mira", Vector3(-6.8, 0, 5.45), "mira")
+	_make_doll(dolls, "Leela", Vector3(-6.8, 0, 1.75), "leela")
+	_make_doll(dolls, "Arun", Vector3(-6.8, 0, -2.0), "arun")
+	_make_doll(dolls, "Dev", Vector3(6.8, 0, 5.45), "dev")
+	_make_doll(dolls, "Sana", Vector3(6.8, 0, 1.75), "sana")
+	_make_doll(dolls, "Kabir", Vector3(6.8, 0, -2.0), "kabir")
+	_make_doll(dolls, "Nila", Vector3(0, 0, -5.25), "nila")
+
 	var alarm := _prop(furniture, "H09_AlarmBell", Vector3(-7.64, 2.2, 7.2))
 	_cylinder_part(alarm, "Bell", Vector3.ZERO, 0.23, 0.22, materials.red, Vector3(0, 0, 90))
 	_cylinder_part(alarm, "Clapper", Vector3(0.0, -0.16, 0), 0.045, 0.25, materials.iron)
@@ -164,6 +182,13 @@ func _create_main_hall() -> Node3D:
 	_add_anchor(anchors, "H04", Vector3(0, 1.08, 3.37), "../../Furniture/H04_HouseRegister", true)
 	_add_anchor(anchors, "H09", Vector3(-7.58, 2.2, 7.2), "../../Furniture/H09_AlarmBell", false)
 	_add_anchor(anchors, "H10", Vector3(-7.58, 1.65, 6.65), "../../Furniture/H10_BatteryBox", false)
+	_add_anchor(anchors, "mira", Vector3(-6.8, 0.72, 5.45), "../../Furniture/Dolls/Mira", false)
+	_add_anchor(anchors, "leela", Vector3(-6.8, 0.72, 1.75), "../../Furniture/Dolls/Leela", false)
+	_add_anchor(anchors, "arun", Vector3(-6.8, 0.72, -2.0), "../../Furniture/Dolls/Arun", false)
+	_add_anchor(anchors, "dev", Vector3(6.8, 0.72, 5.45), "../../Furniture/Dolls/Dev", false)
+	_add_anchor(anchors, "sana", Vector3(6.8, 0.72, 1.75), "../../Furniture/Dolls/Sana", false)
+	_add_anchor(anchors, "kabir", Vector3(6.8, 0.72, -2.0), "../../Furniture/Dolls/Kabir", false)
+	_add_anchor(anchors, "nila", Vector3(0, 0.72, -5.25), "../../Furniture/Dolls/Nila", false)
 
 	_add_omni(lighting, "HallWarmLight", Vector3(0, 2.65, 1.4), Color("e0a45b"), 3.20, 10.5)
 	_add_omni(lighting, "NorthPool", Vector3(0, 2.55, 6.5), Color("c79762"), 1.85, 6.5)
@@ -214,6 +239,89 @@ func _cylinder_part(parent: Node, name: String, position: Vector3, radius: float
 	mesh_instance.mesh = mesh
 	parent.add_child(mesh_instance)
 	return mesh_instance
+
+func _sphere_part(parent: Node, name: String, position: Vector3, radius: float, material: Material, scale := Vector3.ONE) -> MeshInstance3D:
+	var mesh_instance := MeshInstance3D.new()
+	mesh_instance.name = name
+	mesh_instance.position = position
+	mesh_instance.scale = scale
+	var mesh := SphereMesh.new()
+	mesh.radius = radius
+	mesh.height = radius * 2.0
+	mesh.radial_segments = 12
+	mesh.rings = 6
+	mesh.material = material
+	mesh_instance.mesh = mesh
+	parent.add_child(mesh_instance)
+	return mesh_instance
+
+func _make_doll(parent: Node, name: String, position: Vector3, variant: String) -> Node3D:
+	var doll := _prop(parent, name, position)
+	doll.set_meta("doll_variant", StringName(variant))
+	var palette: Material = {
+		"mira": materials.doll_red,
+		"leela": materials.doll_violet,
+		"arun": materials.doll_blue,
+		"dev": materials.doll_amber,
+		"sana": materials.doll_teal,
+		"kabir": materials.doll_green,
+		"nila": materials.doll_cloth,
+	}.get(variant, materials.doll_cloth)
+	var body := _branch(doll, "HandmadeBody")
+	_cylinder_part(body, "Torso", Vector3(0, 0.47, 0), 0.15, 0.34, palette)
+	_sphere_part(body, "Head", Vector3(0, 0.78, 0), 0.17, materials.doll_skin, Vector3(0.92, 1.04, 0.88))
+	_box_part(body, "DressHem", Vector3(0, 0.29, 0), Vector3(0.38, 0.20, 0.26), palette)
+	_box_part(body, "LeftEye", Vector3(-0.055, 0.81, -0.145), Vector3(0.028, 0.035, 0.018), materials.doll_dark)
+	_box_part(body, "RightEye", Vector3(0.055, 0.81, -0.145), Vector3(0.028, 0.035, 0.018), materials.doll_dark)
+	var left_arm := _cylinder_part(body, "LeftArm", Vector3(-0.20, 0.51, 0), 0.045, 0.38, materials.doll_skin, Vector3(0, 0, -20))
+	var right_arm := _cylinder_part(body, "RightArm", Vector3(0.20, 0.51, 0), 0.045, 0.38, materials.doll_skin, Vector3(0, 0, 20))
+	var left_leg := _cylinder_part(body, "LeftLeg", Vector3(-0.09, 0.13, 0), 0.052, 0.28, materials.doll_skin)
+	var right_leg := _cylinder_part(body, "RightLeg", Vector3(0.09, 0.13, 0), 0.052, 0.28, materials.doll_skin)
+	_box_part(body, "RightShoe", Vector3(0.09, 0.025, -0.045), Vector3(0.12, 0.07, 0.19), materials.doll_dark)
+	if variant != "leela":
+		_box_part(body, "LeftShoe", Vector3(-0.09, 0.025, -0.045), Vector3(0.12, 0.07, 0.19), materials.doll_dark)
+	match variant:
+		"mira":
+			left_arm.rotation_degrees = Vector3(72, 0, -38)
+			right_arm.rotation_degrees = Vector3(58, 0, 32)
+			_box_part(body, "RedRibbonTailLeft", Vector3(-0.11, 0.92, 0), Vector3(0.05, 0.18, 0.035), materials.doll_red).rotation_degrees.z = 32
+			_box_part(body, "RedRibbonTailRight", Vector3(0.0, 0.92, 0), Vector3(0.05, 0.18, 0.035), materials.doll_red).rotation_degrees.z = -32
+			_box_part(body, "FaceCrack", Vector3(0.045, 0.77, -0.161), Vector3(0.018, 0.16, 0.012), materials.doll_dark).rotation_degrees.z = 24
+		"leela":
+			doll.rotation_degrees.z = 4
+			left_arm.rotation_degrees = Vector3(78, 0, -62)
+			right_arm.rotation_degrees = Vector3(70, 0, 58)
+			left_leg.rotation_degrees.x = 72
+			right_leg.rotation_degrees.x = 72
+		"arun":
+			body.rotation_degrees.x = -5
+			var star := _box_part(body, "BrassStar", Vector3(0.075, 0.55, -0.145), Vector3(0.09, 0.09, 0.025), materials.brass)
+			star.rotation_degrees.z = 45
+		"dev":
+			left_leg.rotation_degrees.x = 68
+			right_leg.rotation_degrees.x = 32
+			_sphere_part(body, "SootLeftHand", Vector3(-0.25, 0.35, 0), 0.06, materials.doll_dark)
+			_sphere_part(body, "SootRightHand", Vector3(0.25, 0.35, 0), 0.06, materials.doll_dark)
+			var wheel := _torus_part(body, "TrainWheel", Vector3(0.25, 0.33, -0.08), materials.iron)
+			wheel.scale = Vector3(1.6, 1.6, 1.6)
+			wheel.rotation_degrees.x = 90
+		"sana":
+			left_arm.rotation_degrees = Vector3(68, 0, -32)
+			right_arm.rotation_degrees = Vector3(68, 0, 32)
+			_box_part(body, "FoldedCloth", Vector3(0, 0.30, -0.21), Vector3(0.34, 0.055, 0.24), materials.fabric)
+			_cylinder_part(body, "WhistleCord", Vector3(0, 0.61, -0.15), 0.012, 0.28, materials.brass)
+		"kabir":
+			body.position.y = -0.10
+			left_leg.rotation_degrees.x = 55
+			right_leg.rotation_degrees.x = 55
+			_sphere_part(body, "BlueMarble", Vector3(0.25, 0.34, -0.08), 0.055, materials.doll_blue)
+			_box_part(body, "LeftKneeScrape", Vector3(-0.09, 0.13, -0.052), Vector3(0.07, 0.08, 0.015), materials.doll_dark)
+		"nila":
+			right_arm.rotation_degrees = Vector3(74, 0, 26)
+			_box_part(body, "BlankTag", Vector3(-0.15, 0.52, -0.16), Vector3(0.15, 0.11, 0.02), materials.paper)
+			for bead_index in range(7):
+				_sphere_part(body, "CountingBead_%d" % bead_index, Vector3(-0.18 + bead_index * 0.06, 0.25, -0.18), 0.026, materials.brass)
+	return doll
 
 func _torus_part(parent: Node, name: String, position: Vector3, material: Material) -> MeshInstance3D:
 	var mesh_instance := MeshInstance3D.new()

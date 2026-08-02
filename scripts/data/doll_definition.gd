@@ -10,4 +10,9 @@ extends Resource
 @export var required_clue_ids: Array[StringName] = []
 @export var doll_scene: PackedScene
 @export var portrait: Texture2D
-
+@export var model_scene: PackedScene
+@export var material_variant: StringName
+@export var accessory_ids: Array[StringName] = []
+@export var authored_pose: StringName
+@export var animation_set: StringName = &"handmade_doll"
+@export var damage_profile: StringName

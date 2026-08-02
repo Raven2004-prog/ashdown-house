@@ -28,6 +28,7 @@ var pitch := -0.14
 @onready var camera: Camera3D = $CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D
 @onready var interaction_ray: RayCast3D = $CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D/InteractionRay
 @onready var visual_root: Node3D = $VisualRoot
+@onready var investigator_visual: InvestigatorVisual = $VisualRoot/InvestigatorVisual
 
 func _ready() -> void:
 	_apply_authored_node_settings()
@@ -44,6 +45,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		interaction_ray.force_raycast_update()
 		var target = _find_target()
 		if target != null:
+			if investigator_visual != null:
+				investigator_visual.play_interaction(StringName(target.get("kind")), StringName(target.get("interaction_id")))
 			interaction_requested.emit(target)
 	elif event.is_action_pressed("release_mouse"):
 		_release_mouse()
@@ -107,6 +110,20 @@ func _apply_movement(delta: float) -> void:
 	_apply_gravity(delta)
 	if direction.length() > 0.05:
 		visual_root.rotation.y = atan2(-direction.x, -direction.z)
+	if investigator_visual != null:
+		investigator_visual.set_locomotion(direction.length() > 0.05, sprinting, crouching)
+
+func play_stumble() -> void:
+	if investigator_visual != null:
+		investigator_visual.play_stumble()
+
+func play_ending() -> void:
+	if investigator_visual != null:
+		investigator_visual.play_ending()
+
+func play_lantern_raise() -> void:
+	if investigator_visual != null:
+		investigator_visual.play_lantern_raise()
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
