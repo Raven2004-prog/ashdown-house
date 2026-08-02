@@ -68,6 +68,12 @@ func set_input_locked(value: bool) -> void:
 	if input_locked:
 		clear_current_target()
 
+func set_mouse_captured(value: bool) -> void:
+	if value:
+		_capture_mouse()
+	else:
+		_release_mouse()
+
 func set_start_yaw_degrees(value: float) -> void:
 	yaw = deg_to_rad(value)
 	if camera_yaw != null:

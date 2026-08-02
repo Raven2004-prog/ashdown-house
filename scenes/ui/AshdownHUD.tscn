@@ -1,0 +1,398 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ashdown_hud.gd" id="1_hud"]
+[ext_resource type="FontFile" path="res://assets/fonts/atkinson_next/AtkinsonHyperlegibleNext-Regular.ttf" id="2_regular"]
+[ext_resource type="FontFile" path="res://assets/fonts/atkinson_next/AtkinsonHyperlegibleNext-SemiBold.ttf" id="3_semibold"]
+
+[sub_resource type="Theme" id="Theme_ashdown"]
+default_font = ExtResource("2_regular")
+default_font_size = 22
+
+[sub_resource type="StyleBoxFlat" id="Style_dark"]
+bg_color = Color(0.035, 0.034, 0.038, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.34, 0.31, 0.27, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="Style_paper"]
+bg_color = Color(0.86, 0.82, 0.7, 0.99)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.23, 0.2, 0.16, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Style_button"]
+bg_color = Color(0.12, 0.115, 0.12, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.42, 0.38, 0.31, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+
+[sub_resource type="StyleBoxFlat" id="Style_button_hover"]
+bg_color = Color(0.21, 0.18, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.88, 0.66, 0.34, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+
+[node name="AshdownHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_ashdown")
+script = ExtResource("1_hud")
+
+[node name="BottomBand" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+color = Color(0.018, 0.018, 0.022, 0.9)
+
+[node name="BottomMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -108.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="BottomMargin"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PromptLabel" type="Label" parent="BottomMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.93, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 22
+text = "WASD move | Mouse camera | Shift sprint | Ctrl crouch | J journal | E interact"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="BottomMargin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_font_sizes/font_size = 24
+text = "Ashdown House is quiet."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ReticleLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.84, 0.84, 0.8, 0.62)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 24
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="JournalPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.12
+anchor_top = 0.07
+anchor_right = 0.88
+anchor_bottom = 0.86
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_styles/panel = SubResource("Style_paper")
+
+[node name="Margin" type="MarginContainer" parent="JournalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="JournalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="JournalPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.095, 0.075, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 34
+text = "Investigation Journal"
+
+[node name="Rule" type="HSeparator" parent="JournalPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="JournalLabel" type="Label" parent="JournalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.12, 0.1, 0.08, 1)
+theme_override_font_sizes/font_size = 21
+text = "Journal entries appear here."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CloseHint" type="Label" parent="JournalPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.21, 0.17, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 18
+text = "J or Escape closes the journal"
+horizontal_alignment = 1
+
+[node name="CodePanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -130.0
+offset_right = 350.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_styles/panel = SubResource("Style_dark")
+
+[node name="Margin" type="MarginContainer" parent="CodePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 26
+
+[node name="CodeLabel" type="Label" parent="CodePanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.89, 0.73, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 26
+text = "Enter the sequence."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PauseLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Dim" type="ColorRect" parent="PauseLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0.01, 0.012, 0.76)
+
+[node name="Center" type="CenterContainer" parent="PauseLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="PauseLayer/Center"]
+custom_minimum_size = Vector2(720, 610)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_dark")
+
+[node name="Margin" type="MarginContainer" parent="PauseLayer/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="PauseLayer/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="PauseLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 36
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="QualityValue" type="Label" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.76, 0.47, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 22
+text = "Balanced world (50%)"
+horizontal_alignment = 1
+
+[node name="QualityButtons" type="HBoxContainer" parent="PauseLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="PerformanceButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox/QualityButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Performance"
+
+[node name="BalancedButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox/QualityButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Balanced"
+
+[node name="NativeButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox/QualityButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Native"
+
+[node name="BrightnessRow" type="HBoxContainer" parent="PauseLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PauseLayer/Center/Panel/Margin/VBox/BrightnessRow"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Brightness"
+
+[node name="BrightnessSlider" type="HSlider" parent="PauseLayer/Center/Panel/Margin/VBox/BrightnessRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.75
+max_value = 1.3
+step = 0.05
+value = 1.0
+
+[node name="TextScaleRow" type="HBoxContainer" parent="PauseLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PauseLayer/Center/Panel/Margin/VBox/TextScaleRow"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Text size"
+
+[node name="TextScaleSlider" type="HSlider" parent="PauseLayer/Center/Panel/Margin/VBox/TextScaleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.85
+max_value = 1.35
+step = 0.05
+value = 1.0
+
+[node name="FullscreenToggle" type="CheckButton" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen"
+button_pressed = true
+
+[node name="FogToggle" type="CheckButton" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Atmospheric fog"
+button_pressed = true
+
+[node name="ShadowsToggle" type="CheckButton" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dynamic shadows"
+button_pressed = true
+
+[node name="FlashingToggle" type="CheckButton" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reduce flashing effects"
+
+[node name="ResumeButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Resume"

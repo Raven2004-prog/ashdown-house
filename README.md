@@ -12,7 +12,7 @@ The project is currently a playable mechanics and scale prototype. The Library i
 - Data-driven dolls, clues, puzzles, journal entries, and inventory evidence.
 - Library catalog and sliding-shelf investigation sequence.
 - Handcrafted 16 x 14 metre Library benchmark with full-height architecture, shelf aisles, reading area, lighting, optional inspections, and authored interaction anchors.
-- Fullscreen 640 x 360 internal rendering with integer scaling and nearest-style 3D materials.
+- Fullscreen 1280 x 720 presentation with native-resolution UI and independently nearest-scaled 3D world presets.
 - Mechanics self-test for Library progression and collected-prop cleanup.
 
 ## Controls

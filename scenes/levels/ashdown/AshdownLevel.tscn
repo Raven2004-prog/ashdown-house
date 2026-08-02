@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/level/ashdown_level.gd" id="1_ashdown"]
 [ext_resource type="PackedScene" path="res://scenes/player/AshdownPlayer.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/levels/ashdown/rooms/LibraryBenchmark.tscn" id="3_library"]
 [ext_resource type="PackedScene" path="res://scenes/levels/ashdown/AshdownHouseBlockout.tscn" id="4_blockout"]
+[ext_resource type="PackedScene" path="res://scenes/ui/AshdownHUD.tscn" id="5_hud"]
 
 [sub_resource type="Environment" id="Environment_ashdown"]
 background_mode = 1
@@ -32,3 +33,5 @@ shadow_enabled = true
 [node name="Player" parent="." instance=ExtResource("2_player")]
 
 [node name="UI" type="CanvasLayer" parent="."]
+
+[node name="AshdownHUD" parent="UI" instance=ExtResource("5_hud")]

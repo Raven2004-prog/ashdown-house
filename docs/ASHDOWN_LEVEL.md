@@ -7,8 +7,9 @@ This milestone migrates the active 3D prototype from the earlier Ashdown Childre
 Core baseline:
 
 - Godot 4.7.x.
-- Low-resolution 3D pixel-horror presentation.
-- `640 x 360` internal viewport with fullscreen integer-style scaling.
+- HD-2D-inspired 3D pixel-horror presentation.
+- `1280 x 720` native interface with independently nearest-scaled 3D world rendering.
+- World presets: Performance `0.3333`, Balanced `0.5`, and Native `1.0`.
 - One Godot unit equals one metre.
 - `+X` is east, `-X` is west, `+Z` is north, `-Z` is south, `+Y` is up.
 - Third-person player uses `CharacterBody3D`.

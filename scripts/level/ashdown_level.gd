@@ -32,13 +32,14 @@ var interaction_manager
 @onready var marker_root: Node3D = $HouseBlockout/Labels
 @onready var player: CharacterBody3D = $Player
 @onready var ui_layer: CanvasLayer = $UI
-var prompt_label: Label
-var subtitle_label: Label
-var reticle_label: Label
-var journal_panel: Control
-var journal_label: Label
-var code_panel: Control
-var code_label: Label
+@onready var hud: AshdownHUD = $UI/AshdownHUD
+@onready var prompt_label: Label = $UI/AshdownHUD/BottomMargin/VBox/PromptLabel
+@onready var subtitle_label: Label = $UI/AshdownHUD/BottomMargin/VBox/SubtitleLabel
+@onready var reticle_label: Label = $UI/AshdownHUD/ReticleLabel
+@onready var journal_panel: Control = $UI/AshdownHUD/JournalPanel
+@onready var journal_label: Label = $UI/AshdownHUD/JournalPanel/Margin/VBox/JournalLabel
+@onready var code_panel: Control = $UI/AshdownHUD/CodePanel
+@onready var code_label: Label = $UI/AshdownHUD/CodePanel/Margin/CodeLabel
 
 func _ready() -> void:
 	_ensure_inputs()
@@ -48,10 +49,13 @@ func _ready() -> void:
 	_create_environment()
 	_build_blockout()
 	_spawn_player()
-	_create_ui()
+	_setup_ui()
+	_apply_graphics_settings()
 	_show_subtitle("Ashdown House is quiet. Find the register in the Main Hall.")
 	if OS.get_cmdline_user_args().has("--library-benchmark-self-test"):
 		call_deferred("_run_library_benchmark_self_test")
+	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
+		call_deferred("_capture_hd2d_ui")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -64,6 +68,16 @@ func _run_library_benchmark_self_test() -> void:
 	for node_path in required_level_nodes:
 		if get_node_or_null(node_path) == null:
 			failures.append("missing authored level node %s" % node_path)
+	if hud == null:
+		failures.append("authored native-resolution HUD was not instantiated")
+	if get_viewport().scaling_3d_mode != Viewport.SCALING_3D_MODE_NEAREST:
+		failures.append("3D scaling mode is not nearest")
+	if not is_equal_approx(get_viewport().scaling_3d_scale, GraphicsSettings.get_world_scale()):
+		failures.append("3D scaling does not match the selected graphics preset")
+	if ProjectSettings.get_setting("display/window/size/viewport_width", 0) != 1280:
+		failures.append("root viewport width is not 1280")
+	if ProjectSettings.get_setting("display/window/stretch/mode", "") != "canvas_items":
+		failures.append("native-resolution CanvasItem stretch is not configured")
 	for collection_name in ["doors", "dolls", "placements"]:
 		for entry_variant in level_data.get(collection_name, []):
 			var entry: Dictionary = entry_variant
@@ -173,12 +187,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	if code_mode:
 		_handle_code_input(event)
 		return
+	if event.is_action_pressed("release_mouse"):
+		get_viewport().set_input_as_handled()
+		if journal_panel != null and journal_panel.visible:
+			_close_journal()
+		elif hud != null:
+			_set_pause_visible(not hud.is_pause_visible())
+		return
+	if hud != null and hud.is_pause_visible():
+		return
 	if event.is_action_pressed("toggle_debug_labels"):
 		_toggle_debug_labels()
 	elif event.is_action_pressed("open_journal"):
 		_toggle_journal()
-	elif event.is_action_pressed("release_mouse") and journal_panel != null and journal_panel.visible:
-		_close_journal()
 
 func _ensure_inputs() -> void:
 	var actions := {
@@ -285,77 +306,13 @@ func _spawn_player() -> void:
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
 
-func _create_ui() -> void:
-	var prompt_bg := ColorRect.new()
-	prompt_bg.position = Vector2(0, 304)
-	prompt_bg.size = Vector2(640, 56)
-	prompt_bg.color = Color(0.025, 0.025, 0.030, 0.88)
-	ui_layer.add_child(prompt_bg)
-	prompt_label = Label.new()
-	prompt_label.position = Vector2(18, 309)
-	prompt_label.size = Vector2(604, 18)
-	prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	prompt_label.add_theme_font_size_override("font_size", 13)
-	prompt_label.add_theme_color_override("font_color", Color(0.94, 0.92, 0.84))
-	ui_layer.add_child(prompt_label)
-	subtitle_label = Label.new()
-	subtitle_label.position = Vector2(34, 330)
-	subtitle_label.size = Vector2(572, 24)
-	subtitle_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	subtitle_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	subtitle_label.add_theme_font_size_override("font_size", 12)
-	subtitle_label.add_theme_color_override("font_color", Color(0.98, 0.96, 0.88))
-	ui_layer.add_child(subtitle_label)
-	reticle_label = Label.new()
-	reticle_label.position = Vector2(312, 166)
-	reticle_label.size = Vector2(16, 16)
-	reticle_label.text = "+"
-	reticle_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	reticle_label.add_theme_font_size_override("font_size", 12)
-	reticle_label.add_theme_color_override("font_color", Color(0.82, 0.82, 0.78, 0.52))
-	ui_layer.add_child(reticle_label)
-	_create_journal_panel()
-	_create_code_panel()
+func _setup_ui() -> void:
 	interaction_manager.setup(player, prompt_label)
 	interaction_manager.interaction_selected.connect(_handle_interaction)
 	player.target_changed.connect(_on_reticle_target_changed)
-
-func _create_journal_panel() -> void:
-	journal_panel = Control.new()
-	journal_panel.visible = false
-	journal_panel.position = Vector2(72, 34)
-	journal_panel.size = Vector2(496, 260)
-	ui_layer.add_child(journal_panel)
-	var bg := ColorRect.new()
-	bg.size = journal_panel.size
-	bg.color = Color(0.84, 0.78, 0.62, 0.98)
-	journal_panel.add_child(bg)
-	journal_label = Label.new()
-	journal_label.position = Vector2(18, 16)
-	journal_label.size = Vector2(460, 230)
-	journal_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	journal_label.add_theme_font_size_override("font_size", 12)
-	journal_label.add_theme_color_override("font_color", Color(0.12, 0.10, 0.08))
-	journal_panel.add_child(journal_label)
-
-func _create_code_panel() -> void:
-	code_panel = Control.new()
-	code_panel.visible = false
-	code_panel.position = Vector2(96, 104)
-	code_panel.size = Vector2(448, 128)
-	ui_layer.add_child(code_panel)
-	var bg := ColorRect.new()
-	bg.size = code_panel.size
-	bg.color = Color(0.035, 0.032, 0.030, 0.96)
-	code_panel.add_child(bg)
-	code_label = Label.new()
-	code_label.position = Vector2(12, 12)
-	code_label.size = Vector2(424, 104)
-	code_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	code_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	code_label.add_theme_font_size_override("font_size", 13)
-	code_label.add_theme_color_override("font_color", Color(0.94, 0.88, 0.72))
-	code_panel.add_child(code_label)
+	if hud != null:
+		hud.resume_requested.connect(func(): _set_pause_visible(false))
+	GraphicsSettings.settings_changed.connect(_apply_graphics_settings)
 
 func _add_room_content_scenes() -> void:
 	for room_variant in level_data.get("rooms", []):
@@ -586,6 +543,7 @@ func _open_code_panel(target) -> void:
 
 func _handle_code_input(event: InputEvent) -> void:
 	if event.is_action_pressed("release_mouse"):
+		get_viewport().set_input_as_handled()
 		_close_code_panel("Code entry closed.")
 		return
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
@@ -638,12 +596,16 @@ func _toggle_journal() -> void:
 		_close_journal()
 		return
 	_set_player_input_locked(true)
+	if player.has_method("set_mouse_captured"):
+		player.set_mouse_captured(false)
 	journal_panel.visible = true
 	_update_journal_text()
 
 func _close_journal() -> void:
 	journal_panel.visible = false
 	_set_player_input_locked(false)
+	if player.has_method("set_mouse_captured"):
+		player.set_mouse_captured(true)
 
 func _update_journal_text() -> void:
 	if journal_label == null:
@@ -655,6 +617,40 @@ func _set_player_input_locked(value: bool) -> void:
 		player.set_input_locked(value)
 	if interaction_manager != null:
 		interaction_manager.set_interaction_enabled(not value)
+
+func _set_pause_visible(value: bool) -> void:
+	if hud == null:
+		return
+	hud.set_pause_visible(value)
+	_set_player_input_locked(value)
+	if player != null and player.has_method("set_mouse_captured"):
+		player.set_mouse_captured(not value)
+
+func _apply_graphics_settings() -> void:
+	var world_environment := $WorldEnvironment as WorldEnvironment
+	if world_environment != null and world_environment.environment != null:
+		world_environment.environment.adjustment_enabled = true
+		world_environment.environment.adjustment_brightness = GraphicsSettings.brightness
+	var key_light := $DirectionalLight3D as DirectionalLight3D
+	if key_light != null:
+		key_light.shadow_enabled = GraphicsSettings.shadows_enabled
+	for fog_node in get_tree().get_nodes_in_group("ashdown_fog"):
+		if fog_node is Node3D:
+			(fog_node as Node3D).visible = GraphicsSettings.fog_enabled
+	if hud != null:
+		hud.sync_settings()
+
+func _capture_hd2d_ui() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	_set_pause_visible(true)
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase1_native_ui.png")
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("HD2D_UI_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:
 	if subtitle_label != null:
