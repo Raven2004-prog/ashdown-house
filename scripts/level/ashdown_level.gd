@@ -56,6 +56,8 @@ func _ready() -> void:
 		call_deferred("_run_library_benchmark_self_test")
 	elif OS.get_cmdline_user_args().has("--classroom-slice-self-test"):
 		call_deferred("_run_classroom_slice_self_test")
+	elif OS.get_cmdline_user_args().has("--dormitory-slice-self-test"):
+		call_deferred("_run_dormitory_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -64,6 +66,8 @@ func _ready() -> void:
 		call_deferred("_capture_arrival_phase3")
 	elif OS.get_cmdline_user_args().has("--capture-classroom-phase4"):
 		call_deferred("_capture_classroom_phase4")
+	elif OS.get_cmdline_user_args().has("--capture-dormitory-phase5"):
+		call_deferred("_capture_dormitory_phase5")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -315,6 +319,64 @@ func _run_classroom_slice_self_test() -> void:
 		print("CLASSROOM_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_dormitory_slice_self_test() -> void:
+	var failures: Array[String] = []
+	failures.append_array(_collect_authored_validation_errors())
+	var dormitory := content_root.get_node_or_null("DormitoryContent")
+	if dormitory == null:
+		failures.append("authored Dormitory content was not instantiated")
+	else:
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Interactables", ^"Lighting", ^"Atmosphere"]:
+			if dormitory.get_node_or_null(branch) == null:
+				failures.append("missing authored Dormitory branch %s" % branch)
+	var required: Array[StringName] = [
+		&"DR04", &"DR08", &"DR09", &"DR10", &"DR11", &"DR12", &"DR13",
+		&"DR14", &"DR15", &"DR16", &"DR17", &"DR18", &"DR22"
+	]
+	for id in required:
+		if not authored_anchors_by_id.has(id):
+			failures.append("missing Dormitory anchor %s" % id)
+		if not interactables_by_id.has(id):
+			failures.append("missing Dormitory interactable %s" % id)
+		elif interactables_by_id[id].authored_visual == null:
+			failures.append("Dormitory interactable %s has no bound prop" % id)
+	level_state.set_flag(&"dormitory_unlocked", true)
+	_refresh_interactable_visibility()
+	var music_box = interactables_by_id.get(&"DR08")
+	if music_box == null or not music_box.visible:
+		failures.append("music box did not unlock with the Dormitory route")
+	level_state.complete_dormitory_music()
+	_refresh_interactable_visibility()
+	await get_tree().create_timer(0.75).timeout
+	for reward_id in [&"DR09", &"DR10", &"DR11"]:
+		var reward = interactables_by_id.get(reward_id)
+		if reward == null or not reward.visible:
+			failures.append("music-box reward %s did not unlock" % reward_id)
+	var ribbon = interactables_by_id.get(&"DR10")
+	var wheel = interactables_by_id.get(&"DR11")
+	if ribbon != null: _collect_evidence(ribbon)
+	if wheel != null: _collect_evidence(wheel)
+	if not inventory_manager.has_evidence(&"DR10") or not inventory_manager.has_evidence(&"DR11"):
+		failures.append("Dormitory keepsakes were not stored")
+	if dormitory != null:
+		var lid := dormitory.get_node_or_null(^"Furniture/DR09_ToyTrunk/Lid") as Node3D
+		if lid == null or lid.rotation_degrees.x > -55.0:
+			failures.append("toy trunk did not visibly open after the melody")
+	var clues_before: int = journal_manager.discovered_clues.size()
+	var pallet = interactables_by_id.get(&"DR04")
+	if pallet != null:
+		_handle_interaction(pallet)
+	if journal_manager.discovered_clues.size() != clues_before:
+		failures.append("seventh-pallet observation incorrectly counted as principal evidence")
+	if failures.is_empty():
+		print("DORMITORY_SLICE_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Dormitory slice self-test: %s" % failure)
+		print("DORMITORY_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if code_mode:
 		_handle_code_input(event)
@@ -464,6 +526,8 @@ func _spawn_player() -> void:
 		start = {"x": 0.0, "y": 0.05, "z": 6.7, "yaw": 0.0}
 	elif args.has("--classroom-benchmark"):
 		start = {"x": 12.2, "y": 0.05, "z": 2.0, "yaw": 270.0}
+	elif args.has("--dormitory-benchmark"):
+		start = {"x": -15.2, "y": 0.05, "z": -14.4, "yaw": 270.0} if args.has("--dormitory-solved") else {"x": -17.0, "y": 0.05, "z": -8.8, "yaw": 0.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -882,6 +946,28 @@ func _capture_classroom_phase4() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase4_classroom_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("CLASSROOM_PHASE4_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_dormitory_phase5() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "entrance"
+	level_state.set_flag(&"dormitory_unlocked", true)
+	if args.has("--dormitory-solved"):
+		view = "solved"
+		level_state.start_fire()
+		level_state.complete_dormitory_music()
+	_refresh_interactable_visibility()
+	if args.has("--dormitory-solved"):
+		await get_tree().create_timer(0.9).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase5_dormitory_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("DORMITORY_PHASE5_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:
