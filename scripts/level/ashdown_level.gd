@@ -40,6 +40,7 @@ var interaction_manager
 @onready var interactable_root: Node3D = $HouseBlockout/Interactables
 @onready var marker_root: Node3D = $HouseBlockout/Labels
 @onready var player: CharacterBody3D = $Player
+@onready var final_vfx: AshdownFinalVFX = $FinalVFX
 @onready var ui_layer: CanvasLayer = $UI
 @onready var hud: AshdownHUD = $UI/AshdownHUD
 @onready var prompt_label: Label = $UI/AshdownHUD/BottomMargin/VBox/PromptLabel
@@ -66,6 +67,8 @@ func _ready() -> void:
 	_setup_ui()
 	_apply_graphics_settings()
 	_show_subtitle("Ashdown House is quiet. Find the register in the Main Hall.")
+	if not _is_automation_launch():
+		_show_title_flow()
 	if OS.get_cmdline_user_args().has("--library-benchmark-self-test"):
 		call_deferred("_run_library_benchmark_self_test")
 	elif OS.get_cmdline_user_args().has("--classroom-slice-self-test"):
@@ -80,6 +83,8 @@ func _ready() -> void:
 		call_deferred("_run_character_animation_self_test")
 	elif OS.get_cmdline_user_args().has("--audio-system-self-test"):
 		call_deferred("_run_audio_system_self_test")
+	elif OS.get_cmdline_user_args().has("--release-polish-self-test"):
+		call_deferred("_run_release_polish_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -96,11 +101,15 @@ func _ready() -> void:
 		call_deferred("_capture_boiler_phase7")
 	elif OS.get_cmdline_user_args().has("--capture-character-phase8"):
 		call_deferred("_capture_character_phase8")
+	elif OS.get_cmdline_user_args().has("--capture-final-phase10"):
+		call_deferred("_capture_final_phase10")
 
 func _process(delta: float) -> void:
 	if level_state != null and player != null:
 		var pressure_fraction := clampf(smoke_elapsed_seconds / smoke_budget_seconds, 0.0, 1.0)
 		AudioManager.update_house_state(player.global_position, level_state.flags, pressure_fraction)
+		if final_vfx != null:
+			final_vfx.apply_gameplay_state(level_state.flags, pressure_fraction)
 	if level_state == null or not level_state.has_flag(&"fire_started"):
 		return
 	if level_state.state == level_state.COMPLETE or pressure_failure_active or _pressure_is_paused():
@@ -763,7 +772,53 @@ func _run_audio_system_self_test() -> void:
 		print("AUDIO_SYSTEM_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_release_polish_self_test() -> void:
+	var failures: Array[String] = []
+	if final_vfx == null or final_vfx.get_fire_effect_count() != 4:
+		failures.append("final VFX controller does not own four room-local fire effects")
+	if hud.get_node_or_null(^"TitleLayer") == null or hud.get_node_or_null(^"CreditsLayer") == null:
+		failures.append("title or credits flow is missing")
+	if hud.find_child("CameraMotionToggle", true, false) == null:
+		failures.append("reduced camera motion control is missing")
+	var test_snapshot := {
+		"state": level_state.get_snapshot(),
+		"inventory": inventory_manager.get_snapshot(),
+		"journal": journal_manager.get_snapshot(),
+		"player_position": Vector3(1, 0.05, 2),
+		"smoke_elapsed_seconds": 12.0,
+	}
+	checkpoint_manager.save_checkpoint(test_snapshot, false)
+	if not checkpoint_manager.has_checkpoint() or checkpoint_manager.get_checkpoint().player_position != Vector3(1, 0.05, 2):
+		failures.append("checkpoint snapshot did not round-trip Variant data")
+	level_state.start_fire()
+	final_vfx.apply_gameplay_state(level_state.flags, 0.6)
+	if not (final_vfx.fire_effects[&"hall"].root as Node3D).visible:
+		failures.append("fire VFX did not activate with the fire phase")
+	level_state.set_flag(&"boiler_disabled", true)
+	final_vfx.apply_gameplay_state(level_state.flags, 0.6)
+	if (final_vfx.fire_effects[&"boiler"].root as Node3D).visible:
+		failures.append("boiler VFX did not stop after shutdown")
+	level_state.set_flag(&"final_doll_placed", true)
+	final_vfx.apply_gameplay_state(level_state.flags, 0.0)
+	if not final_vfx.soul_wisps.visible or not final_vfx.soul_wisps.emitting:
+		failures.append("release wisps did not activate after Nila placement")
+	if not FileAccess.file_exists("res://export_presets.cfg"):
+		failures.append("Windows export preset is missing")
+	AudioManager.stop_all_for_test()
+	final_vfx.queue_free()
+	await get_tree().process_frame
+	if failures.is_empty():
+		print("RELEASE_POLISH_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Release polish self-test: %s" % failure)
+		print("RELEASE_POLISH_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
+	if hud != null and hud.is_title_visible():
+		return
 	if pressure_failure_active:
 		if event is InputEventKey and event.is_pressed() and not event.is_echo():
 			if event.physical_keycode == KEY_R:
@@ -842,6 +897,7 @@ func _create_managers() -> void:
 	checkpoint_manager = CHECKPOINT_MANAGER_SCRIPT.new()
 	checkpoint_manager.name = "CheckpointManager"
 	add_child(checkpoint_manager)
+	checkpoint_manager.load_persistent_checkpoint()
 	interaction_manager = INTERACTION_MANAGER_SCRIPT.new()
 	interaction_manager.name = "InteractionManager"
 	add_child(interaction_manager)
@@ -942,6 +998,8 @@ func _spawn_player() -> void:
 		start = {"x": 0.0, "y": 0.05, "z": 4.8, "yaw": 0.0}
 	elif args.has("--character-benchmark"):
 		start = {"x": -14.5, "y": 0.05, "z": 2.0, "yaw": 90.0}
+	elif args.has("--final-vfx-benchmark"):
+		start = {"x": 0.0, "y": 0.05, "z": 3.8, "yaw": 0.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -951,7 +1009,11 @@ func _setup_ui() -> void:
 	interaction_manager.interaction_selected.connect(_handle_interaction)
 	player.target_changed.connect(_on_reticle_target_changed)
 	if hud != null:
-		hud.resume_requested.connect(func(): _set_pause_visible(false))
+		hud.resume_requested.connect(_on_resume_requested)
+		hud.start_requested.connect(_start_new_investigation)
+		hud.continue_requested.connect(_continue_investigation)
+		hud.main_menu_requested.connect(func(): get_tree().reload_current_scene())
+		hud.quit_requested.connect(func(): get_tree().quit())
 	var investigator := player.get_node_or_null(^"VisualRoot/InvestigatorVisual") as InvestigatorVisual
 	if investigator != null and not investigator.footstep.is_connected(_on_investigator_footstep):
 		investigator.footstep.connect(_on_investigator_footstep)
@@ -959,6 +1021,39 @@ func _setup_ui() -> void:
 
 func _on_investigator_footstep(_surface_hint: StringName) -> void:
 	AudioManager.play_footstep(player.global_position)
+
+func _is_automation_launch() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if "self-test" in argument or "capture" in argument or "benchmark" in argument:
+			return true
+	return false
+
+func _show_title_flow() -> void:
+	hud.show_title(checkpoint_manager.has_checkpoint())
+	_set_player_input_locked(true)
+	player.set_mouse_captured(false)
+
+func _start_new_investigation() -> void:
+	AudioManager.play_ui_cue(&"puzzle")
+	checkpoint_manager.clear_checkpoint()
+	hud.hide_title()
+	_set_player_input_locked(false)
+	player.set_mouse_captured(true)
+	_show_subtitle("Ashdown House is quiet. Find the register in the Main Hall.")
+
+func _continue_investigation() -> void:
+	if not checkpoint_manager.has_checkpoint():
+		return
+	AudioManager.play_ui_cue(&"puzzle")
+	hud.hide_title()
+	_restore_latest_checkpoint()
+
+func _on_resume_requested() -> void:
+	AudioManager.play_ui_cue(&"select")
+	hud.set_pause_visible(false)
+	var returning_to_title := hud.is_title_visible()
+	_set_player_input_locked(returning_to_title)
+	player.set_mouse_captured(not returning_to_title)
 
 func _add_room_content_scenes() -> void:
 	for room_variant in level_data.get("rooms", []):
@@ -1231,6 +1326,10 @@ func _handle_trigger(target) -> void:
 	if target.interaction_id == &"H04":
 		if not level_state.has_flag(&"fire_started"):
 			level_state.start_fire()
+			if player.has_method("play_lantern_raise"):
+				player.play_lantern_raise()
+			if player.has_method("play_camera_beat"):
+				player.play_camera_beat(&"fire")
 			AudioManager.play_world_cue(&"alarm", target.global_position, -2.0)
 			_collect_evidence(target)
 			_save_checkpoint()
@@ -1455,6 +1554,7 @@ func _apply_graphics_settings() -> void:
 	if world_environment != null and world_environment.environment != null:
 		world_environment.environment.adjustment_enabled = true
 		world_environment.environment.adjustment_brightness = GraphicsSettings.brightness
+		world_environment.environment.volumetric_fog_enabled = GraphicsSettings.fog_enabled
 	var key_light := $DirectionalLight3D as DirectionalLight3D
 	if key_light != null:
 		key_light.shadow_enabled = GraphicsSettings.shadows_enabled
@@ -1630,6 +1730,30 @@ func _capture_character_phase8() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase8_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("CHARACTER_PHASE8_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_final_phase10() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "fire"
+	if args.has("--title-benchmark"):
+		view = "title"
+		hud.show_title(checkpoint_manager.has_checkpoint())
+	elif args.has("--release-benchmark"):
+		view = "release"
+		level_state.set_flag(&"final_doll_placed", true)
+	else:
+		level_state.start_fire()
+		smoke_elapsed_seconds = smoke_budget_seconds * 0.58
+	_refresh_interactable_visibility()
+	await get_tree().create_timer(1.2).timeout
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase10_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("FINAL_PHASE10_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:

@@ -82,6 +82,176 @@ mouse_filter = 2
 theme = SubResource("Theme_ashdown")
 script = ExtResource("1_hud")
 
+[node name="TitleLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Backdrop" type="ColorRect" parent="TitleLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.018, 0.016, 0.017, 0.965)
+
+[node name="Center" type="CenterContainer" parent="TitleLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="TitleLayer/Center"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="TitleLayer/Center/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.86, 0.72, 1)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 54
+text = "Ashdown House"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="TitleLayer/Center/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.62, 0.57, 1)
+theme_override_font_sizes/font_size = 20
+text = "Seven children. Six names. One house that refused to count."
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="TitleLayer/Center/VBox"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="TitleLayer/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "New Investigation"
+
+[node name="ContinueButton" type="Button" parent="TitleLayer/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Continue from Checkpoint"
+
+[node name="TitleSettingsButton" type="Button" parent="TitleLayer/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Settings"
+
+[node name="CreditsButton" type="Button" parent="TitleLayer/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Credits and Licenses"
+
+[node name="QuitButton" type="Button" parent="TitleLayer/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Quit"
+
+[node name="CreditsLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Backdrop" type="ColorRect" parent="CreditsLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.018, 0.016, 0.017, 0.98)
+
+[node name="Center" type="CenterContainer" parent="CreditsLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CreditsLayer/Center"]
+custom_minimum_size = Vector2(820, 620)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_dark")
+
+[node name="Margin" type="MarginContainer" parent="CreditsLayer/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="CreditsLayer/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="CreditsLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 36
+text = "Credits and Licenses"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="CreditsLayer/Center/Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 19
+text = "Ashdown House\nDesign and implementation: Kushagra with Codex\n\nAtkinson Hyperlegible Next - SIL Open Font License 1.1\nKenney Furniture Kit - CC0\nambientCG Planks 021 and Plaster 005 - CC0\n\nLibrary book dressing, investigator, dolls, room kits, shaders, particles, and procedural audio are project-original.\n\nFull source details are recorded in docs/CREDITS.md.\nEssential whispers and story information remain available as subtitles."
+autowrap_mode = 2
+
+[node name="CreditsBackButton" type="Button" parent="CreditsLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Back"
+
 [node name="SmokeVignette" type="ColorRect" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
@@ -316,7 +486,7 @@ theme_override_constants/margin_bottom = 18
 
 [node name="VBox" type="VBoxContainer" parent="PauseLayer/Center/Panel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 2
 
 [node name="Title" type="Label" parent="PauseLayer/Center/Panel/Margin/VBox"]
 layout_mode = 2
@@ -524,6 +694,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Reduce flashing effects"
 
+[node name="CameraMotionToggle" type="CheckButton" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reduce camera motion"
+
 [node name="ResumeButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 58)
@@ -534,3 +709,14 @@ theme_override_styles/normal = SubResource("Style_button")
 theme_override_styles/hover = SubResource("Style_button_hover")
 theme_override_styles/focus = SubResource("Style_button_hover")
 text = "Resume"
+
+[node name="MainMenuButton" type="Button" parent="PauseLayer/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("Style_button")
+theme_override_styles/hover = SubResource("Style_button_hover")
+theme_override_styles/focus = SubResource("Style_button_hover")
+text = "Main Menu"

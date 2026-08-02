@@ -41,3 +41,4 @@ scaling_3d/mode=5
 scaling_3d/scale=0.5
 anti_aliasing/quality/screen_space_aa=0
 anti_aliasing/quality/use_taa=false
+occlusion_culling/use_occlusion_culling=true

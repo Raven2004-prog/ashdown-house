@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/level/ashdown_level.gd" id="1_ashdown"]
 [ext_resource type="PackedScene" path="res://scenes/player/AshdownPlayer.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/levels/ashdown/rooms/LibraryBenchmark.tscn" id="3_library"]
 [ext_resource type="PackedScene" path="res://scenes/levels/ashdown/AshdownHouseBlockout.tscn" id="4_blockout"]
 [ext_resource type="PackedScene" path="res://scenes/ui/AshdownHUD.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/effects/AshdownFinalVFX.tscn" id="6_vfx"]
 
 [sub_resource type="Environment" id="Environment_ashdown"]
 background_mode = 1
@@ -12,6 +13,10 @@ background_color = Color(0.025, 0.027, 0.03, 1)
 ambient_light_source = 3
 ambient_light_color = Color(0.36, 0.34, 0.31, 1)
 ambient_light_energy = 0.75
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_length = 32.0
+volumetric_fog_detail_spread = 1.8
 
 [node name="AshdownLevel" type="Node3D"]
 script = ExtResource("1_ashdown")
@@ -23,6 +28,8 @@ environment = SubResource("Environment_ashdown")
 rotation_degrees = Vector3(-58, 38, 0)
 light_energy = 1.2
 shadow_enabled = true
+
+[node name="FinalVFX" parent="." instance=ExtResource("6_vfx")]
 
 [node name="HouseBlockout" parent="." instance=ExtResource("4_blockout")]
 

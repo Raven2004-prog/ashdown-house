@@ -20,6 +20,7 @@ var mouse_captured := false
 var current_target = null
 var yaw := 0.0
 var pitch := -0.14
+var camera_beat_tween: Tween
 
 @onready var camera_yaw: Node3D = $CameraYaw
 @onready var camera_pitch: Node3D = $CameraYaw/CameraPitch
@@ -116,14 +117,30 @@ func _apply_movement(delta: float) -> void:
 func play_stumble() -> void:
 	if investigator_visual != null:
 		investigator_visual.play_stumble()
+	play_camera_beat(&"stumble")
 
 func play_ending() -> void:
 	if investigator_visual != null:
 		investigator_visual.play_ending()
+	play_camera_beat(&"ending")
 
 func play_lantern_raise() -> void:
 	if investigator_visual != null:
 		investigator_visual.play_lantern_raise()
+
+func play_camera_beat(beat: StringName) -> void:
+	if GraphicsSettings.reduced_camera_motion:
+		return
+	if camera_beat_tween != null and camera_beat_tween.is_valid():
+		camera_beat_tween.kill()
+	var target_fov := 55.0 if beat == &"ending" else 57.0
+	var target_length := 2.28 if beat == &"ending" else 2.48
+	camera_beat_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	camera_beat_tween.tween_property(camera, "fov", target_fov, 0.42)
+	camera_beat_tween.parallel().tween_property(spring_arm, "spring_length", target_length, 0.42)
+	camera_beat_tween.tween_interval(0.26 if beat == &"stumble" else 0.78)
+	camera_beat_tween.tween_property(camera, "fov", 60.0, 0.72)
+	camera_beat_tween.parallel().tween_property(spring_arm, "spring_length", normal_spring_length, 0.72)
 
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():

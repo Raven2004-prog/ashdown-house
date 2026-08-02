@@ -21,6 +21,7 @@ var text_scale := 1.0
 var fog_enabled := true
 var shadows_enabled := true
 var reduced_flashing := false
+var reduced_camera_motion := false
 var fullscreen := true
 
 func _ready() -> void:
@@ -50,6 +51,10 @@ func set_shadows_enabled(value: bool) -> void:
 
 func set_reduced_flashing(value: bool) -> void:
 	reduced_flashing = value
+	_save_and_emit()
+
+func set_reduced_camera_motion(value: bool) -> void:
+	reduced_camera_motion = value
 	_save_and_emit()
 
 func set_fullscreen(value: bool) -> void:
@@ -99,6 +104,7 @@ func _save_settings() -> void:
 	config.set_value("graphics", "fog_enabled", fog_enabled)
 	config.set_value("graphics", "shadows_enabled", shadows_enabled)
 	config.set_value("graphics", "reduced_flashing", reduced_flashing)
+	config.set_value("graphics", "reduced_camera_motion", reduced_camera_motion)
 	config.set_value("graphics", "fullscreen", fullscreen)
 	config.save(CONFIG_PATH)
 
@@ -112,4 +118,5 @@ func _load_settings() -> void:
 	fog_enabled = bool(config.get_value("graphics", "fog_enabled", true))
 	shadows_enabled = bool(config.get_value("graphics", "shadows_enabled", true))
 	reduced_flashing = bool(config.get_value("graphics", "reduced_flashing", false))
+	reduced_camera_motion = bool(config.get_value("graphics", "reduced_camera_motion", false))
 	fullscreen = bool(config.get_value("graphics", "fullscreen", true))
