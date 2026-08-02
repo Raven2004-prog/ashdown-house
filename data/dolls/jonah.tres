@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"jonah"
+child_name = "Jonah Vale"
+required_item_id = &"storybook"
+initial_line = "I read loudly so someone outside would hear us."
+resolved_line = "They looked up. The bars did not move."
+late_line = "I could see the street."
+color = Color(0.26, 0.34, 0.76, 1)
+

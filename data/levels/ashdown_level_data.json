@@ -1,0 +1,56 @@
+{
+  "level_id": "ashdown_children_home",
+  "title": "Ashdown Children's Home",
+  "source": "Ashdown Children's Home: Complete Three-Dimensional Burning-Dolls Level Plan",
+  "units": "meters",
+  "origin": "main_hall_pedestal",
+  "floors": {
+    "ground": 0.0,
+    "basement": -4.0
+  },
+  "player_start": { "x": 0.0, "y": 0.05, "z": 12.0 },
+  "rooms": [
+    { "id": "main_hall", "name": "Main Hall", "x_min": -8, "x_max": 8, "z_min": -8, "z_max": 8, "floor_y": 0, "color": "46505a" },
+    { "id": "foyer", "name": "Foyer", "x_min": -5, "x_max": 5, "z_min": 8, "z_max": 16, "floor_y": 0, "color": "3f4a4d" },
+    { "id": "library", "name": "Library", "x_min": -24, "x_max": -8, "z_min": -8, "z_max": 5, "floor_y": 0, "color": "514437" },
+    { "id": "caretaker_office", "name": "Caretaker Office", "x_min": -24, "x_max": -14, "z_min": 5, "z_max": 16, "floor_y": 0, "color": "57433a" },
+    { "id": "washroom", "name": "Washroom", "x_min": -14, "x_max": -5, "z_min": 8, "z_max": 16, "floor_y": 0, "color": "3d585d" },
+    { "id": "dining_room", "name": "Dining Room", "x_min": 8, "x_max": 24, "z_min": -8, "z_max": 5, "floor_y": 0, "color": "5a4636" },
+    { "id": "kitchen", "name": "Kitchen and Pantry", "x_min": 8, "x_max": 24, "z_min": 5, "z_max": 16, "floor_y": 0, "color": "4f5748" },
+    { "id": "playroom", "name": "Playroom", "x_min": -24, "x_max": -8, "z_min": -22, "z_max": -8, "floor_y": 0, "color": "4f495c" },
+    { "id": "dormitory", "name": "Dormitory", "x_min": -8, "x_max": 8, "z_min": -22, "z_max": -8, "floor_y": 0, "color": "594840" },
+    { "id": "service_corridor", "name": "Service Corridor", "x_min": 8, "x_max": 12, "z_min": -22, "z_max": -8, "floor_y": 0, "color": "3b4144" },
+    { "id": "laundry", "name": "Laundry", "x_min": 12, "x_max": 24, "z_min": -22, "z_max": -8, "floor_y": 0, "color": "43565a" },
+    { "id": "boiler_room", "name": "Boiler Room", "x_min": 12, "x_max": 24, "z_min": -22, "z_max": -8, "floor_y": -4, "color": "4a3028" }
+  ],
+  "doors": [
+    { "id": "exterior_entrance", "name": "Exterior entrance", "x": 0, "y": 0, "z": 16, "state": "locked_after_arrival" },
+    { "id": "foyer_main_hall", "name": "Foyer to Main Hall", "x": 0, "y": 0, "z": 8, "state": "open" },
+    { "id": "main_hall_library", "name": "Main Hall to Library", "x": -8, "y": 0, "z": -1, "state": "open" },
+    { "id": "main_hall_dining", "name": "Main Hall to Dining Room", "x": 8, "y": 0, "z": -1, "state": "locked_washroom_flat_key" },
+    { "id": "main_hall_dormitory", "name": "Main Hall to Dormitory", "x": 0, "y": 0, "z": -8, "state": "barred_from_dormitory_side" },
+    { "id": "library_office", "name": "Library to Office", "x": -18, "y": 0, "z": 5, "state": "hidden_behind_rotating_shelf" },
+    { "id": "library_playroom", "name": "Library to Playroom", "x": -16, "y": 0, "z": -8, "state": "opens_after_library_puzzle" },
+    { "id": "foyer_washroom", "name": "Foyer to Washroom", "x": -5, "y": 0, "z": 12, "state": "open" },
+    { "id": "dining_kitchen", "name": "Dining Room to Kitchen", "x": 16, "y": 0, "z": 5, "state": "open_from_dining_side" },
+    { "id": "dining_service", "name": "Dining Room to Service Corridor", "x": 10, "y": 0, "z": -8, "state": "service_key_required" },
+    { "id": "playroom_dormitory", "name": "Playroom to Dormitory", "x": -8, "y": 0, "z": -15, "state": "bolted_from_playroom_side" },
+    { "id": "dormitory_service", "name": "Dormitory to Service Corridor", "x": 8, "y": 0, "z": -15, "state": "one_way_latch_until_unlocked" },
+    { "id": "service_laundry", "name": "Service Corridor to Laundry", "x": 12, "y": 0, "z": -15, "state": "available_after_service_corridor_entry" },
+    { "id": "service_basement", "name": "Service Corridor to basement stairs", "x": 10, "y": 0, "z": -20, "state": "basement_key_required" }
+  ],
+  "dolls": [
+    { "id": "nila", "name": "Nila", "age": 6, "x": -3.3, "y": 0.45, "z": 2.6, "rotation_y": 129, "initial_line": "Bunny says the floor has air." },
+    { "id": "tomas", "name": "Tomas", "age": 9, "x": 0.0, "y": 0.45, "z": 4.2, "rotation_y": 180, "initial_line": "I can see the rain, but I cannot reach the latch." },
+    { "id": "isha", "name": "Isha", "age": 10, "x": 3.3, "y": 0.45, "z": 2.6, "rotation_y": 231, "initial_line": "Wet cloth. Low breaths. Count slowly." },
+    { "id": "ben", "name": "Ben", "age": 7, "x": 4.1, "y": 0.45, "z": -1.0, "rotation_y": 284, "initial_line": "My shoe. I only went back for my shoe." },
+    { "id": "lena", "name": "Lena", "age": 8, "x": 1.8, "y": 0.45, "z": -3.8, "rotation_y": 335, "initial_line": "Hold my sleeve. Do not let go." },
+    { "id": "oren", "name": "Oren", "age": 11, "x": -1.8, "y": 0.45, "z": -3.8, "rotation_y": 25, "initial_line": "The chain is on the other side." },
+    { "id": "mara", "name": "Mara", "age": 12, "x": -4.1, "y": 0.45, "z": -1.0, "rotation_y": 76, "initial_line": "Six names. Seven breaths." }
+  ],
+  "test_clues": [
+    { "id": "blue_rabbit", "title": "Blue rabbit", "x": -20.5, "y": 0.65, "z": -17.0, "observation": "A cloth rabbit with a blue button eye. The tag reads Nila." },
+    { "id": "library_shelf_code", "title": "Rotating shelf code", "x": -11.4, "y": 1.2, "z": 2.0, "observation": "Three marked books wait for the sequence 3-1-4." },
+    { "id": "pedestal", "title": "Memorial pedestal", "x": 0.0, "y": 0.6, "z": 0.0, "observation": "Seven shallow hand recesses surround a dark center." }
+  ]
+}

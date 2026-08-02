@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"sami"
+child_name = "Sami"
+required_item_id = &"marble"
+initial_line = "It rolled away."
+resolved_line = "I dropped it. Don't leave it."
+late_line = "Under there..."
+color = Color(0.72, 0.18, 0.16, 1)

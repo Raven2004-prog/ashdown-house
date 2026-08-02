@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"leela"
+child_name = "Leela"
+required_item_id = &"storybook"
+initial_line = "Keep reading."
+resolved_line = "One page left. They were still listening."
+late_line = "They were listening."
+color = Color(0.24, 0.38, 0.70, 1)

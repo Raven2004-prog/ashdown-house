@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"mira"
+child_name = "Mira"
+required_item_id = &"ribbon"
+initial_line = "Too bright..."
+resolved_line = "It was cooler beneath the bed."
+late_line = "Lower."
+color = Color(0.38, 0.48, 0.82, 1)

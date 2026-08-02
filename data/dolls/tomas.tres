@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tomas"
+child_name = "Tomas Reed"
+required_item_id = &"train"
+initial_line = "I sent the train to wake them. It could not reach the bell."
+resolved_line = "The red light had no battery."
+late_line = "It rang once. Then it stopped."
+color = Color(0.64, 0.42, 0.24, 1)
+

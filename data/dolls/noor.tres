@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"noor"
+child_name = "Noor"
+required_item_id = &"cloth"
+initial_line = "Cover your mouth."
+resolved_line = "I tore the cloth in half."
+late_line = "Not for me."
+color = Color(0.46, 0.64, 0.66, 1)

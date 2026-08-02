@@ -1,0 +1,20 @@
+{
+  "source": "Ashdown House PDF",
+  "current_pass": "primitive_blockout",
+  "deferred_free_sources": [
+    "Kenney Furniture Kit",
+    "Quaternius Ultimate House Interior Pack",
+    "Quaternius Ultimate Furniture Pack",
+    "ambientCG low-resolution material pass",
+    "Kenney RPG Audio",
+    "Kenney Impact Sounds",
+    "Kenney Interface Sounds"
+  ],
+  "procedural_required": [
+    "seven dolls",
+    "small clue props",
+    "fire",
+    "smoke",
+    "steam"
+  ]
+}

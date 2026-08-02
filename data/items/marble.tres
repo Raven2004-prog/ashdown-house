@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"marble"
+display_name = "Red marble"
+description = "A red marble from beneath the activity table."
+color = Color(0.82, 0.10, 0.12, 1)

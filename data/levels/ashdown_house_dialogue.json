@@ -1,0 +1,17 @@
+{
+  "mira": {
+    "initial": "The glass became warm before the floor did.",
+    "one_clue": "Leela told me not to look through it.",
+    "two_clues": "I tied my red ribbon where she could still see me."
+  },
+  "leela": {
+    "initial": "I left something beside the water.",
+    "one_clue": "I could not go back for my shoe.",
+    "two_clues": "Mira was above me. I could hear her at the window."
+  },
+  "nila": {
+    "initial": "One... two... three... I keep losing one.",
+    "one_clue": "Mother said I was not supposed to be in the class.",
+    "two_clues": "There were seven of us. Why did they write only six?"
+  }
+}

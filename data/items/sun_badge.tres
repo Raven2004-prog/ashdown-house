@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"sun_badge"
+display_name = "Sun badge"
+description = "A bright badge from Nia's marked cubby."
+color = Color(0.95, 0.72, 0.16, 1)
+

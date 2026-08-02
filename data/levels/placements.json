@@ -1,0 +1,5 @@
+{
+  "source": "Ashdown House PDF",
+  "placements_file": "res://data/levels/level_ashdown_house.json",
+  "note": "First-pass interactable placements are embedded in level_ashdown_house.json. Future passes can split them here."
+}

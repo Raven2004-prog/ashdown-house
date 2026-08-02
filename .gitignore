@@ -1,0 +1,31 @@
+# Godot generated files
+.godot/
+.import/
+*.import
+
+# Local editor and runtime state
+.vscode/
+.idea/
+logs/
+saves/
+
+# Download staging and generated captures
+art/_staging/
+# Large, unused source packs from superseded 2D experiments
+art/effects/
+art/environment/
+art/fonts/
+art/ui/
+work/
+*.avi
+*.zip
+
+# Exported builds and local templates
+builds/
+dist/
+export_templates/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini

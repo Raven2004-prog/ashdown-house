@@ -1,0 +1,5 @@
+{
+  "source": "Ashdown House PDF",
+  "rooms_file": "res://data/levels/level_ashdown_house.json",
+  "note": "Room bounds are stored in level_ashdown_house.json for the active blockout builder."
+}

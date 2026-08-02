@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"nia"
+child_name = "Nia Hale"
+required_item_id = &"sun_badge"
+initial_line = "Sami said morning would come. I tried to believe him."
+resolved_line = "Someone was still standing by the door."
+late_line = "Hold my hand."
+color = Color(0.92, 0.68, 0.16, 1)
+

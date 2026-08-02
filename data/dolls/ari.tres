@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DollData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/doll_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"ari"
+child_name = "Ari"
+required_item_id = &""
+initial_line = "One... two... three..."
+resolved_line = "One for every name."
+late_line = "Six names. Seven beds."
+unnamed = true
+color = Color(0.78, 0.78, 0.70, 1)
+
