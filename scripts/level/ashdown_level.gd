@@ -25,10 +25,10 @@ var journal_manager
 var level_state
 var checkpoint_manager
 var interaction_manager
-@onready var geometry_root: Node3D = $BlockoutGeometry
+@onready var geometry_root: Node3D = $HouseBlockout/BlockoutGeometry
 @onready var content_root: Node3D = $AuthoredRoomContent
-@onready var interactable_root: Node3D = $Interactables
-@onready var marker_root: Node3D = $Labels
+@onready var interactable_root: Node3D = $HouseBlockout/Interactables
+@onready var marker_root: Node3D = $HouseBlockout/Labels
 @onready var player: CharacterBody3D = $Player
 @onready var ui_layer: CanvasLayer = $UI
 var prompt_label: Label
@@ -55,12 +55,19 @@ func _ready() -> void:
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
 	var required_level_nodes: Array[NodePath] = [
-		^"BlockoutGeometry", ^"AuthoredRoomContent", ^"Interactables", ^"Labels",
+		^"HouseBlockout/BlockoutGeometry", ^"AuthoredRoomContent",
+		^"HouseBlockout/Interactables", ^"HouseBlockout/Labels",
 		^"WorldEnvironment", ^"DirectionalLight3D", ^"Player", ^"UI"
 	]
 	for node_path in required_level_nodes:
 		if get_node_or_null(node_path) == null:
 			failures.append("missing authored level node %s" % node_path)
+	for collection_name in ["doors", "dolls", "placements"]:
+		for entry_variant in level_data.get(collection_name, []):
+			var entry: Dictionary = entry_variant
+			var authored_id := StringName(entry.get("id", ""))
+			if authored_id != &"" and not interactables_by_id.has(authored_id):
+				failures.append("missing authored %s interactable %s" % [collection_name, authored_id])
 	var required_player_nodes: Array[NodePath] = [
 		^"CollisionShape3D", ^"VisualRoot/PrototypeBody", ^"VisualRoot/Face",
 		^"CameraYaw/CameraPitch/SpringArm3D",
@@ -202,19 +209,20 @@ func _create_environment() -> void:
 	pass
 
 func _build_blockout() -> void:
-	for room in level_data.get("rooms", []):
-		_add_room(room as Dictionary)
-	_add_wall_network()
-	for door in level_data.get("doors", []):
-		_add_door(door as Dictionary)
-	_add_door_floor_bridges()
-	_add_room_blockers()
+	_index_authored_interactables()
 	_add_room_content_scenes()
-	for doll in level_data.get("dolls", []):
-		_add_doll(doll as Dictionary)
-	for placement in level_data.get("placements", []):
-		_add_placement(placement as Dictionary)
+	for id in interactables_by_id:
+		_bind_authored_interactable(interactables_by_id[id], id)
 	_refresh_interactable_visibility()
+
+func _index_authored_interactables() -> void:
+	interactables_by_id.clear()
+	for node in get_tree().get_nodes_in_group("ashdown_interactable"):
+		if node == null or not is_instance_valid(node) or not interactable_root.is_ancestor_of(node):
+			continue
+		var id := StringName(node.get("interaction_id"))
+		if id != &"":
+			interactables_by_id[id] = node
 
 func _spawn_player() -> void:
 	var start: Dictionary = level_data.get("player_start", {"x": 0.0, "y": 0.05, "z": 12.0})
@@ -465,7 +473,7 @@ func _bind_authored_interactable(area, id: StringName) -> void:
 	if OS.get_cmdline_user_args().has("--library-benchmark-report"):
 		print("Bound ", id, " visual=", visual != null, " path=", visual.get_path() if visual != null else "")
 	if area.has_meta("label_path"):
-		var label := get_node_or_null(NodePath(String(area.get_meta("label_path")))) as Label3D
+		var label := _resolve_metadata_node(area, &"label_path") as Label3D
 		if label != null:
 			label.position = anchor.global_position + Vector3(0, area.interaction_radius + 0.28, 0)
 
@@ -598,14 +606,14 @@ func _apply_interactable_visibility(area) -> void:
 	if area.has_method("set_visual_available"):
 		area.set_visual_available(requirements_met)
 	if area.has_meta("label_path"):
-		var label := get_node_or_null(NodePath(String(area.get_meta("label_path"))))
+		var label := _resolve_metadata_node(area, &"label_path")
 		if label != null:
 			label.visible = requirements_met and debug_labels_visible
 
 func _apply_door_state(area) -> void:
 	if not area.has_meta("blocker_path"):
 		return
-	var blocker := get_node_or_null(NodePath(String(area.get_meta("blocker_path"))))
+	var blocker := _resolve_metadata_node(area, &"blocker_path")
 	if blocker == null:
 		return
 	var blocks := _door_state_blocks(String(area.get_meta("state", "")))
@@ -690,12 +698,18 @@ func _hide_collected_interactable(target) -> void:
 	if target.has_method("collect_visual"):
 		target.collect_visual()
 	if target.has_meta("label_path"):
-		var label := get_node_or_null(NodePath(String(target.get_meta("label_path"))))
+		var label := _resolve_metadata_node(target, &"label_path")
 		if label != null:
 			label.visible = false
 	if interaction_manager != null:
 		interaction_manager.clear_target()
 		call_deferred("_clear_interaction_target_deferred")
+
+func _resolve_metadata_node(source: Node, key: StringName) -> Node:
+	if source == null or not source.has_meta(key):
+		return null
+	var path := NodePath(String(source.get_meta(key)))
+	return get_node_or_null(path) if path.is_absolute() else source.get_node_or_null(path)
 
 func _clear_interaction_target_deferred() -> void:
 	if interaction_manager != null:

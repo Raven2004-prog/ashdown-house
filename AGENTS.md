@@ -23,15 +23,15 @@ The newer Ashdown House PDF supersedes earlier Ash Dormitory, Burning Nursery, a
 
 The Library is the scale benchmark and lives in `res://scenes/levels/ashdown/rooms/LibraryBenchmark.tscn`. Its architecture, furniture, collisions, lights, atmosphere, and interaction anchors are serialized editor-visible nodes. `library_benchmark.gd` controls only gameplay state such as the sliding shelf; it must not rebuild permanent geometry at runtime.
 
-Other rooms remain functional blockouts until the Library scale and camera presentation are accepted.
+The complete house blockout is serialized in `res://scenes/levels/ashdown/AshdownHouseBlockout.tscn` and instanced by the main level. Room floors, walls, blockers, doors, dolls, clue markers, labels, and collisions are visible in the editor. Other rooms remain visually simple blockouts until the Library scale and camera presentation are accepted.
 
 ## Next Work
 
-1. Convert the remaining generated house blockout into an editor-visible scene while preserving placement IDs.
-2. Remove obsolete permanent-geometry construction and add authored-content validation.
-3. Lower the visible player/camera presentation slightly.
-4. Raise the Library ceiling, correct shifted props, and confirm D03-D05 traversal.
-5. Manually play the catalog, desk, shelf, hidden-clue, and classroom-key sequence before authoring the next detailed room.
+1. Remove obsolete permanent-geometry construction and finish authored-content validation.
+2. Lower the visible player/camera presentation slightly.
+3. Raise the Library ceiling, correct shifted props, and confirm D03-D05 traversal.
+4. Manually play the catalog, desk, shelf, hidden-clue, and classroom-key sequence.
+5. Author the next detailed room only after the Library corrections are accepted.
 
 ## Verification
 
