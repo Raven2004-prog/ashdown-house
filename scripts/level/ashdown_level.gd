@@ -1,7 +1,6 @@
 extends Node3D
 
 const LEVEL_DATA_PATH := "res://data/levels/level_ashdown_house.json"
-const PLAYER_SCRIPT := preload("res://scripts/player/ashdown_player.gd")
 const INTERACTABLE_SCRIPT := preload("res://scripts/interaction/interactable_3d.gd")
 const INTERACTION_MANAGER_SCRIPT := preload("res://scripts/interaction/interaction_manager.gd")
 const INVENTORY_MANAGER_SCRIPT := preload("res://scripts/level/inventory_manager.gd")
@@ -26,12 +25,12 @@ var journal_manager
 var level_state
 var checkpoint_manager
 var interaction_manager
-var geometry_root: Node3D
-var content_root: Node3D
-var interactable_root: Node3D
-var marker_root: Node3D
-var player: CharacterBody3D
-var ui_layer: CanvasLayer
+@onready var geometry_root: Node3D = $BlockoutGeometry
+@onready var content_root: Node3D = $AuthoredRoomContent
+@onready var interactable_root: Node3D = $Interactables
+@onready var marker_root: Node3D = $Labels
+@onready var player: CharacterBody3D = $Player
+@onready var ui_layer: CanvasLayer = $UI
 var prompt_label: Label
 var subtitle_label: Label
 var reticle_label: Label
@@ -55,6 +54,22 @@ func _ready() -> void:
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
+	var required_level_nodes: Array[NodePath] = [
+		^"BlockoutGeometry", ^"AuthoredRoomContent", ^"Interactables", ^"Labels",
+		^"WorldEnvironment", ^"DirectionalLight3D", ^"Player", ^"UI"
+	]
+	for node_path in required_level_nodes:
+		if get_node_or_null(node_path) == null:
+			failures.append("missing authored level node %s" % node_path)
+	var required_player_nodes: Array[NodePath] = [
+		^"CollisionShape3D", ^"VisualRoot/PrototypeBody", ^"VisualRoot/Face",
+		^"CameraYaw/CameraPitch/SpringArm3D",
+		^"CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D",
+		^"CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D/InteractionRay"
+	]
+	for node_path in required_player_nodes:
+		if player.get_node_or_null(node_path) == null:
+			failures.append("missing authored player node %s" % node_path)
 	var required_anchors: Array[StringName] = [
 		&"L05", &"L07", &"L13", &"L14", &"L18", &"L19", &"L20",
 		&"L21", &"L22", &"L23", &"L24", &"L25", &"L26", &"L27", &"L28",
@@ -171,37 +186,11 @@ func _create_managers() -> void:
 	level_state.flags_changed.connect(_refresh_interactable_visibility)
 
 func _create_roots() -> void:
-	geometry_root = Node3D.new()
-	geometry_root.name = "BlockoutGeometry"
-	add_child(geometry_root)
-	content_root = Node3D.new()
-	content_root.name = "AuthoredRoomContent"
-	add_child(content_root)
-	interactable_root = Node3D.new()
-	interactable_root.name = "Interactables"
-	add_child(interactable_root)
-	marker_root = Node3D.new()
-	marker_root.name = "Labels"
-	add_child(marker_root)
 	marker_root.visible = debug_labels_visible
 
 func _create_environment() -> void:
-	var world_environment := WorldEnvironment.new()
-	world_environment.name = "WorldEnvironment"
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.025, 0.027, 0.030)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.36, 0.34, 0.31)
-	env.ambient_light_energy = 0.75
-	world_environment.environment = env
-	add_child(world_environment)
-	var light := DirectionalLight3D.new()
-	light.name = "DirectionalLight3D"
-	light.rotation_degrees = Vector3(-58, 38, 0)
-	light.light_energy = 1.2
-	light.shadow_enabled = true
-	add_child(light)
+	# Environment and baseline lighting are authored in AshdownLevel.tscn.
+	pass
 
 func _build_blockout() -> void:
 	for room in level_data.get("rooms", []):
@@ -219,9 +208,6 @@ func _build_blockout() -> void:
 	_refresh_interactable_visibility()
 
 func _spawn_player() -> void:
-	player = CharacterBody3D.new()
-	player.name = "Player"
-	player.set_script(PLAYER_SCRIPT)
 	var start: Dictionary = level_data.get("player_start", {"x": 0.0, "y": 0.05, "z": 12.0})
 	var args := OS.get_cmdline_user_args()
 	if args.has("--library-benchmark"):
@@ -233,14 +219,10 @@ func _spawn_player() -> void:
 	elif args.has("--library-benchmark-shelf"):
 		start = {"x": -13.4, "y": 0.05, "z": 7.4, "yaw": 105.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
-	add_child(player)
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
 
 func _create_ui() -> void:
-	ui_layer = CanvasLayer.new()
-	ui_layer.name = "UI"
-	add_child(ui_layer)
 	var prompt_bg := ColorRect.new()
 	prompt_bg.position = Vector2(0, 304)
 	prompt_bg.size = Vector2(640, 56)

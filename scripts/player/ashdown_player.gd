@@ -21,16 +21,16 @@ var current_target = null
 var yaw := 0.0
 var pitch := -0.14
 
-var camera_yaw: Node3D
-var camera_pitch: Node3D
-var spring_arm: SpringArm3D
-var camera_socket: Node3D
-var camera: Camera3D
-var interaction_ray: RayCast3D
-var visual_root: Node3D
+@onready var camera_yaw: Node3D = $CameraYaw
+@onready var camera_pitch: Node3D = $CameraYaw/CameraPitch
+@onready var spring_arm: SpringArm3D = $CameraYaw/CameraPitch/SpringArm3D
+@onready var camera_socket: Node3D = $CameraYaw/CameraPitch/SpringArm3D/CameraSocket
+@onready var camera: Camera3D = $CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D
+@onready var interaction_ray: RayCast3D = $CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D/InteractionRay
+@onready var visual_root: Node3D = $VisualRoot
 
 func _ready() -> void:
-	_build_runtime_nodes()
+	_apply_authored_node_settings()
 	_capture_mouse()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -192,68 +192,9 @@ func _release_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	mouse_captured = false
 
-func _build_runtime_nodes() -> void:
-	var shape := CollisionShape3D.new()
-	shape.name = "CollisionShape3D"
-	var capsule := CapsuleShape3D.new()
-	capsule.radius = 0.32
-	capsule.height = 1.55
-	shape.shape = capsule
-	shape.position = Vector3(0, 0.82, 0)
-	add_child(shape)
-
-	visual_root = Node3D.new()
-	visual_root.name = "VisualRoot"
-	add_child(visual_root)
-	var body := MeshInstance3D.new()
-	body.name = "PrototypeBody"
-	var body_mesh := CapsuleMesh.new()
-	body_mesh.radius = 0.28
-	body_mesh.height = 1.35
-	body.mesh = body_mesh
-	body.position = Vector3(0, 0.82, 0)
-	body.material_override = _make_material(Color(0.58, 0.66, 0.76), false)
-	visual_root.add_child(body)
-	var face := MeshInstance3D.new()
-	var face_mesh := BoxMesh.new()
-	face_mesh.size = Vector3(0.18, 0.08, 0.04)
-	face.mesh = face_mesh
-	face.position = Vector3(0, 1.18, -0.28)
-	face.material_override = _make_material(Color(0.12, 0.11, 0.10), false)
-	visual_root.add_child(face)
-
-	camera_yaw = Node3D.new()
-	camera_yaw.name = "CameraYaw"
-	add_child(camera_yaw)
-	camera_pitch = Node3D.new()
-	camera_pitch.name = "CameraPitch"
+func _apply_authored_node_settings() -> void:
 	camera_pitch.position = Vector3(0, camera_pivot_height, 0)
-	camera_yaw.add_child(camera_pitch)
-	spring_arm = SpringArm3D.new()
-	spring_arm.name = "SpringArm3D"
 	spring_arm.spring_length = normal_spring_length
-	spring_arm.margin = 0.12
-	camera_pitch.add_child(spring_arm)
-	camera_socket = Node3D.new()
-	camera_socket.name = "CameraSocket"
 	camera_socket.position.x = camera_shoulder_offset
-	spring_arm.add_child(camera_socket)
-	camera = Camera3D.new()
-	camera.name = "Camera3D"
-	camera.fov = 60.0
 	camera.current = true
-	camera_socket.add_child(camera)
-	interaction_ray = RayCast3D.new()
-	interaction_ray.name = "InteractionRay"
 	interaction_ray.target_position = Vector3(0, 0, -camera_ray_distance)
-	interaction_ray.collide_with_areas = true
-	interaction_ray.collide_with_bodies = true
-	interaction_ray.collision_mask = 1
-	camera.add_child(interaction_ray)
-
-func _make_material(color: Color, unshaded: bool) -> StandardMaterial3D:
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = color
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if unshaded else BaseMaterial3D.SHADING_MODE_PER_PIXEL
-	return mat

@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/ashdown_player.gd" id="1_player"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_player"]
+radius = 0.32
+height = 1.55
+
+[sub_resource type="StandardMaterial3D" id="Material_body"]
+albedo_color = Color(0.58, 0.66, 0.76, 1)
+texture_filter = 0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+material = SubResource("Material_body")
+radius = 0.28
+height = 1.35
+
+[sub_resource type="StandardMaterial3D" id="Material_face"]
+albedo_color = Color(0.12, 0.11, 0.1, 1)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_face"]
+material = SubResource("Material_face")
+size = Vector3(0.18, 0.08, 0.04)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.82, 0)
+shape = SubResource("CapsuleShape_player")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="PrototypeBody" type="MeshInstance3D" parent="VisualRoot"]
+position = Vector3(0, 0.82, 0)
+mesh = SubResource("CapsuleMesh_body")
+
+[node name="Face" type="MeshInstance3D" parent="VisualRoot"]
+position = Vector3(0, 1.18, -0.28)
+mesh = SubResource("BoxMesh_face")
+
+[node name="CameraYaw" type="Node3D" parent="."]
+
+[node name="CameraPitch" type="Node3D" parent="CameraYaw"]
+position = Vector3(0, 1.48, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraYaw/CameraPitch"]
+spring_length = 2.65
+margin = 0.12
+
+[node name="CameraSocket" type="Node3D" parent="CameraYaw/CameraPitch/SpringArm3D"]
+position = Vector3(0.35, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraYaw/CameraPitch/SpringArm3D/CameraSocket"]
+current = true
+fov = 60.0
+
+[node name="InteractionRay" type="RayCast3D" parent="CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D"]
+target_position = Vector3(0, 0, -12)
+collision_mask = 1
+collide_with_areas = true
