@@ -19,6 +19,15 @@ The Library benchmark uses the following CC0 assets:
 
 All custom shelves, book clusters, trim, windows, ladder, carts, puzzle props, interaction anchors, lighting, and dust are assembled in Godot from primitive meshes. Download archives remain in `art/_staging/`; active scenes reference only the approved copies under `assets/`.
 
+Project-original production assets:
+
+- Library book dressing: 2,577 deterministic individual volumes with covers, pages, labels, gaps, leaning books, and horizontal stacks.
+  - Source: `res://assets/source/blender/library_book_dressing/library_book_dressing.blend`.
+  - Export: `res://assets/hd2d/library/library_book_dressing.glb`.
+- Investigator visual blockout: obscured coat, hat, boots, satchel, and lantern silhouette.
+  - Source: `res://assets/source/blender/investigator/investigator_blockout.blend`.
+  - Export: `res://assets/hd2d/characters/investigator_blockout.glb`.
+
 Future imports should record:
 
 - Asset name

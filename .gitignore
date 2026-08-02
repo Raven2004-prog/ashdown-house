@@ -26,7 +26,8 @@ work/
 # Art-pipeline scratch output
 assets/source/blender/_scratch/
 assets/hd2d/_generated/
-captures/
+captures/*
+!captures/.gdignore
 
 # Exported builds and local templates
 builds/

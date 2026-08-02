@@ -56,6 +56,8 @@ func _ready() -> void:
 		call_deferred("_run_library_benchmark_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
+	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
+		call_deferred("_capture_library_phase2")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -86,6 +88,7 @@ func _run_library_benchmark_self_test() -> void:
 				failures.append("missing authored %s interactable %s" % [collection_name, authored_id])
 	var required_player_nodes: Array[NodePath] = [
 		^"CollisionShape3D", ^"VisualRoot/PrototypeBody", ^"VisualRoot/Face",
+		^"VisualRoot/InvestigatorVisual", ^"VisualRoot/LanternLight",
 		^"CameraYaw/CameraPitch/SpringArm3D",
 		^"CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D",
 		^"CameraYaw/CameraPitch/SpringArm3D/CameraSocket/Camera3D/InteractionRay"
@@ -102,6 +105,13 @@ func _run_library_benchmark_self_test() -> void:
 				failures.append("missing authored Library branch %s" % branch)
 		if library_content.has_method("build_if_needed"):
 			failures.append("Library runtime geometry builder is still active")
+		var book_dressing := library_content.get_node_or_null(^"Furniture/HD2DBookDressing")
+		if book_dressing == null or book_dressing.get_child_count() < 8:
+			failures.append("HD-2D Library book dressing is missing or incomplete")
+		for old_books in library_content.find_children("Books_*", "MeshInstance3D", true, false):
+			if (old_books as MeshInstance3D).visible:
+				failures.append("old Library filler block is still visible: %s" % old_books.get_path())
+				break
 		var ceiling := library_content.get_node_or_null(^"Architecture/LibraryCeiling") as Node3D
 		if ceiling == null or not is_equal_approx(ceiling.position.y, 4.18):
 			failures.append("Library ceiling is not aligned to the 4.2 m shell")
@@ -650,6 +660,26 @@ func _capture_hd2d_ui() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase1_native_ui.png")
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("HD2D_UI_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_library_phase2() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var args := OS.get_cmdline_user_args()
+	var view := "entrance"
+	if args.has("--library-benchmark-central"):
+		view = "central"
+	elif args.has("--library-benchmark-reading"):
+		view = "reading"
+	elif args.has("--library-benchmark-shelf"):
+		view = "shelf"
+	var path := ProjectSettings.globalize_path("res://captures/phase2_library_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("LIBRARY_PHASE2_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:

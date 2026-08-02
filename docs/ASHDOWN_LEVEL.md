@@ -38,6 +38,8 @@ Library scale benchmark:
 - Optional Library observations are recorded separately from progression evidence and cannot unlock flags or inflate clue totals.
 - Floating labels are hidden during normal play. `F3` toggles them for route and interaction testing.
 - Current visual materials use nearest-with-mipmaps filtering to keep the low-resolution presentation stable at distance.
+- The Library benchmark replaces all 396 old shelf-filler blocks with a Blender-authored, material-batched dressing layer containing 2,577 individual books.
+- The player capsule remains as hidden collision/debug geometry; normal play uses the obscured investigator visual blockout and lantern light.
 
 Deferred:
 

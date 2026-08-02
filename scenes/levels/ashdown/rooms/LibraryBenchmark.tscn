@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://assets/furniture/kenney_furniture_kit/library/desk.glb" id="12_holpd"]
 [ext_resource type="PackedScene" path="res://assets/furniture/kenney_furniture_kit/library/lampWall.glb" id="13_5067f"]
 [ext_resource type="PackedScene" path="res://assets/furniture/kenney_furniture_kit/library/lampSquareCeiling.glb" id="14_4q026"]
+[ext_resource type="PackedScene" path="res://assets/hd2d/library/library_book_dressing.glb" id="15_hd2d_books"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_emhs3"]
 albedo_color = Color(0.46, 0.39, 0.3, 1)
@@ -4055,6 +4056,8 @@ mesh = SubResource("BoxMesh_g8y16")
 
 [node name="Furniture" type="Node3D" parent="." unique_id=618836534]
 
+[node name="HD2DBookDressing" parent="Furniture" instance=ExtResource("15_hd2d_books")]
+
 [node name="L01_WestShelfA" type="Node3D" parent="Furniture" unique_id=1499463602]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -24.45, 0, 6.2)
 
@@ -4090,21 +4093,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_7rkdd")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=214540954]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_k2fur")
 mesh = SubResource("BoxMesh_h2wsl")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1603393142]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_plf20")
 mesh = SubResource("BoxMesh_b7muy")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=311325925]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_x2o52")
 mesh = SubResource("BoxMesh_ug60n")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=625553556]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_i6sh7")
 mesh = SubResource("BoxMesh_4bnk8")
@@ -4115,21 +4122,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_dibbe")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1478257296]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_rd04k")
 mesh = SubResource("BoxMesh_jdq0i")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=846259507]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_p4stq")
 mesh = SubResource("BoxMesh_3jtdu")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1753277422]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_lfibp")
 mesh = SubResource("BoxMesh_2vtxq")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=962041054]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_monn1")
 mesh = SubResource("BoxMesh_22ghv")
@@ -4140,21 +4151,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_34u6k")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=882196390]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_14khh")
 mesh = SubResource("BoxMesh_2kdjj")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=976054189]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_32t7n")
 mesh = SubResource("BoxMesh_r8guo")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1640217768]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_t8okf")
 mesh = SubResource("BoxMesh_fkxxr")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=262485686]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_vxrcd")
 mesh = SubResource("BoxMesh_tvdfr")
@@ -4165,21 +4180,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_tdsom")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1045226438]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_e2xrt")
 mesh = SubResource("BoxMesh_nj43d")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1297675803]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_61ql6")
 mesh = SubResource("BoxMesh_pb2vi")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1784830089]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_lc6ee")
 mesh = SubResource("BoxMesh_ovhwk")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L01_WestShelfA" unique_id=1275696431]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_kk1vt")
 mesh = SubResource("BoxMesh_0fqjj")
@@ -4224,21 +4243,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_vk3ey")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1618975904]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_bfuge")
 mesh = SubResource("BoxMesh_0jle1")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1475783551]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_6kv2d")
 mesh = SubResource("BoxMesh_hea6x")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=2146591030]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_r45u2")
 mesh = SubResource("BoxMesh_g7j26")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=44892038]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_fokk0")
 mesh = SubResource("BoxMesh_pv33n")
@@ -4249,21 +4272,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_nhtig")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1711991107]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_2q1vr")
 mesh = SubResource("BoxMesh_s1yn3")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=2037826598]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_8m54e")
 mesh = SubResource("BoxMesh_t23he")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=615814584]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_nx2qx")
 mesh = SubResource("BoxMesh_y3766")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1521891916]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_fkcup")
 mesh = SubResource("BoxMesh_4x3uw")
@@ -4274,21 +4301,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_5ln4a")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1450955165]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_75uax")
 mesh = SubResource("BoxMesh_dcxpi")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1030815809]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_thm68")
 mesh = SubResource("BoxMesh_mpfie")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=2022667670]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_lxep8")
 mesh = SubResource("BoxMesh_nxamq")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=255871602]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_r32vr")
 mesh = SubResource("BoxMesh_boxdx")
@@ -4299,21 +4330,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_delov")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=341168332]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_7ywr1")
 mesh = SubResource("BoxMesh_dqo46")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=577990945]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_ej7hk")
 mesh = SubResource("BoxMesh_8io8l")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1633752209]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_lua7b")
 mesh = SubResource("BoxMesh_c1wpf")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L02_WestShelfB" unique_id=1312141606]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_v18es")
 mesh = SubResource("BoxMesh_60wb5")
@@ -4358,21 +4393,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_gmo45")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1712894285]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_vw8kb")
 mesh = SubResource("BoxMesh_dqquy")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1500312660]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_sy14b")
 mesh = SubResource("BoxMesh_rbvfx")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=848132066]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.33, -0.13499999)
 material_override = SubResource("StandardMaterial3D_bq5my")
 mesh = SubResource("BoxMesh_56ryt")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=105056281]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.385, -0.13499999)
 material_override = SubResource("StandardMaterial3D_lybne")
 mesh = SubResource("BoxMesh_v2mwi")
@@ -4383,21 +4422,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_jn8n2")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=884248236]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_p0koa")
 mesh = SubResource("BoxMesh_j6mwv")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1948986114]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_q54pt")
 mesh = SubResource("BoxMesh_3k0va")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1119677945]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.8015, -0.13499999)
 material_override = SubResource("StandardMaterial3D_5drn0")
 mesh = SubResource("BoxMesh_dvat0")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=2121731232]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 0.8565, -0.13499999)
 material_override = SubResource("StandardMaterial3D_4bmgi")
 mesh = SubResource("BoxMesh_37sa2")
@@ -4408,21 +4451,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_ne1ga")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=2073610692]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_r3b87")
 mesh = SubResource("BoxMesh_scto1")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=343220736]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_qyjka")
 mesh = SubResource("BoxMesh_md7v3")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1440770407]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.273, -0.13499999)
 material_override = SubResource("StandardMaterial3D_eqota")
 mesh = SubResource("BoxMesh_yn5rg")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1003032668]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.218, -0.13499999)
 material_override = SubResource("StandardMaterial3D_l134n")
 mesh = SubResource("BoxMesh_cpm1v")
@@ -4433,21 +4480,25 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_bv585")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1970876626]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0575, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_uoyu5")
 mesh = SubResource("BoxMesh_r13xl")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=2088417337]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_cu8kp")
 mesh = SubResource("BoxMesh_k06tt")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=1598085663]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 1.7445, -0.13499999)
 material_override = SubResource("StandardMaterial3D_gyn0w")
 mesh = SubResource("BoxMesh_jh4yb")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L03_WestShelfC" unique_id=563431554]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0575, 1.6895001, -0.13499999)
 material_override = SubResource("StandardMaterial3D_58qio")
 mesh = SubResource("BoxMesh_qmajt")
@@ -4492,26 +4543,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_atlod")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1670828902]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_7vujk")
 mesh = SubResource("BoxMesh_5nuok")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=942264798]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_m6qc6")
 mesh = SubResource("BoxMesh_wswnk")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=821871124]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_6byt1")
 mesh = SubResource("BoxMesh_1mmaq")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1347840922]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_uhy3p")
 mesh = SubResource("BoxMesh_mblbc")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1888473833]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_olqne")
 mesh = SubResource("BoxMesh_3lk6i")
@@ -4522,26 +4578,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_b74ka")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=746776005]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_75r26")
 mesh = SubResource("BoxMesh_elluq")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1162934721]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_a4n8d")
 mesh = SubResource("BoxMesh_xtnc8")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=26724589]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_mvc2o")
 mesh = SubResource("BoxMesh_f0a13")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=532897805]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_fm7et")
 mesh = SubResource("BoxMesh_wvhri")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=656573188]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_8eaby")
 mesh = SubResource("BoxMesh_46e7v")
@@ -4552,26 +4613,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_e0rr6")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1631951355]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_xy8ol")
 mesh = SubResource("BoxMesh_cc8oc")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1684174549]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_iqu3q")
 mesh = SubResource("BoxMesh_7mgjw")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1130550794]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_uqlsc")
 mesh = SubResource("BoxMesh_f5l25")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=931874343]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_g1j8t")
 mesh = SubResource("BoxMesh_jfvuo")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1539110795]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_ooxbe")
 mesh = SubResource("BoxMesh_gn3ya")
@@ -4582,26 +4648,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_im65q")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1818031075]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_unlan")
 mesh = SubResource("BoxMesh_2ak4o")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=1115333797]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_26bwn")
 mesh = SubResource("BoxMesh_hlm4b")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=2036725400]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_chq3h")
 mesh = SubResource("BoxMesh_64bqa")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=30615943]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_jkvmc")
 mesh = SubResource("BoxMesh_uk4gf")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/L04_NorthShelfA" unique_id=465162351]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_db26w")
 mesh = SubResource("BoxMesh_3ahsy")
@@ -4646,26 +4717,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_yks02")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=622074995]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_3qi1m")
 mesh = SubResource("BoxMesh_t27rg")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1788382927]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_elrxd")
 mesh = SubResource("BoxMesh_o5nd0")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1474720702]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_4eoy5")
 mesh = SubResource("BoxMesh_idktb")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1286501708]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_5bqnf")
 mesh = SubResource("BoxMesh_mnsr7")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1827821783]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_4ofsv")
 mesh = SubResource("BoxMesh_mrpso")
@@ -4676,26 +4752,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_tg10q")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1853326950]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_8eoan")
 mesh = SubResource("BoxMesh_h5c5c")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1588228282]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_j72nb")
 mesh = SubResource("BoxMesh_tjoa1")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=195755156]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_khq7x")
 mesh = SubResource("BoxMesh_fgaux")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=209088718]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_6wikk")
 mesh = SubResource("BoxMesh_fycjb")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1857984775]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_dhnnj")
 mesh = SubResource("BoxMesh_wrmey")
@@ -4706,26 +4787,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_oukly")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=581095567]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_86eo8")
 mesh = SubResource("BoxMesh_8y2hp")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1699917068]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_0f7nk")
 mesh = SubResource("BoxMesh_cyigd")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1484943737]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_q4c7t")
 mesh = SubResource("BoxMesh_ilqhj")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1940522138]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_ifyqi")
 mesh = SubResource("BoxMesh_f0qc1")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=97277092]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_dq1sr")
 mesh = SubResource("BoxMesh_vx468")
@@ -4736,26 +4822,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_wlh10")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=870595958]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_e3kxf")
 mesh = SubResource("BoxMesh_3q07d")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1175332733]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_kbtsh")
 mesh = SubResource("BoxMesh_y5e5v")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1255032817]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_weuow")
 mesh = SubResource("BoxMesh_pws3v")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1565550839]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_217rv")
 mesh = SubResource("BoxMesh_e1s6h")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/L05_SlidingShelf" unique_id=1374590972]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_pj007")
 mesh = SubResource("BoxMesh_mjd5q")
@@ -4820,26 +4911,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_51hhk")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1576884690]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_g0yfm")
 mesh = SubResource("BoxMesh_nmg2t")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=342840189]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_pduwg")
 mesh = SubResource("BoxMesh_uti32")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=202980980]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_bp72a")
 mesh = SubResource("BoxMesh_434vv")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1526019668]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.385, -0.15499999)
 material_override = SubResource("StandardMaterial3D_c4kw6")
 mesh = SubResource("BoxMesh_ptmaj")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=8798880]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.33, -0.15499999)
 material_override = SubResource("StandardMaterial3D_t0wiw")
 mesh = SubResource("BoxMesh_2x1cw")
@@ -4850,26 +4946,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_s4wds")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=771502034]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_m1fv6")
 mesh = SubResource("BoxMesh_fkyix")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1323381276]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_ttkbo")
 mesh = SubResource("BoxMesh_l56at")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1608613942]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_6vavh")
 mesh = SubResource("BoxMesh_2stnw")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=505708946]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 0.8645, -0.15499999)
 material_override = SubResource("StandardMaterial3D_vmmt7")
 mesh = SubResource("BoxMesh_la2q8")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1091246377]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 0.80950004, -0.15499999)
 material_override = SubResource("StandardMaterial3D_74lue")
 mesh = SubResource("BoxMesh_t6edo")
@@ -4880,26 +4981,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_fvg64")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1797702434]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_c7fw8")
 mesh = SubResource("BoxMesh_26lnp")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=2061732784]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_prf4t")
 mesh = SubResource("BoxMesh_al7a8")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=911858594]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_qdo5m")
 mesh = SubResource("BoxMesh_v1d36")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=703854362]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.2340001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_bsux5")
 mesh = SubResource("BoxMesh_0mmwn")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1621577432]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.289, -0.15499999)
 material_override = SubResource("StandardMaterial3D_8aypi")
 mesh = SubResource("BoxMesh_mna31")
@@ -4910,26 +5016,31 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_14g5y")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1812498249]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_m654y")
 mesh = SubResource("BoxMesh_dnlhr")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=574310086]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_542wo")
 mesh = SubResource("BoxMesh_ly8aw")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1973556235]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_ji055")
 mesh = SubResource("BoxMesh_osjp3")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1431895642]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.654, 1.7135, -0.15499999)
 material_override = SubResource("StandardMaterial3D_psrfd")
 mesh = SubResource("BoxMesh_o0rrs")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/L06_NorthShelfC" unique_id=1959336506]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.308, 1.7685001, -0.15499999)
 material_override = SubResource("StandardMaterial3D_gx3xw")
 mesh = SubResource("BoxMesh_jgm2k")
@@ -4974,121 +5085,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_vx0kp")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1434154649]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_ukvm1")
 mesh = SubResource("BoxMesh_5vge1")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=800368320]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_np5yu")
 mesh = SubResource("BoxMesh_2c6c8")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1989360862]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_gaqag")
 mesh = SubResource("BoxMesh_alsfk")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1343555778]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_1dsvt")
 mesh = SubResource("BoxMesh_t372g")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=693016398]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_nx0f0")
 mesh = SubResource("BoxMesh_bo4if")
 
 [node name="Books_00_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=573271224]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_2wes0")
 mesh = SubResource("BoxMesh_oll64")
 
 [node name="Books_00_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1977659332]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_qhrus")
 mesh = SubResource("BoxMesh_qergm")
 
 [node name="Books_00_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=740203834]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_tx6ti")
 mesh = SubResource("BoxMesh_0hr6l")
 
 [node name="Books_00_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=561653440]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_h1t7g")
 mesh = SubResource("BoxMesh_ybyp3")
 
 [node name="Books_00_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2015467496]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_a4q43")
 mesh = SubResource("BoxMesh_dgaqc")
 
 [node name="Books_00_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=947274031]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_webal")
 mesh = SubResource("BoxMesh_w7fga")
 
 [node name="Books_00_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2020340842]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_7a8su")
 mesh = SubResource("BoxMesh_tjeam")
 
 [node name="Books_00_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2022019480]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_pq1gp")
 mesh = SubResource("BoxMesh_36w7q")
 
 [node name="Books_00_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1111409096]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_0s240")
 mesh = SubResource("BoxMesh_fc755")
 
 [node name="Books_00_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1492287270]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_hl7jj")
 mesh = SubResource("BoxMesh_e57py")
 
 [node name="Books_00_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1764612712]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_8rjg5")
 mesh = SubResource("BoxMesh_aekwe")
 
 [node name="Books_00_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1075585227]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_mwp2a")
 mesh = SubResource("BoxMesh_wq3rb")
 
 [node name="Books_00_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=11484775]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_so2j8")
 mesh = SubResource("BoxMesh_fo55f")
 
 [node name="Books_00_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=205732186]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_ygms1")
 mesh = SubResource("BoxMesh_fc5f1")
 
 [node name="Books_00_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1933726618]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_g4sfr")
 mesh = SubResource("BoxMesh_d4xxo")
 
 [node name="Books_00_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=884084697]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_muvtn")
 mesh = SubResource("BoxMesh_rrc1a")
 
 [node name="Books_00_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1263406476]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_aykmc")
 mesh = SubResource("BoxMesh_mxb0n")
 
 [node name="Books_00_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1969655015]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_kc8j2")
 mesh = SubResource("BoxMesh_lge10")
 
 [node name="Books_00_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1198247633]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_e2utd")
 mesh = SubResource("BoxMesh_o6f7l")
@@ -5099,121 +5234,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_hr3mg")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1796597785]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_mbwia")
 mesh = SubResource("BoxMesh_5d4q4")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=635542027]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_vk0kf")
 mesh = SubResource("BoxMesh_2v3j4")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1387738518]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_pp6hg")
 mesh = SubResource("BoxMesh_mtq8s")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1776655108]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_wpfcq")
 mesh = SubResource("BoxMesh_0do12")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1138969482]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_fldpa")
 mesh = SubResource("BoxMesh_raj5j")
 
 [node name="Books_01_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=176299612]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_3javb")
 mesh = SubResource("BoxMesh_e2uho")
 
 [node name="Books_01_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1580010199]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_ku38r")
 mesh = SubResource("BoxMesh_w12jh")
 
 [node name="Books_01_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1498575695]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_sn23l")
 mesh = SubResource("BoxMesh_dly8u")
 
 [node name="Books_01_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1910827830]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_g6aey")
 mesh = SubResource("BoxMesh_7m26h")
 
 [node name="Books_01_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=290228790]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_dc0gx")
 mesh = SubResource("BoxMesh_hqnvn")
 
 [node name="Books_01_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1252789588]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_c8se4")
 mesh = SubResource("BoxMesh_1sp6i")
 
 [node name="Books_01_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=291012331]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_7aywv")
 mesh = SubResource("BoxMesh_riepf")
 
 [node name="Books_01_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=618906527]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_03810")
 mesh = SubResource("BoxMesh_5p16d")
 
 [node name="Books_01_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=156433685]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_ie6ms")
 mesh = SubResource("BoxMesh_xwvut")
 
 [node name="Books_01_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=337665602]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_2hpwd")
 mesh = SubResource("BoxMesh_he6fp")
 
 [node name="Books_01_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1468434801]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_ws4od")
 mesh = SubResource("BoxMesh_rwl8v")
 
 [node name="Books_01_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2025894475]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_rtgrt")
 mesh = SubResource("BoxMesh_og2wy")
 
 [node name="Books_01_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=638669983]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_viyyx")
 mesh = SubResource("BoxMesh_twi2t")
 
 [node name="Books_01_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=373435933]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_c0mvj")
 mesh = SubResource("BoxMesh_5wwjy")
 
 [node name="Books_01_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=735134060]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_5wjrf")
 mesh = SubResource("BoxMesh_vybni")
 
 [node name="Books_01_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=592933066]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_2uwte")
 mesh = SubResource("BoxMesh_fuy7r")
 
 [node name="Books_01_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=577960006]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_ll2we")
 mesh = SubResource("BoxMesh_xcqs0")
 
 [node name="Books_01_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1053497746]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_nqnur")
 mesh = SubResource("BoxMesh_ftx1x")
 
 [node name="Books_01_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1773885680]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_cc2uq")
 mesh = SubResource("BoxMesh_wwj72")
@@ -5224,121 +5383,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_hjyfl")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1931551726]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_3hwg3")
 mesh = SubResource("BoxMesh_6ynr3")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1785875543]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_axfhy")
 mesh = SubResource("BoxMesh_nmqvf")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=237214645]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_iaup7")
 mesh = SubResource("BoxMesh_p5ts8")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1827898268]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_4cqsv")
 mesh = SubResource("BoxMesh_5p351")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=787471716]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_xt01k")
 mesh = SubResource("BoxMesh_ewddl")
 
 [node name="Books_02_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1529964084]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_x4dyj")
 mesh = SubResource("BoxMesh_7cksv")
 
 [node name="Books_02_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1484326428]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_nld03")
 mesh = SubResource("BoxMesh_6ml3i")
 
 [node name="Books_02_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=970787502]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_fsija")
 mesh = SubResource("BoxMesh_jim7n")
 
 [node name="Books_02_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1070965904]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_2pab7")
 mesh = SubResource("BoxMesh_4tqdy")
 
 [node name="Books_02_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1374265961]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_fq4hm")
 mesh = SubResource("BoxMesh_falw6")
 
 [node name="Books_02_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=846896956]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_ybqcn")
 mesh = SubResource("BoxMesh_twx5l")
 
 [node name="Books_02_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2044999930]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_dhjju")
 mesh = SubResource("BoxMesh_jp3ql")
 
 [node name="Books_02_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=120344288]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_jnvny")
 mesh = SubResource("BoxMesh_sb4o8")
 
 [node name="Books_02_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1374393167]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_wkjm6")
 mesh = SubResource("BoxMesh_satxq")
 
 [node name="Books_02_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=952703393]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_va28v")
 mesh = SubResource("BoxMesh_xh2we")
 
 [node name="Books_02_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1275133527]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_iin13")
 mesh = SubResource("BoxMesh_ei7sn")
 
 [node name="Books_02_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1294194818]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_cltl0")
 mesh = SubResource("BoxMesh_63rf1")
 
 [node name="Books_02_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=594398255]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_arpms")
 mesh = SubResource("BoxMesh_my40b")
 
 [node name="Books_02_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=970875291]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_h2cmh")
 mesh = SubResource("BoxMesh_rtf80")
 
 [node name="Books_02_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2123177574]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_7ou67")
 mesh = SubResource("BoxMesh_cmcco")
 
 [node name="Books_02_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=2082111866]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_rqu0a")
 mesh = SubResource("BoxMesh_phrpc")
 
 [node name="Books_02_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=448418373]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_si2t0")
 mesh = SubResource("BoxMesh_4p5ku")
 
 [node name="Books_02_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=390348698]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_k5j2b")
 mesh = SubResource("BoxMesh_fm6lv")
 
 [node name="Books_02_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1435281472]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_i5h5h")
 mesh = SubResource("BoxMesh_107ju")
@@ -5349,121 +5532,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_jnxsw")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=388340390]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_w6tvb")
 mesh = SubResource("BoxMesh_uj63l")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1184729613]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_pe7ji")
 mesh = SubResource("BoxMesh_ma8ui")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=782443051]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_y61ui")
 mesh = SubResource("BoxMesh_8oca2")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1156746387]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_c1bj1")
 mesh = SubResource("BoxMesh_wbrlk")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=994212619]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_xoh3s")
 mesh = SubResource("BoxMesh_6cexc")
 
 [node name="Books_03_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1512776825]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_awxgv")
 mesh = SubResource("BoxMesh_esiri")
 
 [node name="Books_03_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1062215297]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_sqpka")
 mesh = SubResource("BoxMesh_qcxc8")
 
 [node name="Books_03_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1480905968]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_ctp00")
 mesh = SubResource("BoxMesh_rubob")
 
 [node name="Books_03_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=837750986]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_xdas8")
 mesh = SubResource("BoxMesh_dbfid")
 
 [node name="Books_03_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=896285364]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_gi0q1")
 mesh = SubResource("BoxMesh_6yqjw")
 
 [node name="Books_03_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1184450776]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_mw3pw")
 mesh = SubResource("BoxMesh_voekh")
 
 [node name="Books_03_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=912551377]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_ffxea")
 mesh = SubResource("BoxMesh_m0du4")
 
 [node name="Books_03_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1586814103]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_e5o3n")
 mesh = SubResource("BoxMesh_ohdf0")
 
 [node name="Books_03_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=587440462]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_uhrmp")
 mesh = SubResource("BoxMesh_dj747")
 
 [node name="Books_03_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=195213132]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_y6tjq")
 mesh = SubResource("BoxMesh_8ofa5")
 
 [node name="Books_03_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=26225921]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_4cfnb")
 mesh = SubResource("BoxMesh_uk8tv")
 
 [node name="Books_03_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=603858513]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_42odg")
 mesh = SubResource("BoxMesh_u1sk2")
 
 [node name="Books_03_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=929055332]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_r0a5u")
 mesh = SubResource("BoxMesh_7r4u3")
 
 [node name="Books_03_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1677951165]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_msbeh")
 mesh = SubResource("BoxMesh_w7xd7")
 
 [node name="Books_03_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=378282321]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_6ncy2")
 mesh = SubResource("BoxMesh_nylky")
 
 [node name="Books_03_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=1998734776]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_kasf6")
 mesh = SubResource("BoxMesh_3ubxs")
 
 [node name="Books_03_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=824269667]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_d46hh")
 mesh = SubResource("BoxMesh_2pd3k")
 
 [node name="Books_03_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=550118617]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_scjwc")
 mesh = SubResource("BoxMesh_ealc2")
 
 [node name="Books_03_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeA" unique_id=538946244]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_vfuhg")
 mesh = SubResource("BoxMesh_nhn1l")
@@ -5508,121 +5715,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_6upiv")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=2111177729]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_h45k3")
 mesh = SubResource("BoxMesh_0hn6r")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1693023155]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_g0m1l")
 mesh = SubResource("BoxMesh_tsmxd")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1691398506]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_rjwid")
 mesh = SubResource("BoxMesh_ajblv")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1982283629]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_kqbxv")
 mesh = SubResource("BoxMesh_fn03q")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1760132423]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_nnfjg")
 mesh = SubResource("BoxMesh_0w84s")
 
 [node name="Books_00_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1543942966]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_n64w5")
 mesh = SubResource("BoxMesh_3cv8k")
 
 [node name="Books_00_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1350484586]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_d8yad")
 mesh = SubResource("BoxMesh_dv8yg")
 
 [node name="Books_00_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=636924354]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_wjfvw")
 mesh = SubResource("BoxMesh_03nwn")
 
 [node name="Books_00_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=412380692]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_gn1ju")
 mesh = SubResource("BoxMesh_ovv11")
 
 [node name="Books_00_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1900412430]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_mg2xb")
 mesh = SubResource("BoxMesh_1fro7")
 
 [node name="Books_00_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1518368853]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_w248c")
 mesh = SubResource("BoxMesh_j04j6")
 
 [node name="Books_00_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=143131055]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_d3md8")
 mesh = SubResource("BoxMesh_g3aai")
 
 [node name="Books_00_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=690471425]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_m143l")
 mesh = SubResource("BoxMesh_h6o0r")
 
 [node name="Books_00_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=678769058]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_7php2")
 mesh = SubResource("BoxMesh_qvl3l")
 
 [node name="Books_00_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=822403631]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_vsmh6")
 mesh = SubResource("BoxMesh_u1lnr")
 
 [node name="Books_00_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=779793538]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_mm3oj")
 mesh = SubResource("BoxMesh_8vx40")
 
 [node name="Books_00_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=147851588]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_tddal")
 mesh = SubResource("BoxMesh_5ksyg")
 
 [node name="Books_00_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1960230081]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_x2pol")
 mesh = SubResource("BoxMesh_yxja0")
 
 [node name="Books_00_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1157427372]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_hdxi5")
 mesh = SubResource("BoxMesh_vsnfx")
 
 [node name="Books_00_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1387423499]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_t33p6")
 mesh = SubResource("BoxMesh_ql1dk")
 
 [node name="Books_00_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=741246816]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_miave")
 mesh = SubResource("BoxMesh_ammrh")
 
 [node name="Books_00_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1575382803]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_8dj6f")
 mesh = SubResource("BoxMesh_h075d")
 
 [node name="Books_00_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=448490149]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_mfn5g")
 mesh = SubResource("BoxMesh_td4ub")
 
 [node name="Books_00_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1277226873]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_57egq")
 mesh = SubResource("BoxMesh_uauoi")
@@ -5633,121 +5864,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_fqppt")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1833304195]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_u1ayc")
 mesh = SubResource("BoxMesh_s8eu3")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=707713879]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_01ikl")
 mesh = SubResource("BoxMesh_nwupd")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=458266230]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_uvnea")
 mesh = SubResource("BoxMesh_w2f7c")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1918006487]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_tkpuv")
 mesh = SubResource("BoxMesh_g7qwp")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=73164472]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_nb1d0")
 mesh = SubResource("BoxMesh_yno71")
 
 [node name="Books_01_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=698521161]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_vq7vl")
 mesh = SubResource("BoxMesh_lq0u0")
 
 [node name="Books_01_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1153734289]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_6yqs7")
 mesh = SubResource("BoxMesh_u6r2s")
 
 [node name="Books_01_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1375237114]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_k1d28")
 mesh = SubResource("BoxMesh_gby4k")
 
 [node name="Books_01_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=338980418]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_j8bls")
 mesh = SubResource("BoxMesh_8mb2x")
 
 [node name="Books_01_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=935800822]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_ibl4u")
 mesh = SubResource("BoxMesh_she5e")
 
 [node name="Books_01_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=969809725]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_yy2rn")
 mesh = SubResource("BoxMesh_xw7qn")
 
 [node name="Books_01_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=340830892]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_lp74s")
 mesh = SubResource("BoxMesh_5u3mr")
 
 [node name="Books_01_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1318745685]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_qd4kx")
 mesh = SubResource("BoxMesh_xoars")
 
 [node name="Books_01_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=869250204]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_64pd0")
 mesh = SubResource("BoxMesh_kaf1p")
 
 [node name="Books_01_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=2099720895]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_ftoh2")
 mesh = SubResource("BoxMesh_ritgn")
 
 [node name="Books_01_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1057276301]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_c2i77")
 mesh = SubResource("BoxMesh_hewxv")
 
 [node name="Books_01_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1443025813]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_d2ext")
 mesh = SubResource("BoxMesh_cygpd")
 
 [node name="Books_01_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1222736805]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_hu0hd")
 mesh = SubResource("BoxMesh_apctc")
 
 [node name="Books_01_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=635897239]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_7ycbc")
 mesh = SubResource("BoxMesh_7kw5i")
 
 [node name="Books_01_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1138040900]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_rugmy")
 mesh = SubResource("BoxMesh_ytoc7")
 
 [node name="Books_01_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1928870589]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_wghoc")
 mesh = SubResource("BoxMesh_egx3i")
 
 [node name="Books_01_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1920221331]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_rn1qr")
 mesh = SubResource("BoxMesh_qge8s")
 
 [node name="Books_01_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1514278556]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_5dxdm")
 mesh = SubResource("BoxMesh_eblfw")
 
 [node name="Books_01_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1636154869]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_mvdf1")
 mesh = SubResource("BoxMesh_1m1kb")
@@ -5758,121 +6013,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_d07tw")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1191333179]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_i6hve")
 mesh = SubResource("BoxMesh_nvvnw")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1728082528]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_aj5ye")
 mesh = SubResource("BoxMesh_at37p")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1914255183]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_vxhky")
 mesh = SubResource("BoxMesh_7ix2b")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1127564635]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_wlmhk")
 mesh = SubResource("BoxMesh_stxrb")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=2116038133]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_jbqhk")
 mesh = SubResource("BoxMesh_n7jo3")
 
 [node name="Books_02_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=2130504748]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_826d3")
 mesh = SubResource("BoxMesh_kpyd6")
 
 [node name="Books_02_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1716757790]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_j6wl7")
 mesh = SubResource("BoxMesh_mrx1l")
 
 [node name="Books_02_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=522950576]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_hpa38")
 mesh = SubResource("BoxMesh_v0jve")
 
 [node name="Books_02_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=120612468]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_nvdxe")
 mesh = SubResource("BoxMesh_thg00")
 
 [node name="Books_02_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=990411211]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_wrb3f")
 mesh = SubResource("BoxMesh_weupn")
 
 [node name="Books_02_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=153862275]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_tqn8r")
 mesh = SubResource("BoxMesh_8rnc4")
 
 [node name="Books_02_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=628379565]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_lq4yd")
 mesh = SubResource("BoxMesh_esd5l")
 
 [node name="Books_02_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=669136086]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_f6qoj")
 mesh = SubResource("BoxMesh_2ah4r")
 
 [node name="Books_02_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=29718525]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_mc42k")
 mesh = SubResource("BoxMesh_revjj")
 
 [node name="Books_02_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1100604168]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_el6jv")
 mesh = SubResource("BoxMesh_tpjtc")
 
 [node name="Books_02_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1833137487]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_yixk8")
 mesh = SubResource("BoxMesh_x30lw")
 
 [node name="Books_02_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=303757655]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_e70nh")
 mesh = SubResource("BoxMesh_7frfd")
 
 [node name="Books_02_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1140985070]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_05gqi")
 mesh = SubResource("BoxMesh_kldkq")
 
 [node name="Books_02_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=2046051145]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_78wjt")
 mesh = SubResource("BoxMesh_ak32e")
 
 [node name="Books_02_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=487636905]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_fvaut")
 mesh = SubResource("BoxMesh_83k3o")
 
 [node name="Books_02_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1034676272]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_gnjt4")
 mesh = SubResource("BoxMesh_qb0i8")
 
 [node name="Books_02_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1626336289]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_g1f23")
 mesh = SubResource("BoxMesh_m50mb")
 
 [node name="Books_02_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1147139620]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_jsgts")
 mesh = SubResource("BoxMesh_og77x")
 
 [node name="Books_02_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1903108164]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_myfod")
 mesh = SubResource("BoxMesh_ad274")
@@ -5883,121 +6162,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_hrgj0")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=209226802]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_h7nuo")
 mesh = SubResource("BoxMesh_on52v")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1902300389]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_cmc7f")
 mesh = SubResource("BoxMesh_ydi0f")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=574321846]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_8bb0t")
 mesh = SubResource("BoxMesh_tiwer")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=759527842]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_3mjfv")
 mesh = SubResource("BoxMesh_7prtm")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1776699234]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_8tj44")
 mesh = SubResource("BoxMesh_omaej")
 
 [node name="Books_03_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=691426943]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_w250n")
 mesh = SubResource("BoxMesh_s5g73")
 
 [node name="Books_03_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=757371808]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_go1va")
 mesh = SubResource("BoxMesh_c4rhq")
 
 [node name="Books_03_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=848088371]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_eng5u")
 mesh = SubResource("BoxMesh_jmm21")
 
 [node name="Books_03_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=192622047]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_cduuq")
 mesh = SubResource("BoxMesh_y5c2r")
 
 [node name="Books_03_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=186835561]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_yd1oq")
 mesh = SubResource("BoxMesh_qmqjs")
 
 [node name="Books_03_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=317103862]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_olmk6")
 mesh = SubResource("BoxMesh_m026w")
 
 [node name="Books_03_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1104344513]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_q0v85")
 mesh = SubResource("BoxMesh_2pbdh")
 
 [node name="Books_03_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1107564005]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_awp1f")
 mesh = SubResource("BoxMesh_dj6fd")
 
 [node name="Books_03_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1414639228]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_4n40y")
 mesh = SubResource("BoxMesh_k411m")
 
 [node name="Books_03_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=617538533]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_n1itu")
 mesh = SubResource("BoxMesh_kcnv7")
 
 [node name="Books_03_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1968204315]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_qe11b")
 mesh = SubResource("BoxMesh_rt3wb")
 
 [node name="Books_03_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=78203320]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_6jyx8")
 mesh = SubResource("BoxMesh_wtini")
 
 [node name="Books_03_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1228830408]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_20f35")
 mesh = SubResource("BoxMesh_0ar3c")
 
 [node name="Books_03_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1488902337]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_s7j83")
 mesh = SubResource("BoxMesh_rap14")
 
 [node name="Books_03_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1677802117]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_uinsk")
 mesh = SubResource("BoxMesh_deaww")
 
 [node name="Books_03_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1363553246]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_88g4g")
 mesh = SubResource("BoxMesh_sl73o")
 
 [node name="Books_03_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=1221631053]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_7jjeg")
 mesh = SubResource("BoxMesh_ybgvu")
 
 [node name="Books_03_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=148891997]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_7nyux")
 mesh = SubResource("BoxMesh_eegsq")
 
 [node name="Books_03_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeB" unique_id=313971819]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_xcmx7")
 mesh = SubResource("BoxMesh_5m2yg")
@@ -6042,121 +6345,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_ktui8")
 
 [node name="Books_00_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1394294153]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_1cnmi")
 mesh = SubResource("BoxMesh_bocub")
 
 [node name="Books_00_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1298352732]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_xyex4")
 mesh = SubResource("BoxMesh_5xjwa")
 
 [node name="Books_00_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=570472222]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_tct8r")
 mesh = SubResource("BoxMesh_f4w88")
 
 [node name="Books_00_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1678895080]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_lq2ba")
 mesh = SubResource("BoxMesh_gk0h2")
 
 [node name="Books_00_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1463330227]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_u3fso")
 mesh = SubResource("BoxMesh_lx5we")
 
 [node name="Books_00_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1375777682]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_nye7j")
 mesh = SubResource("BoxMesh_eeinr")
 
 [node name="Books_00_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=895679724]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_fe30u")
 mesh = SubResource("BoxMesh_u5eb2")
 
 [node name="Books_00_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1287378167]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_mhjs6")
 mesh = SubResource("BoxMesh_yfmx0")
 
 [node name="Books_00_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1573771787]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_i635g")
 mesh = SubResource("BoxMesh_m6xqh")
 
 [node name="Books_00_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=65888004]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_nys6r")
 mesh = SubResource("BoxMesh_8cly5")
 
 [node name="Books_00_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=842768440]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, -0.335)
 material_override = SubResource("StandardMaterial3D_5pcef")
 mesh = SubResource("BoxMesh_xn10g")
 
 [node name="Books_00_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=134596011]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, -0.335)
 material_override = SubResource("StandardMaterial3D_a56pb")
 mesh = SubResource("BoxMesh_ruhqx")
 
 [node name="Books_00_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1896060471]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_kbbb8")
 mesh = SubResource("BoxMesh_k066m")
 
 [node name="Books_00_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1105930168]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_yqi4q")
 mesh = SubResource("BoxMesh_e4ph2")
 
 [node name="Books_00_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=649813970]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_wrq6f")
 mesh = SubResource("BoxMesh_vc16p")
 
 [node name="Books_00_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1615024734]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_nn1tm")
 mesh = SubResource("BoxMesh_ygrnb")
 
 [node name="Books_00_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=57613853]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_vneuq")
 mesh = SubResource("BoxMesh_x8cu7")
 
 [node name="Books_00_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1371737469]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_xg0sq")
 mesh = SubResource("BoxMesh_7hb7c")
 
 [node name="Books_00_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=511516277]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_pr2dg")
 mesh = SubResource("BoxMesh_pvi6g")
 
 [node name="Books_00_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=270846535]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_ls85i")
 mesh = SubResource("BoxMesh_tbd1b")
 
 [node name="Books_00_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=843784711]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_7r3oy")
 mesh = SubResource("BoxMesh_rtm7u")
 
 [node name="Books_00_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1599094309]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_p3uog")
 mesh = SubResource("BoxMesh_6vn3u")
 
 [node name="Books_00_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=340542225]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.33, 0.335)
 material_override = SubResource("StandardMaterial3D_t8t8w")
 mesh = SubResource("BoxMesh_7oflm")
 
 [node name="Books_00_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1002836479]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.385, 0.335)
 material_override = SubResource("StandardMaterial3D_0w1df")
 mesh = SubResource("BoxMesh_hunlq")
@@ -6167,121 +6494,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_p6esn")
 
 [node name="Books_01_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=778845778]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_3m3wn")
 mesh = SubResource("BoxMesh_tsoqp")
 
 [node name="Books_01_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=199847787]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_1bjid")
 mesh = SubResource("BoxMesh_6ixlj")
 
 [node name="Books_01_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1540618151]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_603vm")
 mesh = SubResource("BoxMesh_jqp0k")
 
 [node name="Books_01_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1843901759]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_uki0y")
 mesh = SubResource("BoxMesh_uxxej")
 
 [node name="Books_01_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1399876001]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_bkp78")
 mesh = SubResource("BoxMesh_b5r3k")
 
 [node name="Books_01_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=511053566]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_tmt0t")
 mesh = SubResource("BoxMesh_mhkm4")
 
 [node name="Books_01_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1819948205]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_lyxct")
 mesh = SubResource("BoxMesh_0ejfc")
 
 [node name="Books_01_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1953711467]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_4jhx0")
 mesh = SubResource("BoxMesh_p3jmd")
 
 [node name="Books_01_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1705320295]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_udvn4")
 mesh = SubResource("BoxMesh_axmpf")
 
 [node name="Books_01_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1646434218]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_xqfei")
 mesh = SubResource("BoxMesh_y82tn")
 
 [node name="Books_01_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=182538692]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, -0.335)
 material_override = SubResource("StandardMaterial3D_1q70v")
 mesh = SubResource("BoxMesh_4eo11")
 
 [node name="Books_01_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=821965760]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, -0.335)
 material_override = SubResource("StandardMaterial3D_r64dg")
 mesh = SubResource("BoxMesh_l1ui2")
 
 [node name="Books_01_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=2015923311]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_4j1gf")
 mesh = SubResource("BoxMesh_l3186")
 
 [node name="Books_01_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1192839896]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_pfvw8")
 mesh = SubResource("BoxMesh_32f8g")
 
 [node name="Books_01_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=2055400796]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_bysfd")
 mesh = SubResource("BoxMesh_cye1n")
 
 [node name="Books_01_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1228124395]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_y754h")
 mesh = SubResource("BoxMesh_cb4x0")
 
 [node name="Books_01_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=890186971]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_aqyx8")
 mesh = SubResource("BoxMesh_bpu7q")
 
 [node name="Books_01_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1343678000]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_tphuj")
 mesh = SubResource("BoxMesh_f3u40")
 
 [node name="Books_01_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1399603733]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_rj7lr")
 mesh = SubResource("BoxMesh_b1cuk")
 
 [node name="Books_01_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=727947546]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_80aln")
 mesh = SubResource("BoxMesh_ur86b")
 
 [node name="Books_01_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1978597578]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_nnj6u")
 mesh = SubResource("BoxMesh_l1ae7")
 
 [node name="Books_01_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=536510057]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_7dxfm")
 mesh = SubResource("BoxMesh_scecy")
 
 [node name="Books_01_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1904522598]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 0.7855, 0.335)
 material_override = SubResource("StandardMaterial3D_2gt1j")
 mesh = SubResource("BoxMesh_x4waf")
 
 [node name="Books_01_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1014097441]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 0.8405, 0.335)
 material_override = SubResource("StandardMaterial3D_nuoxk")
 mesh = SubResource("BoxMesh_r55sp")
@@ -6292,121 +6643,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_v4fhb")
 
 [node name="Books_02_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=440809277]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_7uhsr")
 mesh = SubResource("BoxMesh_5wxq7")
 
 [node name="Books_02_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1073218814]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_h0ck7")
 mesh = SubResource("BoxMesh_k5chx")
 
 [node name="Books_02_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1843434732]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_e61vd")
 mesh = SubResource("BoxMesh_2ds4u")
 
 [node name="Books_02_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1292688018]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_l33yn")
 mesh = SubResource("BoxMesh_fbe3y")
 
 [node name="Books_02_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=346302501]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_oa1hp")
 mesh = SubResource("BoxMesh_i6vrm")
 
 [node name="Books_02_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1780913113]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_oyyrp")
 mesh = SubResource("BoxMesh_2v5os")
 
 [node name="Books_02_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1653470413]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_mf660")
 mesh = SubResource("BoxMesh_tkpqn")
 
 [node name="Books_02_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1677325895]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_ckkyx")
 mesh = SubResource("BoxMesh_4a77b")
 
 [node name="Books_02_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=2054479841]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_48yh4")
 mesh = SubResource("BoxMesh_7ypkq")
 
 [node name="Books_02_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1971264236]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_cir2x")
 mesh = SubResource("BoxMesh_tt1am")
 
 [node name="Books_02_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=972626046]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, -0.335)
 material_override = SubResource("StandardMaterial3D_km7tl")
 mesh = SubResource("BoxMesh_npp8g")
 
 [node name="Books_02_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=812184597]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, -0.335)
 material_override = SubResource("StandardMaterial3D_tpix5")
 mesh = SubResource("BoxMesh_iteji")
 
 [node name="Books_02_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=718647175]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_pockg")
 mesh = SubResource("BoxMesh_o8qo3")
 
 [node name="Books_02_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=2006287829]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_c4gmw")
 mesh = SubResource("BoxMesh_c6ycy")
 
 [node name="Books_02_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1403723714]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_keqhy")
 mesh = SubResource("BoxMesh_ev8ur")
 
 [node name="Books_02_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=136911045]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_3v65w")
 mesh = SubResource("BoxMesh_omnjd")
 
 [node name="Books_02_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=412016982]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_mhtqa")
 mesh = SubResource("BoxMesh_rfbx6")
 
 [node name="Books_02_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1313991432]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_6nfyx")
 mesh = SubResource("BoxMesh_8u22i")
 
 [node name="Books_02_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1174757481]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_p8g2v")
 mesh = SubResource("BoxMesh_aptwu")
 
 [node name="Books_02_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1483364435]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_ylio7")
 mesh = SubResource("BoxMesh_bbah3")
 
 [node name="Books_02_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1398478491]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_6s33m")
 mesh = SubResource("BoxMesh_68dyf")
 
 [node name="Books_02_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=2083593157]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_s786b")
 mesh = SubResource("BoxMesh_i0vyy")
 
 [node name="Books_02_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1065580772]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.2409999, 0.335)
 material_override = SubResource("StandardMaterial3D_x7np0")
 mesh = SubResource("BoxMesh_ma1sa")
 
 [node name="Books_02_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1011128376]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.186, 0.335)
 material_override = SubResource("StandardMaterial3D_xb075")
 mesh = SubResource("BoxMesh_ysn6d")
@@ -6417,121 +6792,145 @@ material_override = SubResource("StandardMaterial3D_jh40p")
 mesh = SubResource("BoxMesh_gsaa6")
 
 [node name="Books_03_00_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1495572284]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_17bwv")
 mesh = SubResource("BoxMesh_hm5yd")
 
 [node name="Books_03_01_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=521512011]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_olvyv")
 mesh = SubResource("BoxMesh_thdev")
 
 [node name="Books_03_02_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=114948450]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_r0263")
 mesh = SubResource("BoxMesh_l8gn5")
 
 [node name="Books_03_03_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1570140582]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_86qhb")
 mesh = SubResource("BoxMesh_hsw4v")
 
 [node name="Books_03_04_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1833127459]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_oxi0v")
 mesh = SubResource("BoxMesh_olunq")
 
 [node name="Books_03_05_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=882137641]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_y6h0g")
 mesh = SubResource("BoxMesh_cdr6j")
 
 [node name="Books_03_06_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=54637627]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_kw8xm")
 mesh = SubResource("BoxMesh_riyp3")
 
 [node name="Books_03_07_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=268723105]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_q8t4f")
 mesh = SubResource("BoxMesh_imq2t")
 
 [node name="Books_03_08_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1117287411]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_4oef8")
 mesh = SubResource("BoxMesh_yp3uc")
 
 [node name="Books_03_09_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=368030814]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_dd0no")
 mesh = SubResource("BoxMesh_ep3of")
 
 [node name="Books_03_10_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=659212071]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, -0.335)
 material_override = SubResource("StandardMaterial3D_qxkro")
 mesh = SubResource("BoxMesh_s7nhq")
 
 [node name="Books_03_11_F" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=465697164]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, -0.335)
 material_override = SubResource("StandardMaterial3D_084uq")
 mesh = SubResource("BoxMesh_f8cu0")
 
 [node name="Books_03_00_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1268693341]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8591666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_uw4pc")
 mesh = SubResource("BoxMesh_sb48i")
 
 [node name="Books_03_01_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1040571564]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1575, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_lma0i")
 mesh = SubResource("BoxMesh_mbgj2")
 
 [node name="Books_03_02_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=253013807]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4558332, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_cs3n3")
 mesh = SubResource("BoxMesh_nfvy2")
 
 [node name="Books_03_03_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=73764434]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7541666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_8mdby")
 mesh = SubResource("BoxMesh_t277o")
 
 [node name="Books_03_04_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1702241874]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0525, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_x4vfw")
 mesh = SubResource("BoxMesh_4iryo")
 
 [node name="Books_03_05_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=798641072]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35083333, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_674sc")
 mesh = SubResource("BoxMesh_433xu")
 
 [node name="Books_03_06_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1046161811]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35083333, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_rdnhq")
 mesh = SubResource("BoxMesh_cugct")
 
 [node name="Books_03_07_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=205817596]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0525, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_wjs2o")
 mesh = SubResource("BoxMesh_rmcpa")
 
 [node name="Books_03_08_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=117345162]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7541666, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_gf636")
 mesh = SubResource("BoxMesh_qwma6")
 
 [node name="Books_03_09_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=98408025]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4558332, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_hxhs2")
 mesh = SubResource("BoxMesh_t7h0e")
 
 [node name="Books_03_10_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1439191292]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1575, 1.6965, 0.335)
 material_override = SubResource("StandardMaterial3D_65bss")
 mesh = SubResource("BoxMesh_cwtjf")
 
 [node name="Books_03_11_B" type="MeshInstance3D" parent="Furniture/CentralRangeC" unique_id=1073238604]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8591666, 1.6415, 0.335)
 material_override = SubResource("StandardMaterial3D_p1jbs")
 mesh = SubResource("BoxMesh_cxqq0")
@@ -7336,6 +7735,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.65, 1.28, 6)
 light_color = Color(1, 0.61, 0.28, 1)
 light_energy = 0.85
 omni_range = 3.2
+
+[node name="ShelfReadabilityFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(-17, 2.05, 2)
+light_color = Color(0.42, 0.48, 0.49, 1)
+light_energy = 0.48
+omni_range = 11.5
+shadow_enabled = false
 
 [node name="Atmosphere" type="Node3D" parent="." unique_id=371323952]
 

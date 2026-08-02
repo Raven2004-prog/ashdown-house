@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/ashdown_player.gd" id="1_player"]
+[ext_resource type="PackedScene" path="res://assets/hd2d/characters/investigator_blockout.glb" id="2_investigator"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape_player"]
 radius = 0.32
@@ -34,12 +35,24 @@ shape = SubResource("CapsuleShape_player")
 position = Vector3(0, -0.14, 0)
 
 [node name="PrototypeBody" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 position = Vector3(0, 0.82, 0)
 mesh = SubResource("CapsuleMesh_body")
 
 [node name="Face" type="MeshInstance3D" parent="VisualRoot"]
+visible = false
 position = Vector3(0, 1.18, -0.28)
 mesh = SubResource("BoxMesh_face")
+
+[node name="InvestigatorVisual" parent="VisualRoot" instance=ExtResource("2_investigator")]
+position = Vector3(0, 0.14, 0)
+
+[node name="LanternLight" type="OmniLight3D" parent="VisualRoot"]
+position = Vector3(-0.39, 0.91, -0.02)
+light_color = Color(1, 0.48, 0.16, 1)
+light_energy = 0.72
+omni_range = 3.4
+shadow_enabled = false
 
 [node name="CameraYaw" type="Node3D" parent="."]
 
