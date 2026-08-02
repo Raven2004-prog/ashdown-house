@@ -9,6 +9,26 @@
     "one_clue": "I could not go back for my shoe.",
     "two_clues": "Mira was above me. I could hear her at the window."
   },
+  "arun": {
+    "initial": "The stars did not disappear. The smoke only covered them.",
+    "one_clue": "The library book showed me where to find north.",
+    "two_clues": "I drew the same stars for the projector."
+  },
+  "dev": {
+    "initial": "It was already sparking. I told them.",
+    "one_clue": "My train made the same clicking sound.",
+    "two_clues": "The fire did not begin in the boiler. I checked."
+  },
+  "sana": {
+    "initial": "Keep the cloth low. Do not breathe above it.",
+    "one_clue": "There were not enough towels.",
+    "two_clues": "I counted seven cloths, even though the kitchen list had six names."
+  },
+  "kabir": {
+    "initial": "I hid when the lights failed.",
+    "one_clue": "My marble rolled beneath the desk.",
+    "two_clues": "The register called me a coward. The desk kept me alive a little longer."
+  },
   "nila": {
     "initial": "One... two... three... I keep losing one.",
     "one_clue": "Mother said I was not supposed to be in the class.",

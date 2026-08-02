@@ -8,7 +8,7 @@ extends Node3D
 var fire_active := false
 
 func apply_gameplay_state(flags: Dictionary) -> void:
-	var should_burn := bool(flags.get("fire_started", false))
+	var should_burn := bool(flags.get("fire_started", false)) and not bool(flags.get("final_doll_placed", false))
 	if should_burn == fire_active:
 		return
 	fire_active = should_burn

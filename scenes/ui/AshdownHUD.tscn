@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/ashdown_hud.gd" id="1_hud"]
 [ext_resource type="FontFile" path="res://assets/fonts/atkinson_next/AtkinsonHyperlegibleNext-Regular.ttf" id="2_regular"]
@@ -64,6 +64,13 @@ content_margin_top = 9.0
 content_margin_right = 18.0
 content_margin_bottom = 9.0
 
+[sub_resource type="Shader" id="Shader_smoke_vignette"]
+code = "shader_type canvas_item;\nuniform float intensity : hint_range(0.0, 1.0) = 0.0;\nvoid fragment() {\n\tvec2 p = (UV - vec2(0.5)) * vec2(1.0, 0.72);\n\tfloat edge = smoothstep(0.27, 0.57, length(p));\n\tfloat upper = smoothstep(0.74, 0.15, UV.y);\n\tfloat alpha = clamp(edge * 0.72 + upper * 0.18, 0.0, 1.0) * intensity;\n\tCOLOR = vec4(0.025, 0.024, 0.022, alpha);\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_smoke_vignette"]
+shader = SubResource("Shader_smoke_vignette")
+shader_parameter/intensity = 0.0
+
 [node name="AshdownHUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -74,6 +81,36 @@ grow_vertical = 2
 mouse_filter = 2
 theme = SubResource("Theme_ashdown")
 script = ExtResource("1_hud")
+
+[node name="SmokeVignette" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_smoke_vignette")
+color = Color(1, 1, 1, 1)
+
+[node name="PressureStatus" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -216.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = 58.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.82, 0.73, 0.61, 0.9)
+theme_override_fonts/font = ExtResource("3_semibold")
+theme_override_font_sizes/font_size = 18
+text = "Air clear"
+horizontal_alignment = 2
 
 [node name="BottomBand" type="ColorRect" parent="."]
 layout_mode = 1

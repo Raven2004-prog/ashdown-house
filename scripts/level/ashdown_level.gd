@@ -1,6 +1,8 @@
 extends Node3D
 
 const LEVEL_DATA_PATH := "res://data/levels/level_ashdown_house.json"
+const CLUE_DATA_PATH := "res://data/clues/ashdown_house_clues.json"
+const DIALOGUE_DATA_PATH := "res://data/levels/ashdown_house_dialogue.json"
 const INTERACTABLE_SCRIPT := preload("res://scripts/interaction/interactable_3d.gd")
 const INTERACTION_MANAGER_SCRIPT := preload("res://scripts/interaction/interaction_manager.gd")
 const INVENTORY_MANAGER_SCRIPT := preload("res://scripts/level/inventory_manager.gd")
@@ -13,6 +15,8 @@ const WALL_THICKNESS := 0.30
 const BLOCKOUT_DOOR_GAP_WIDTH := 2.4
 
 var level_data: Dictionary = {}
+var clue_data: Dictionary = {}
+var dialogue_data: Dictionary = {}
 var code_entry := ""
 var code_mode := false
 var active_code_puzzle: Dictionary = {}
@@ -20,6 +24,11 @@ var interactables_by_id: Dictionary = {}
 var authored_anchors_by_id: Dictionary = {}
 var authored_index_errors: Array[String] = []
 var debug_labels_visible := false
+var smoke_elapsed_seconds := 0.0
+var smoke_budget_seconds := 1680.0
+var pressure_failure_active := false
+var completion_active := false
+var last_pressure_stage := -1
 
 var inventory_manager
 var journal_manager
@@ -42,6 +51,11 @@ var interaction_manager
 @onready var code_label: Label = $UI/AshdownHUD/CodePanel/Margin/CodeLabel
 
 func _ready() -> void:
+	var launch_args := OS.get_cmdline_user_args()
+	if launch_args.has("--story-pressure"):
+		smoke_budget_seconds = 2280.0
+	elif launch_args.has("--hard-pressure"):
+		smoke_budget_seconds = 1260.0
 	_ensure_inputs()
 	_load_level_data()
 	_create_managers()
@@ -60,6 +74,8 @@ func _ready() -> void:
 		call_deferred("_run_dormitory_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--wet-service-slice-self-test"):
 		call_deferred("_run_wet_service_slice_self_test")
+	elif OS.get_cmdline_user_args().has("--boiler-final-slice-self-test"):
+		call_deferred("_run_boiler_final_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
@@ -72,6 +88,27 @@ func _ready() -> void:
 		call_deferred("_capture_dormitory_phase5")
 	elif OS.get_cmdline_user_args().has("--capture-wet-service-phase6"):
 		call_deferred("_capture_wet_service_phase6")
+	elif OS.get_cmdline_user_args().has("--capture-boiler-phase7"):
+		call_deferred("_capture_boiler_phase7")
+
+func _process(delta: float) -> void:
+	if level_state == null or not level_state.has_flag(&"fire_started"):
+		return
+	if level_state.state == level_state.COMPLETE or pressure_failure_active or _pressure_is_paused():
+		return
+	var rate := _get_smoke_rate_multiplier()
+	smoke_elapsed_seconds = minf(smoke_budget_seconds, smoke_elapsed_seconds + delta * rate)
+	_update_pressure_presentation()
+	if smoke_elapsed_seconds >= smoke_budget_seconds:
+		_show_pressure_failure()
+
+func _get_smoke_rate_multiplier() -> float:
+	var rate := 1.0
+	if level_state.has_flag(&"kitchen_fire_extinguished"):
+		rate *= 0.88
+	if level_state.has_flag(&"boiler_disabled"):
+		rate *= 0.58
+	return rate
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -507,7 +544,127 @@ func _run_wet_service_slice_self_test() -> void:
 		print("WET_SERVICE_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_boiler_final_slice_self_test() -> void:
+	var failures: Array[String] = []
+	failures.append_array(_collect_authored_validation_errors())
+	var boiler := content_root.get_node_or_null("BoilerRecordsContent")
+	if boiler == null:
+		failures.append("authored Boiler/Records content was not instantiated")
+	else:
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Interactables", ^"Lighting", ^"Atmosphere"]:
+			if boiler.get_node_or_null(branch) == null:
+				failures.append("missing authored Boiler/Records branch %s" % branch)
+	var required: Array[StringName] = [
+		&"R02", &"R03", &"R04", &"R05", &"R06", &"R08", &"R11", &"R12",
+		&"R13", &"R14", &"R15", &"R16", &"R17", &"R22"
+	]
+	for id in required:
+		if not authored_anchors_by_id.has(id):
+			failures.append("missing Boiler/Records anchor %s" % id)
+		if not interactables_by_id.has(id):
+			failures.append("missing Boiler/Records interactable %s" % id)
+		elif interactables_by_id[id].authored_visual == null:
+			failures.append("Boiler/Records interactable %s has no bound prop" % id)
+
+	level_state.start_fire()
+	smoke_elapsed_seconds = 42.0
+	_save_checkpoint()
+	smoke_elapsed_seconds = 420.0
+	level_state.set_flag(&"kitchen_fire_extinguished", true)
+	_restore_latest_checkpoint()
+	if not is_equal_approx(smoke_elapsed_seconds, 42.0):
+		failures.append("checkpoint did not restore smoke progress")
+	if level_state.has_flag(&"kitchen_fire_extinguished"):
+		failures.append("checkpoint did not restore level flags exactly")
+
+	level_state.set_flag(&"boiler_wheel_installed", true)
+	_refresh_interactable_visibility()
+	var pressure_board = interactables_by_id.get(&"R02")
+	if pressure_board == null or not pressure_board.visible:
+		failures.append("pressure board did not unlock after installing the wheel")
+	level_state.complete_boiler_pressure()
+	_refresh_interactable_visibility()
+	if not level_state.has_flag(&"steam_routed_to_bathroom") or not level_state.has_flag(&"boiler_disabled"):
+		failures.append("pressure sequence did not route steam before shutdown")
+	if not is_equal_approx(_get_smoke_rate_multiplier(), 0.58):
+		failures.append("boiler shutdown did not apply the 0.58 smoke multiplier")
+	level_state.set_flag(&"kitchen_fire_extinguished", true)
+	if not is_equal_approx(_get_smoke_rate_multiplier(), 0.5104):
+		failures.append("kitchen and boiler smoke multipliers did not combine")
+	if boiler != null:
+		var lever := boiler.get_node_or_null(^"Furniture/R02_PressureBoard/MasterLever") as Node3D
+		var handprints := boiler.get_node_or_null(^"Furniture/R14_Handprints") as Node3D
+		var smoke := boiler.get_node_or_null(^"Atmosphere/BoilerSmoke") as GPUParticles3D
+		if lever == null or lever.rotation_degrees.z > -40.0:
+			failures.append("master isolation lever did not visibly move")
+		if handprints == null or not handprints.visible:
+			failures.append("shutdown did not reveal the seven handprints")
+		if smoke == null or smoke.emitting:
+			failures.append("boiler smoke continued after shutdown")
+	var records = interactables_by_id.get(&"R08")
+	if records == null or not records.visible:
+		failures.append("records cabinet did not unlock after shutdown")
+	else:
+		_handle_container(records)
+
+	for flag in [
+		&"librarian_desk_opened", &"library_bookcase_open", &"classroom_unlocked",
+		&"projector_revealed", &"dormitory_unlocked", &"dormitory_music_solved",
+		&"drain_accessed", &"towel_cabinet_opened", &"pantry_opened", &"wringer_operated",
+		&"mirror_message_revealed", &"records_cabinet_opened"
+	]:
+		level_state.set_flag(flag, true)
+	_refresh_interactable_visibility()
+	var identity_ids: Array[StringName] = []
+	for doll_id in clue_data.get("identity_clues", {}):
+		for clue_id in clue_data.identity_clues[doll_id]:
+			identity_ids.append(StringName(clue_id))
+	for clue_id in identity_ids:
+		var clue = interactables_by_id.get(clue_id)
+		if clue == null or not clue.visible:
+			failures.append("identity clue %s was not available for the final deduction" % clue_id)
+		else:
+			_collect_evidence(clue)
+	if journal_manager.get_total_identity_clues_found(inventory_manager) != 14:
+		failures.append("journal did not count exactly fourteen identity clues")
+	for registered_id in clue_data.get("registered_identity_order", []):
+		var doll_id := StringName(registered_id)
+		if not level_state.assign_registered_identity(doll_id, doll_id):
+			failures.append("registered identity %s could not be assigned" % doll_id)
+	_refresh_final_deduction_state()
+	if level_state.state != level_state.FINAL_DEDUCTION or not level_state.has_flag(&"nila_identity_deduced"):
+		failures.append("final Nila deduction did not unlock after all prerequisites")
+	var cradle = interactables_by_id.get(&"H01")
+	var smoke_before_wrong := smoke_elapsed_seconds
+	level_state.carry_final_doll(&"mira")
+	_handle_cradle_interaction(cradle)
+	if not is_equal_approx(smoke_elapsed_seconds, smoke_before_wrong + 90.0):
+		failures.append("wrong cradle choice did not apply the 90-second smoke penalty")
+	if level_state.carried_final_doll_id != &"":
+		failures.append("wrong doll did not return to its alcove")
+	level_state.carry_final_doll(&"nila")
+	_handle_cradle_interaction(cradle)
+	if level_state.state != level_state.COMPLETE or not level_state.has_flag(&"final_doll_placed"):
+		failures.append("Nila was not accepted by the cradle")
+	if failures.is_empty():
+		print("BOILER_FINAL_SLICE_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Boiler/final slice self-test: %s" % failure)
+		print("BOILER_FINAL_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
+	if pressure_failure_active:
+		if event is InputEventKey and event.is_pressed() and not event.is_echo():
+			if event.physical_keycode == KEY_R:
+				_restore_latest_checkpoint()
+			elif event.physical_keycode == KEY_M:
+				get_tree().reload_current_scene()
+		return
+	if completion_active:
+		return
 	if code_mode:
 		_handle_code_input(event)
 		return
@@ -553,6 +710,14 @@ func _load_level_data() -> void:
 	if level_data == null:
 		push_error("Could not parse Ashdown level data.")
 		level_data = {}
+	clue_data = JSON.parse_string(FileAccess.get_file_as_string(CLUE_DATA_PATH)) as Dictionary
+	if clue_data == null:
+		push_error("Could not parse Ashdown identity clue data.")
+		clue_data = {}
+	dialogue_data = JSON.parse_string(FileAccess.get_file_as_string(DIALOGUE_DATA_PATH)) as Dictionary
+	if dialogue_data == null:
+		push_error("Could not parse Ashdown doll dialogue data.")
+		dialogue_data = {}
 
 func _create_managers() -> void:
 	inventory_manager = INVENTORY_MANAGER_SCRIPT.new()
@@ -562,6 +727,7 @@ func _create_managers() -> void:
 	journal_manager.name = "JournalManager"
 	add_child(journal_manager)
 	journal_manager.configure_dolls(level_data.get("dolls", []))
+	journal_manager.configure_identity_clues(clue_data)
 	level_state = LEVEL_STATE_CONTROLLER_SCRIPT.new()
 	level_state.name = "LevelStateController"
 	add_child(level_state)
@@ -662,6 +828,8 @@ func _spawn_player() -> void:
 		start = {"x": 12.0, "y": 0.05, "z": -8.2, "yaw": 270.0}
 	elif args.has("--kitchen-benchmark"):
 		start = {"x": 21.5, "y": 0.05, "z": -8.0, "yaw": 180.0}
+	elif args.has("--boiler-benchmark"):
+		start = {"x": -4.2, "y": 0.05, "z": -10.4, "yaw": -28.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -802,10 +970,9 @@ func _set_collision_enabled(node: Node, enabled: bool) -> void:
 func _handle_interaction(target) -> void:
 	match target.kind:
 		&"doll":
-			journal_manager.record_whisper(target.interaction_id, target.display_name)
-			_show_subtitle('%s: "%s"' % [target.display_name, target.observation])
+			_handle_doll_interaction(target)
 		&"pedestal":
-			_show_subtitle(target.observation)
+			_handle_cradle_interaction(target)
 		&"door":
 			_handle_door(target)
 		&"puzzle":
@@ -835,6 +1002,64 @@ func _collect_evidence(target) -> void:
 		_show_subtitle("Recorded evidence: %s. %s" % [target.display_name, target.observation])
 	else:
 		_show_subtitle("%s is already recorded." % target.display_name)
+	_refresh_final_deduction_state()
+
+func _handle_doll_interaction(target) -> void:
+	var doll_id: StringName = target.interaction_id
+	journal_manager.record_whisper(doll_id, target.display_name)
+	if level_state.state == level_state.FINAL_DEDUCTION:
+		level_state.carry_final_doll(doll_id)
+		_show_subtitle("You carry %s toward the central cradle." % target.display_name)
+		return
+	var clue_count: int = journal_manager.get_identity_clue_count(doll_id, inventory_manager)
+	var dialogue: Dictionary = dialogue_data.get(String(doll_id), {})
+	var line_key := "initial" if clue_count == 0 else ("one_clue" if clue_count == 1 else "two_clues")
+	var line := String(dialogue.get(line_key, target.observation))
+	_show_subtitle('%s: "%s"' % [target.display_name, line])
+	if doll_id == &"nila":
+		return
+	if clue_count >= 2 and not level_state.is_doll_identified(doll_id):
+		_open_identity_assignment(target)
+
+func _open_identity_assignment(target) -> void:
+	var registered: Array = clue_data.get("registered_identity_order", [])
+	var expected_index := registered.find(String(target.interaction_id))
+	if expected_index < 0:
+		return
+	active_code_puzzle = {
+		"id": "assign_identity",
+		"title": "Assign this doll's identity",
+		"code": str(expected_index + 1),
+		"doll_id": target.interaction_id,
+		"observation": "Choose 1 Mira, 2 Leela, 3 Arun, 4 Dev, 5 Sana, or 6 Kabir."
+	}
+	code_mode = true
+	code_entry = ""
+	_set_player_input_locked(true)
+	code_panel.visible = true
+	_update_code_text()
+
+func _handle_cradle_interaction(target) -> void:
+	if level_state.state != level_state.FINAL_DEDUCTION:
+		_show_subtitle(target.observation)
+		return
+	var chosen: StringName = level_state.carried_final_doll_id
+	if chosen == &"":
+		_show_subtitle("The inscription is clear now. Choose the child who counted everyone but was counted by none.")
+		return
+	if chosen != &"nila":
+		smoke_elapsed_seconds = minf(smoke_budget_seconds, smoke_elapsed_seconds + 90.0)
+		level_state.return_carried_doll()
+		_update_pressure_presentation()
+		_show_subtitle("The memory rejects that name. The doll returns to its alcove as smoke surges through the hall.")
+		return
+	level_state.complete_final_choice()
+	completion_active = true
+	_update_pressure_presentation()
+	_set_player_input_locked(true)
+	code_panel.visible = true
+	code_label.text = "Nila\n\nYou write her name into the blank line. The fire holds still, and seven footsteps leave Ashdown House together.\n\nDeath brought them here. Being forgotten kept them here."
+	_show_subtitle("Nila has been counted. Ashdown House releases the children.")
 
 func _hide_collected_interactable(target) -> void:
 	target.visible = false
@@ -880,6 +1105,7 @@ func _handle_trigger(target) -> void:
 		if not level_state.has_flag(&"fire_started"):
 			level_state.start_fire()
 			_collect_evidence(target)
+			_save_checkpoint()
 			_show_subtitle(target.observation)
 		else:
 			_show_subtitle("The register is already in your journal.")
@@ -922,6 +1148,14 @@ func _handle_code_input(event: InputEvent) -> void:
 
 func _complete_active_code_puzzle() -> void:
 	match String(active_code_puzzle.get("id", "")):
+		"assign_identity":
+			var doll_id := StringName(active_code_puzzle.get("doll_id", &""))
+			if level_state.assign_registered_identity(doll_id, doll_id):
+				journal_manager.record_profile(doll_id, String(doll_id).capitalize())
+				_close_code_panel("The two records agree. This doll remembers the name %s." % String(doll_id).capitalize())
+				_refresh_final_deduction_state()
+			else:
+				_close_code_panel("The evidence contradicts that identity.")
 		"library_catalog":
 			level_state.complete_library_catalog()
 			_close_code_panel("The catalog drawers settle into Moon, Bird, Train. The librarian desk unlocks.")
@@ -945,6 +1179,7 @@ func _complete_active_code_puzzle() -> void:
 			_close_code_panel("The toy trunk opens. Mira's ribbon and Dev's train wheel are now reachable.")
 		"boiler_pressure":
 			level_state.complete_boiler_pressure()
+			_save_checkpoint()
 			_close_code_panel("Steam routes to the bathroom, then the service line shuts down. Boiler records are now reachable.")
 		_:
 			_close_code_panel("%s clicks open." % String(active_code_puzzle.get("title", "The puzzle")))
@@ -982,7 +1217,92 @@ func _close_journal() -> void:
 func _update_journal_text() -> void:
 	if journal_label == null:
 		return
-	journal_label.text = journal_manager.build_text(inventory_manager, level_state.flags)
+	journal_label.text = journal_manager.build_text(inventory_manager, level_state.flags, level_state.assigned_identities)
+
+func _refresh_final_deduction_state() -> void:
+	if journal_manager.has_all_identity_clues(inventory_manager):
+		level_state.set_flag(&"all_fourteen_clues_found", true)
+	var prerequisites_met: bool = (
+		level_state.has_flag(&"all_fourteen_clues_found")
+		and level_state.has_flag(&"six_registered_dolls_identified")
+		and level_state.has_flag(&"register_taken")
+		and level_state.has_flag(&"mirror_message_revealed")
+		and level_state.has_flag(&"seventh_handprint_inspected")
+	)
+	if prerequisites_met and not level_state.has_flag(&"nila_identity_deduced"):
+		level_state.begin_final_deduction()
+		_show_subtitle("The journal joins the evidence: Nila counted everyone, but Ashdown never counted Nila. Choose a doll and return to the cradle.")
+	_update_journal_text()
+
+func _pressure_is_paused() -> bool:
+	return code_mode or journal_panel.visible or (hud != null and hud.is_pause_visible())
+
+func _update_pressure_presentation() -> void:
+	var fraction := clampf(smoke_elapsed_seconds / smoke_budget_seconds, 0.0, 1.0)
+	if level_state != null and level_state.state == level_state.COMPLETE:
+		fraction = 0.0
+	var vignette := hud.get_node_or_null(^"SmokeVignette") as ColorRect if hud != null else null
+	if vignette != null and vignette.material is ShaderMaterial:
+		(vignette.material as ShaderMaterial).set_shader_parameter("intensity", fraction * 0.82)
+	var pressure_label := hud.get_node_or_null(^"PressureStatus") as Label if hud != null else null
+	var stage := mini(4, int(floor(fraction * 5.0)))
+	if pressure_label != null:
+		var descriptions := ["Air clear", "Ceiling haze", "Smoke thickening", "Stay low", "Air failing"]
+		pressure_label.text = descriptions[stage]
+		pressure_label.visible = level_state.has_flag(&"fire_started") and level_state.state != level_state.COMPLETE
+	if stage != last_pressure_stage:
+		last_pressure_stage = stage
+
+func _show_pressure_failure() -> void:
+	if pressure_failure_active or level_state.state == level_state.COMPLETE:
+		return
+	pressure_failure_active = true
+	level_state.set_state(level_state.FAILED)
+	_set_player_input_locked(true)
+	code_panel.visible = true
+	code_label.text = "The smoke closes in.\n\nR - Retry from latest checkpoint\nM - Restart the investigation"
+	_show_subtitle("Ashdown disappears behind the smoke.")
+
+func _save_checkpoint() -> void:
+	checkpoint_manager.save_checkpoint({
+		"level_state": level_state.get_snapshot(),
+		"inventory": inventory_manager.get_snapshot(),
+		"journal": journal_manager.get_snapshot(),
+		"player_position": player.global_position,
+		"smoke_elapsed_seconds": smoke_elapsed_seconds
+	})
+
+func _restore_latest_checkpoint() -> void:
+	if not checkpoint_manager.has_checkpoint():
+		get_tree().reload_current_scene()
+		return
+	var snapshot: Dictionary = checkpoint_manager.get_checkpoint()
+	level_state.restore_snapshot(snapshot.get("level_state", {}))
+	inventory_manager.restore_snapshot(snapshot.get("inventory", {}))
+	journal_manager.restore_snapshot(snapshot.get("journal", {}))
+	player.global_position = snapshot.get("player_position", player.global_position)
+	smoke_elapsed_seconds = float(snapshot.get("smoke_elapsed_seconds", 0.0))
+	pressure_failure_active = false
+	code_panel.visible = false
+	code_mode = false
+	_apply_inventory_collection_state()
+	_refresh_interactable_visibility()
+	_update_pressure_presentation()
+	_set_player_input_locked(false)
+	if player.has_method("set_mouse_captured"):
+		player.set_mouse_captured(true)
+	_show_subtitle("The house reforms at the latest checkpoint. Your evidence remains recorded.")
+
+func _apply_inventory_collection_state() -> void:
+	for id in interactables_by_id:
+		var area = interactables_by_id[id]
+		if area == null or not is_instance_valid(area):
+			continue
+		if inventory_manager.has_evidence(id) and area.kind in [&"item", &"clue", &"trigger"]:
+			_hide_collected_interactable(area)
+		elif area.has_meta("collected"):
+			area.remove_meta("collected")
+			area.add_to_group("ashdown_interactable")
 
 func _set_player_input_locked(value: bool) -> void:
 	if player != null:
@@ -1141,6 +1461,28 @@ func _capture_wet_service_phase6() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase6_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("WET_SERVICE_PHASE6_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_boiler_phase7() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "active"
+	level_state.start_fire()
+	level_state.set_flag(&"boiler_wheel_installed", true)
+	if args.has("--boiler-shutdown"):
+		view = "shutdown"
+		level_state.complete_boiler_pressure()
+		level_state.set_flag(&"records_cabinet_opened", true)
+	_refresh_interactable_visibility()
+	await get_tree().create_timer(0.9).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase7_boiler_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("BOILER_PHASE7_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:

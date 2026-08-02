@@ -8,10 +8,33 @@ var known_profiles: Dictionary = {}
 var heard_whispers: Dictionary = {}
 var discovered_clues: Dictionary = {}
 var ambient_observations: Dictionary = {}
+var identity_clues: Dictionary = {}
+var registered_identity_order: Array = []
 
 func configure_dolls(dolls: Array) -> void:
 	doll_roster = dolls.duplicate(true)
 	journal_changed.emit()
+
+func configure_identity_clues(clue_data: Dictionary) -> void:
+	identity_clues = clue_data.get("identity_clues", {}).duplicate(true)
+	registered_identity_order = clue_data.get("registered_identity_order", []).duplicate(true)
+	journal_changed.emit()
+
+func get_identity_clue_count(doll_id: StringName, inventory) -> int:
+	var count := 0
+	for clue_id in identity_clues.get(String(doll_id), []):
+		if inventory.has_evidence(StringName(clue_id)):
+			count += 1
+	return count
+
+func get_total_identity_clues_found(inventory) -> int:
+	var found := 0
+	for doll_id in identity_clues:
+		found += get_identity_clue_count(StringName(doll_id), inventory)
+	return found
+
+func has_all_identity_clues(inventory) -> bool:
+	return get_total_identity_clues_found(inventory) >= 14
 
 func record_profile(doll_id: StringName, display_name: String) -> void:
 	known_profiles[doll_id] = display_name
@@ -38,7 +61,7 @@ func record_observation(observation_id: StringName, title: String) -> void:
 	ambient_observations[observation_id] = title
 	journal_changed.emit()
 
-func build_text(inventory, flags: Dictionary) -> String:
+func build_text(inventory, flags: Dictionary, assignments: Dictionary = {}) -> String:
 	var lines: Array[String] = []
 	lines.append("Ashdown journal")
 	lines.append("Dolls heard: %d / 7" % heard_whispers.size())
@@ -46,8 +69,13 @@ func build_text(inventory, flags: Dictionary) -> String:
 	for doll in doll_roster:
 		var doll_data: Dictionary = doll
 		var id := StringName(doll_data["id"])
-		var status := "identified" if known_profiles.has(id) else ("heard" if heard_whispers.has(id) else "unknown")
+		var status := "identified" if assignments.has(id) or known_profiles.has(id) else ("heard" if heard_whispers.has(id) else "unknown")
 		lines.append("- %s: %s" % [String(doll_data["name"]), status])
+	lines.append("")
+	lines.append("Identity evidence: %d / 14" % get_total_identity_clues_found(inventory))
+	lines.append("Registered identities assigned: %d / 6" % assignments.size())
+	if bool(flags.get("nila_identity_deduced", false)):
+		lines.append("Final deduction: Nila counted everyone, but Ashdown never counted Nila.")
 	lines.append("")
 	lines.append("Clues found: %d" % discovered_clues.size())
 	for clue_id in discovered_clues.keys():

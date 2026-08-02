@@ -34,13 +34,21 @@ const REQUIRED_SAVE_FLAGS: Array[StringName] = [
 	&"wringer_operated",
 	&"dormitory_music_solved",
 	&"boiler_wheel_installed",
+	&"boiler_pressure_solved",
 	&"boiler_disabled",
 	&"mirror_message_revealed",
-	&"drain_shoe_retrieved"
+	&"drain_shoe_retrieved",
+	&"wringer_ledger_retrieved",
+	&"all_fourteen_clues_found",
+	&"six_registered_dolls_identified",
+	&"nila_identity_deduced",
+	&"final_doll_placed"
 ]
 
 var state: StringName = ARRIVAL
 var flags: Dictionary = {}
+var assigned_identities: Dictionary = {}
+var carried_final_doll_id: StringName = &""
 
 func set_state(next_state: StringName) -> void:
 	if state == next_state:
@@ -89,6 +97,36 @@ func complete_boiler_pressure() -> void:
 	set_flag(&"boiler_disabled", true)
 	set_state(BOILER_DISABLED)
 
+func assign_registered_identity(doll_id: StringName, identity_id: StringName) -> bool:
+	if doll_id == &"nila" or doll_id != identity_id:
+		return false
+	assigned_identities[doll_id] = identity_id
+	if assigned_identities.size() >= 6:
+		set_flag(&"six_registered_dolls_identified", true)
+	else:
+		flags_changed.emit()
+	return true
+
+func is_doll_identified(doll_id: StringName) -> bool:
+	return assigned_identities.has(doll_id)
+
+func begin_final_deduction() -> void:
+	set_flag(&"nila_identity_deduced", true)
+	set_state(FINAL_DEDUCTION)
+
+func carry_final_doll(doll_id: StringName) -> void:
+	carried_final_doll_id = doll_id
+	flags_changed.emit()
+
+func return_carried_doll() -> void:
+	carried_final_doll_id = &""
+	flags_changed.emit()
+
+func complete_final_choice() -> void:
+	set_flag(&"final_doll_placed", true)
+	carried_final_doll_id = &""
+	set_state(COMPLETE)
+
 func describe_door(display_name: String, state_text: String) -> String:
 	if state_text.begins_with("open") or state_text.begins_with("available"):
 		return "%s is open for this blockout route." % display_name
@@ -115,11 +153,15 @@ func describe_door(display_name: String, state_text: String) -> String:
 func get_snapshot() -> Dictionary:
 	return {
 		"state": state,
-		"flags": flags.duplicate(true)
+		"flags": flags.duplicate(true),
+		"assigned_identities": assigned_identities.duplicate(true),
+		"carried_final_doll_id": carried_final_doll_id
 	}
 
 func restore_snapshot(snapshot: Dictionary) -> void:
 	state = StringName(snapshot.get("state", ARRIVAL))
 	flags = snapshot.get("flags", {}).duplicate(true)
+	assigned_identities = snapshot.get("assigned_identities", {}).duplicate(true)
+	carried_final_doll_id = StringName(snapshot.get("carried_final_doll_id", &""))
 	state_changed.emit(state)
 	flags_changed.emit()

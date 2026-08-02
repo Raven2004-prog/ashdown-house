@@ -1,12 +1,15 @@
 {
   "source": "Ashdown House PDF",
   "identity_clues_target": 14,
-  "active_first_slice": [
-    "L22",
-    "L23",
-    "L24",
-    "L25",
-    "L26"
-  ],
+  "identity_clues": {
+    "mira": ["L25", "DR10"],
+    "leela": ["B09", "DR12"],
+    "arun": ["L22", "C20"],
+    "dev": ["R11", "DR11"],
+    "sana": ["K11", "B11"],
+    "kabir": ["L23", "C21"],
+    "nila": ["B14", "R14"]
+  },
+  "registered_identity_order": ["mira", "leela", "arun", "dev", "sana", "kabir"],
   "final_anchor_child": "nila"
 }
