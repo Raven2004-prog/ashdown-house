@@ -12,8 +12,9 @@ The newer Ashdown House PDF supersedes earlier Ash Dormitory, Burning Nursery, a
 
 ## Stable Baseline
 
-- Keep the internal viewport at 640 x 360.
-- Preserve fullscreen, viewport stretch, aspect keep, integer scaling, and nearest-style filtering.
+- Use a 1280 x 720 root viewport with native-resolution CanvasItem UI.
+- Render the 3D world independently with nearest scaling. Balanced is 0.5, Performance is 0.3333, and Native is 1.0.
+- Preserve fullscreen, 16:9 presentation, and nearest-style filtering for pixel-textured assets.
 - Preserve `CharacterBody3D`, `SpringArm3D`, camera-centred interaction, nearby line-of-sight fallback, and UI input locking.
 - Extend the existing InventoryManager, JournalManager, LevelStateController, InteractionManager, and CheckpointManager rather than consolidating gameplay back into one script.
 - Keep progression evidence separate from optional environmental observations.
@@ -27,12 +28,18 @@ The complete house blockout is serialized in `res://scenes/levels/ashdown/Ashdow
 
 The editor-authored conversion is complete through Phase 5. The player's visible placeholder is lowered independently of its collision body, and the Library uses a 4.2 m visual shell with ceiling fixtures and lights aligned to the raised ceiling. Permanent geometry must remain editor-authored; runtime scripts are controllers and validators only.
 
+## Current Production Direction
+
+Ashdown is moving toward an HD-2D-inspired pixel-horror presentation: authored low-poly 3D rooms, pixel-controlled materials, native-resolution interface text, modern lighting, and restrained effects. This is an original visual language and must not copy proprietary assets or compositions.
+
+Blender source files live in `assets/source/blender`; approved exports live under `assets/hd2d`. Follow `docs/ASSET_PIPELINE.md` and `docs/ART_BIBLE.md` for naming, scale, collision, texture, and lighting rules.
+
 ## Next Work
 
-1. Manually review the final Library camera framing and D03-D05 traversal in the editor build.
-2. Correct individual prop placement directly in `LibraryBenchmark.tscn` when playtesting identifies a specific obstruction.
-3. Author the next detailed room using the Library's scene structure and persistent-ID anchors.
-4. Keep final character art, sound, fire VFX, and release lighting for their dedicated passes.
+1. Establish sharp native-resolution UI and independent nearest-scaled 3D rendering.
+2. Replace the Library prototype kit with the final benchmark asset set.
+3. Propagate the accepted shared kit room by room without changing persistent gameplay IDs.
+4. Build player, dolls, sound, fire VFX, and release lighting in their dedicated phases.
 
 ## Verification
 

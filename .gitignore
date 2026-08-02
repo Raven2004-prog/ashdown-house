@@ -19,6 +19,14 @@ art/ui/
 work/
 *.avi
 *.zip
+*.blend1
+*.blend2
+*.blend@
+
+# Art-pipeline scratch output
+assets/source/blender/_scratch/
+assets/hd2d/_generated/
+captures/
 
 # Exported builds and local templates
 builds/
