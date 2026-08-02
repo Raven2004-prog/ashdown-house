@@ -58,6 +58,8 @@ func _ready() -> void:
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
 		call_deferred("_capture_library_phase2")
+	elif OS.get_cmdline_user_args().has("--capture-arrival-phase3"):
+		call_deferred("_capture_arrival_phase3")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -152,6 +154,44 @@ func _run_library_benchmark_self_test() -> void:
 			library_scene_found = String(room.get("content_scene", "")) == "res://scenes/levels/ashdown/rooms/LibraryBenchmark.tscn"
 	if not library_scene_found:
 		failures.append("Library content_scene is not configured")
+	var vestibule_content := content_root.get_node_or_null("VestibuleContent")
+	var main_hall_content := content_root.get_node_or_null("MainHallContent")
+	for content_pair in [
+		["Vestibule", vestibule_content],
+		["Main Hall", main_hall_content]
+	]:
+		var content_name: String = content_pair[0]
+		var content: Node = content_pair[1]
+		if content == null:
+			failures.append("authored %s content was not instantiated" % content_name)
+			continue
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Lighting", ^"Atmosphere"]:
+			if content.get_node_or_null(branch) == null:
+				failures.append("missing authored %s branch %s" % [content_name, branch])
+	var arrival_anchors: Array[StringName] = [&"V03", &"V08", &"V09", &"H01", &"H04", &"H09", &"H10"]
+	for id in arrival_anchors:
+		if not authored_anchors_by_id.has(id):
+			failures.append("missing authored arrival anchor %s" % id)
+		elif interactables_by_id.has(id) and interactables_by_id[id].authored_visual == null:
+			failures.append("arrival anchor %s did not bind its visible prop" % id)
+	var register = interactables_by_id.get(&"H04")
+	if register == null:
+		failures.append("house register interactable is missing")
+	else:
+		_handle_trigger(register)
+		if not level_state.has_flag(&"fire_started"):
+			failures.append("taking the register did not start the fire phase")
+		if register.visible or register.is_in_group("ashdown_interactable"):
+			failures.append("taken register remained visible or targetable")
+		if register.authored_visual != null and register.authored_visual.visible:
+			failures.append("taken register prop remained visible")
+		if main_hall_content != null:
+			var smoke := main_hall_content.get_node_or_null(^"Atmosphere/SmokeParticles") as GPUParticles3D
+			var glow := main_hall_content.get_node_or_null(^"Atmosphere/FireGlow") as OmniLight3D
+			if smoke == null or not smoke.visible or not smoke.emitting:
+				failures.append("register trigger did not activate Main Hall smoke")
+			if glow == null or not glow.visible:
+				failures.append("register trigger did not activate Main Hall fire glow")
 	if not is_equal_approx(float(player.get("normal_spring_length")), 2.65):
 		failures.append("camera spring length is not 2.65 m")
 	if not is_equal_approx(float(player.get("camera_pivot_height")), 1.48):
@@ -312,6 +352,10 @@ func _spawn_player() -> void:
 		start = {"x": -17.0, "y": 0.05, "z": -4.0, "yaw": 101.0}
 	elif args.has("--library-benchmark-shelf"):
 		start = {"x": -13.4, "y": 0.05, "z": 7.4, "yaw": 105.0}
+	elif args.has("--arrival-vestibule"):
+		start = {"x": 0.0, "y": 0.05, "z": 14.7, "yaw": 180.0}
+	elif args.has("--arrival-main-hall"):
+		start = {"x": 0.0, "y": 0.05, "z": 6.7, "yaw": 0.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -680,6 +724,26 @@ func _capture_library_phase2() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase2_library_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("LIBRARY_PHASE2_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_arrival_phase3() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "vestibule"
+	if args.has("--arrival-main-hall"):
+		view = "main_hall"
+	if args.has("--arrival-fire"):
+		view += "_fire"
+		level_state.start_fire()
+		await get_tree().create_timer(1.2).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase3_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("ARRIVAL_PHASE3_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:

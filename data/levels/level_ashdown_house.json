@@ -7,8 +7,8 @@
   "coordinate_system": "+Z north, -Z south, +X east, -X west, +Y up",
   "player_start": { "x": 0.0, "y": 0.05, "z": 14.5, "yaw": 180.0 },
   "rooms": [
-    { "id": "vestibule", "name": "Vestibule", "x_min": -5.0, "x_max": 5.0, "z_min": 9.0, "z_max": 17.0, "floor_y": 0.0, "color": "3f4542" },
-    { "id": "main_hall", "name": "Main Hall", "x_min": -8.0, "x_max": 8.0, "z_min": -6.0, "z_max": 9.0, "floor_y": 0.0, "color": "464b50" },
+    { "id": "vestibule", "name": "Vestibule", "x_min": -5.0, "x_max": 5.0, "z_min": 9.0, "z_max": 17.0, "floor_y": 0.0, "color": "3f4542", "content_scene": "res://scenes/levels/ashdown/rooms/VestibuleContent.tscn" },
+    { "id": "main_hall", "name": "Main Hall", "x_min": -8.0, "x_max": 8.0, "z_min": -6.0, "z_max": 9.0, "floor_y": 0.0, "color": "464b50", "content_scene": "res://scenes/levels/ashdown/rooms/MainHallContent.tscn" },
     { "id": "library", "name": "Library", "x_min": -25.0, "x_max": -9.0, "z_min": -5.0, "z_max": 9.0, "floor_y": 0.0, "color": "4a3f35", "content_scene": "res://scenes/levels/ashdown/rooms/LibraryBenchmark.tscn" },
     { "id": "classroom", "name": "Classroom", "x_min": 9.0, "x_max": 25.0, "z_min": -5.0, "z_max": 9.0, "floor_y": 0.0, "color": "4b4a3d" },
     { "id": "dormitory", "name": "Dormitory", "x_min": -25.0, "x_max": -9.0, "z_min": -17.0, "z_max": -6.0, "floor_y": 0.0, "color": "50413b" },
