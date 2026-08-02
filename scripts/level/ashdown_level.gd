@@ -18,6 +18,7 @@ var code_mode := false
 var active_code_puzzle: Dictionary = {}
 var interactables_by_id: Dictionary = {}
 var authored_anchors_by_id: Dictionary = {}
+var authored_index_errors: Array[String] = []
 var debug_labels_visible := false
 
 var inventory_manager
@@ -54,6 +55,7 @@ func _ready() -> void:
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
+	failures.append_array(_collect_authored_validation_errors())
 	var required_level_nodes: Array[NodePath] = [
 		^"HouseBlockout/BlockoutGeometry", ^"AuthoredRoomContent",
 		^"HouseBlockout/Interactables", ^"HouseBlockout/Labels",
@@ -217,12 +219,28 @@ func _build_blockout() -> void:
 
 func _index_authored_interactables() -> void:
 	interactables_by_id.clear()
+	authored_index_errors.clear()
 	for node in get_tree().get_nodes_in_group("ashdown_interactable"):
 		if node == null or not is_instance_valid(node) or not interactable_root.is_ancestor_of(node):
 			continue
 		var id := StringName(node.get("interaction_id"))
-		if id != &"":
+		if id == &"":
+			authored_index_errors.append("authored interactable %s has no persistent ID" % node.get_path())
+		elif interactables_by_id.has(id):
+			authored_index_errors.append("duplicate authored interactable ID %s" % id)
+		else:
 			interactables_by_id[id] = node
+
+func _collect_authored_validation_errors() -> Array[String]:
+	var errors := authored_index_errors.duplicate()
+	for id in interactables_by_id:
+		var area: Node = interactables_by_id[id]
+		if area.find_children("*", "CollisionShape3D", true, false).is_empty():
+			errors.append("authored interactable %s has no collision shape" % id)
+		for key in [&"blocker_path", &"label_path"]:
+			if area.has_meta(key) and _resolve_metadata_node(area, key) == null:
+				errors.append("authored interactable %s has unresolved %s" % [id, key])
+	return errors
 
 func _spawn_player() -> void:
 	var start: Dictionary = level_data.get("player_start", {"x": 0.0, "y": 0.05, "z": 12.0})
@@ -311,116 +329,6 @@ func _create_code_panel() -> void:
 	code_label.add_theme_color_override("font_color", Color(0.94, 0.88, 0.72))
 	code_panel.add_child(code_label)
 
-func _add_room(room: Dictionary) -> void:
-	var x_min := float(room["x_min"])
-	var x_max := float(room["x_max"])
-	var z_min := float(room["z_min"])
-	var z_max := float(room["z_max"])
-	var floor_y := float(room["floor_y"])
-	var center := Vector3((x_min + x_max) * 0.5, floor_y - 0.05, (z_min + z_max) * 0.5)
-	var size := Vector3(x_max - x_min, 0.10, z_max - z_min)
-	_add_box(geometry_root, "%sFloor" % String(room["id"]), center, size, _color_from_hex(String(room["color"])), true)
-	_add_label3d(String(room["name"]), Vector3(center.x, floor_y + 0.08, center.z), Color(0.86, 0.82, 0.66))
-
-func _add_wall_network() -> void:
-	for line_variant in level_data.get("wall_lines", []):
-		var line: Dictionary = line_variant
-		var axis := String(line.get("axis", "z"))
-		var value := float(line.get("value", 0.0))
-		var start := float(line.get("min", 0.0))
-		var finish := float(line.get("max", 0.0))
-		var gaps: Array = line.get("gaps", [])
-		if axis == "x":
-			_add_wall_x(value, start, finish, 0.0, gaps)
-		else:
-			_add_wall_z(value, start, finish, 0.0, gaps)
-
-func _add_wall_x(x: float, z_min: float, z_max: float, floor_y: float, gaps: Array) -> void:
-	var cursor := z_min
-	var sorted_gaps := gaps.duplicate(true)
-	sorted_gaps.sort_custom(func(a, b): return float(a["center"]) < float(b["center"]))
-	for gap_variant in sorted_gaps:
-		var gap: Dictionary = gap_variant
-		var width := maxf(float(gap["width"]), BLOCKOUT_DOOR_GAP_WIDTH)
-		var start := float(gap["center"]) - width * 0.5
-		var finish := float(gap["center"]) + width * 0.5
-		_add_wall_x_segment(x, cursor, start, floor_y)
-		cursor = finish
-	_add_wall_x_segment(x, cursor, z_max, floor_y)
-
-func _add_wall_z(z: float, x_min: float, x_max: float, floor_y: float, gaps: Array) -> void:
-	var cursor := x_min
-	var sorted_gaps := gaps.duplicate(true)
-	sorted_gaps.sort_custom(func(a, b): return float(a["center"]) < float(b["center"]))
-	for gap_variant in sorted_gaps:
-		var gap: Dictionary = gap_variant
-		var width := maxf(float(gap["width"]), BLOCKOUT_DOOR_GAP_WIDTH)
-		var start := float(gap["center"]) - width * 0.5
-		var finish := float(gap["center"]) + width * 0.5
-		_add_wall_z_segment(z, cursor, start, floor_y)
-		cursor = finish
-	_add_wall_z_segment(z, cursor, x_max, floor_y)
-
-func _add_wall_x_segment(x: float, z_min: float, z_max: float, floor_y: float) -> void:
-	if z_max - z_min <= 0.05:
-		return
-	var center := Vector3(x, floor_y + WALL_HEIGHT * 0.5, (z_min + z_max) * 0.5)
-	var size := Vector3(WALL_THICKNESS, WALL_HEIGHT, z_max - z_min)
-	_add_box(geometry_root, "WallX", center, size, Color(0.15, 0.13, 0.12), true)
-
-func _add_wall_z_segment(z: float, x_min: float, x_max: float, floor_y: float) -> void:
-	if x_max - x_min <= 0.05:
-		return
-	var center := Vector3((x_min + x_max) * 0.5, floor_y + WALL_HEIGHT * 0.5, z)
-	var size := Vector3(x_max - x_min, WALL_HEIGHT, WALL_THICKNESS)
-	_add_box(geometry_root, "WallZ", center, size, Color(0.15, 0.13, 0.12), true)
-
-func _add_door(door: Dictionary) -> void:
-	var pos := Vector3(float(door["x"]), float(door["y"]) + 1.15, float(door["z"]))
-	var state := String(door["state"])
-	var yaw := float(door.get("yaw", 0.0))
-	var needs_blocker := _door_needs_blocker(state)
-	var blocker: Node3D = null
-	if needs_blocker:
-		var horizontal := int(round(yaw)) % 180 == 0
-		var size := Vector3(1.35, 2.2, 0.30) if horizontal else Vector3(0.30, 2.2, 1.35)
-		blocker = _add_box(geometry_root, "%sBlocker" % String(door["id"]), pos, size, Color(0.22, 0.10, 0.08), true)
-	var area = _add_interactable(StringName(door["id"]), &"door", String(door["name"]), "Inspect door", pos, 0.95, Color(0.58, 0.40, 0.24))
-	area.set_meta("debug_marker", true)
-	var door_marker := area.get_node_or_null("Marker") as Node3D
-	if door_marker != null:
-		door_marker.visible = debug_labels_visible
-	area.set_meta("state", state)
-	area.rotation_degrees.y = yaw
-	if blocker != null:
-		area.set_meta("blocker_path", blocker.get_path())
-		_apply_door_state(area)
-
-func _door_needs_blocker(state: String) -> bool:
-	return not state.begins_with("open") and not state.begins_with("available")
-
-func _add_door_floor_bridges() -> void:
-	for door_variant in level_data.get("doors", []):
-		var door: Dictionary = door_variant
-		var yaw := int(round(float(door.get("yaw", 0.0)))) % 180
-		var pos := Vector3(float(door["x"]), -0.045, float(door["z"]))
-		var size := Vector3(1.8, 0.08, 1.05) if yaw == 0 else Vector3(1.05, 0.08, 1.8)
-		_add_box(geometry_root, "%sFloorBridge" % String(door["id"]), pos, size, Color(0.39, 0.42, 0.43), true)
-
-func _add_room_blockers() -> void:
-	_add_box(geometry_root, "VestibuleReceptionTable", Vector3(-2.9, 0.42, 11.3), Vector3(1.8, 0.84, 0.75), Color(0.34, 0.24, 0.17), true)
-	_add_box(geometry_root, "MainHallWestConsole", Vector3(-6.25, 0.42, 7.05), Vector3(0.75, 0.84, 2.0), Color(0.34, 0.24, 0.17), true)
-	_add_box(geometry_root, "MainHallEastConsole", Vector3(6.25, 0.42, 7.05), Vector3(0.75, 0.84, 2.0), Color(0.34, 0.24, 0.17), true)
-	_add_box(geometry_root, "MainHallWestBench", Vector3(-5.7, 0.32, -4.65), Vector3(0.70, 0.64, 2.2), Color(0.30, 0.22, 0.16), true)
-	_add_box(geometry_root, "MainHallEastBench", Vector3(5.7, 0.32, -4.65), Vector3(0.70, 0.64, 2.2), Color(0.30, 0.22, 0.16), true)
-	_add_box(geometry_root, "ClassroomTeacherDesk", Vector3(21.7, 0.42, 6.15), Vector3(2.1, 0.84, 1.1), Color(0.35, 0.25, 0.16), true)
-	_add_box(geometry_root, "ClassroomDesks", Vector3(17.0, 0.36, 1.55), Vector3(9.6, 0.72, 4.6), Color(0.31, 0.25, 0.18), true)
-	_add_box(geometry_root, "DormitoryBunksWest", Vector3(-22.8, 0.65, -11.0), Vector3(1.2, 1.3, 5.4), Color(0.31, 0.24, 0.20), true)
-	_add_box(geometry_root, "DormitoryBunksSouth", Vector3(-17.5, 0.65, -16.0), Vector3(5.0, 1.3, 1.2), Color(0.31, 0.24, 0.20), true)
-	_add_box(geometry_root, "Boiler", Vector3(0.0, 1.25, -14.7), Vector3(2.4, 2.5, 1.8), Color(0.28, 0.10, 0.07), true)
-	_add_box(geometry_root, "BathroomStalls", Vector3(11.9, 0.85, -15.5), Vector3(4.0, 1.7, 1.6), Color(0.31, 0.36, 0.36), true)
-	_add_box(geometry_root, "KitchenPrepTable", Vector3(21.5, 0.42, -11.2), Vector3(3.5, 0.84, 1.2), Color(0.34, 0.27, 0.18), true)
-
 func _add_room_content_scenes() -> void:
 	for room_variant in level_data.get("rooms", []):
 		var room: Dictionary = room_variant
@@ -476,109 +384,6 @@ func _bind_authored_interactable(area, id: StringName) -> void:
 		var label := _resolve_metadata_node(area, &"label_path") as Label3D
 		if label != null:
 			label.position = anchor.global_position + Vector3(0, area.interaction_radius + 0.28, 0)
-
-func _add_pedestal() -> void:
-	var pedestal := _add_box(geometry_root, "MemorialPedestal", Vector3(0, 0.25, 0), Vector3(1.6, 0.5, 1.6), Color(0.33, 0.31, 0.38), true)
-	var top := MeshInstance3D.new()
-	var cylinder := CylinderMesh.new()
-	cylinder.top_radius = 1.05
-	cylinder.bottom_radius = 1.05
-	cylinder.height = 0.18
-	top.mesh = cylinder
-	top.position = Vector3(0, 0.62, 0)
-	top.material_override = _make_material(Color(0.45, 0.42, 0.52), false)
-	pedestal.add_child(top)
-	var area = _add_interactable(&"pedestal", &"pedestal", "Memorial pedestal", "Inspect pedestal", Vector3(0, 0.95, 0), 1.15, Color(0.55, 0.48, 0.68))
-	area.observation = "Seven shallow hand recesses surround a dark center."
-
-func _add_doll(doll: Dictionary) -> void:
-	var id := StringName(doll["id"])
-	var pos := Vector3(float(doll["x"]), float(doll["y"]), float(doll["z"]))
-	var area = _add_interactable(id, &"doll", String(doll["name"]), "Listen", pos, 0.65, _doll_color(String(id)))
-	area.observation = String(doll["initial_line"])
-	area.rotation_degrees.y = float(doll["rotation_y"])
-	area.set_meta("age", int(doll["age"]))
-
-func _add_placement(placement: Dictionary) -> void:
-	var id := StringName(placement["id"])
-	var kind := StringName(placement.get("kind", "clue"))
-	var pos := Vector3(float(placement["x"]), float(placement["y"]), float(placement["z"]))
-	var area = _add_interactable(
-		id,
-		kind,
-		String(placement.get("title", id)),
-		String(placement.get("prompt", "Inspect")),
-		pos,
-		_radius_for_kind(kind),
-		_color_for_kind(kind)
-	)
-	area.observation = String(placement.get("observation", ""))
-	if placement.has("requirements"):
-		area.set_meta("requirements", placement["requirements"])
-	if placement.has("flag"):
-		area.set_meta("flag", StringName(placement["flag"]))
-	if placement.has("puzzle_id"):
-		area.set_meta("puzzle_id", String(placement["puzzle_id"]))
-	if placement.has("code"):
-		area.set_meta("code", String(placement["code"]))
-	if placement.has("category"):
-		area.set_meta("category", String(placement["category"]))
-	_bind_authored_interactable(area, id)
-
-func _add_interactable(id: StringName, kind: StringName, display_name: String, prompt_text: String, pos: Vector3, radius: float, color: Color):
-	var area = INTERACTABLE_SCRIPT.new()
-	area.name = String(id)
-	area.interaction_id = id
-	area.kind = kind
-	area.display_name = display_name
-	area.prompt = prompt_text
-	area.position = pos
-	area.interaction_radius = radius
-	interactable_root.add_child(area)
-	var mesh := MeshInstance3D.new()
-	mesh.name = "Marker"
-	var sphere := SphereMesh.new()
-	sphere.radius = radius * 0.32
-	sphere.height = radius * 0.64
-	mesh.mesh = sphere
-	mesh.material_override = _make_material(color, false)
-	area.add_child(mesh)
-	var label := _add_label3d(display_name, pos + Vector3(0, radius + 0.28, 0), Color(0.95, 0.92, 0.78))
-	area.set_meta("label_path", label.get_path())
-	interactables_by_id[id] = area
-	return area
-
-func _radius_for_kind(kind: StringName) -> float:
-	match kind:
-		&"door":
-			return 0.95
-		&"doll":
-			return 0.65
-		&"pedestal":
-			return 1.10
-		&"puzzle", &"container", &"trigger":
-			return 0.75
-		_:
-			return 0.55
-
-func _color_for_kind(kind: StringName) -> Color:
-	match kind:
-		&"door":
-			return Color(0.58, 0.40, 0.24)
-		&"doll":
-			return Color(0.50, 0.50, 0.50)
-		&"pedestal":
-			return Color(0.55, 0.48, 0.68)
-		&"puzzle":
-			return Color(0.64, 0.55, 0.30)
-		&"container":
-			return Color(0.50, 0.34, 0.18)
-		&"trigger":
-			return Color(0.70, 0.64, 0.42)
-		&"item":
-			return Color(0.34, 0.55, 0.75)
-		_:
-			return Color(0.62, 0.58, 0.42)
 
 func _refresh_interactable_visibility() -> void:
 	if content_root != null:
@@ -848,63 +653,3 @@ func _toggle_debug_labels() -> void:
 				marker.visible = debug_labels_visible
 	_refresh_interactable_visibility()
 	_show_subtitle("Debug labels on." if debug_labels_visible else "Debug labels off.")
-
-func _add_box(parent: Node, name: String, pos: Vector3, size: Vector3, color: Color, collision: bool) -> Node3D:
-	var node: Node3D = StaticBody3D.new() if collision else Node3D.new()
-	node.name = name
-	node.position = pos
-	parent.add_child(node)
-	var mesh_instance := MeshInstance3D.new()
-	var mesh := BoxMesh.new()
-	mesh.size = size
-	mesh_instance.mesh = mesh
-	mesh_instance.material_override = _make_material(color, false)
-	node.add_child(mesh_instance)
-	if collision:
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = size
-		shape.shape = box
-		node.add_child(shape)
-	return node
-
-func _add_label3d(text: String, pos: Vector3, color: Color) -> Label3D:
-	var label := Label3D.new()
-	label.text = text
-	label.position = pos
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.modulate = color
-	label.font_size = 24
-	label.outline_size = 6
-	label.outline_modulate = Color(0.02, 0.018, 0.015)
-	marker_root.add_child(label)
-	return label
-
-func _make_material(color: Color, unshaded: bool) -> StandardMaterial3D:
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = color
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if unshaded else BaseMaterial3D.SHADING_MODE_PER_PIXEL
-	return mat
-
-func _color_from_hex(value: String) -> Color:
-	return Color.html("#%s" % value)
-
-func _doll_color(id: String) -> Color:
-	match id:
-		"mira":
-			return Color(0.66, 0.22, 0.25)
-		"leela":
-			return Color(0.45, 0.35, 0.62)
-		"arun":
-			return Color(0.14, 0.22, 0.46)
-		"dev":
-			return Color(0.30, 0.28, 0.24)
-		"sana":
-			return Color(0.28, 0.48, 0.48)
-		"kabir":
-			return Color(0.25, 0.34, 0.70)
-		"nila":
-			return Color(0.82, 0.78, 0.58)
-		_:
-			return Color(0.50, 0.50, 0.50)
