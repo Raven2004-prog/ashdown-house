@@ -18,6 +18,9 @@ const REQUIRED_SAVE_FLAGS: Array[StringName] = [
 	&"library_catalog_solved",
 	&"library_bookcase_open",
 	&"classroom_unlocked",
+	&"classroom_fuses_solved",
+	&"projector_revealed",
+	&"classroom_seating_solved",
 	&"librarian_desk_opened",
 	&"dormitory_unlocked",
 	&"bathroom_unlocked",
@@ -56,6 +59,12 @@ func complete_library_catalog() -> void:
 func complete_library_code() -> void:
 	set_flag(&"library_shelf_open", true)
 	set_flag(&"library_bookcase_open", true)
+
+func complete_classroom_fuses() -> void:
+	set_flag(&"classroom_fuses_solved", true)
+
+func complete_classroom_seating() -> void:
+	set_flag(&"classroom_seating_solved", true)
 
 func complete_dormitory_music() -> void:
 	set_flag(&"dormitory_music_solved", true)

@@ -54,12 +54,16 @@ func _ready() -> void:
 	_show_subtitle("Ashdown House is quiet. Find the register in the Main Hall.")
 	if OS.get_cmdline_user_args().has("--library-benchmark-self-test"):
 		call_deferred("_run_library_benchmark_self_test")
+	elif OS.get_cmdline_user_args().has("--classroom-slice-self-test"):
+		call_deferred("_run_classroom_slice_self_test")
 	elif OS.get_cmdline_user_args().has("--capture-hd2d-ui"):
 		call_deferred("_capture_hd2d_ui")
 	elif OS.get_cmdline_user_args().has("--capture-library-phase2"):
 		call_deferred("_capture_library_phase2")
 	elif OS.get_cmdline_user_args().has("--capture-arrival-phase3"):
 		call_deferred("_capture_arrival_phase3")
+	elif OS.get_cmdline_user_args().has("--capture-classroom-phase4"):
+		call_deferred("_capture_classroom_phase4")
 
 func _run_library_benchmark_self_test() -> void:
 	var failures: Array[String] = []
@@ -233,6 +237,84 @@ func _run_library_benchmark_self_test() -> void:
 		print("LIBRARY_BENCHMARK_SELF_TEST: FAIL (%d)" % failures.size())
 		get_tree().quit(1)
 
+func _run_classroom_slice_self_test() -> void:
+	var failures: Array[String] = []
+	failures.append_array(_collect_authored_validation_errors())
+	var classroom := content_root.get_node_or_null("ClassroomContent")
+	if classroom == null:
+		failures.append("authored Classroom content was not instantiated")
+	else:
+		for branch in [^"Architecture", ^"Furniture", ^"InteractionAnchors", ^"Interactables", ^"Lighting", ^"Atmosphere"]:
+			if classroom.get_node_or_null(branch) == null:
+				failures.append("missing authored Classroom branch %s" % branch)
+	var required: Array[StringName] = [
+		&"C01", &"C04", &"C06", &"C07", &"C08", &"C09", &"C16",
+		&"C18", &"C19", &"C20", &"C21", &"C22", &"C23", &"C24",
+		&"C25", &"C26", &"C29"
+	]
+	for id in required:
+		if not authored_anchors_by_id.has(id):
+			failures.append("missing Classroom anchor %s" % id)
+		if not interactables_by_id.has(id):
+			failures.append("missing Classroom interactable %s" % id)
+		elif interactables_by_id[id].authored_visual == null:
+			failures.append("Classroom interactable %s has no bound prop" % id)
+	level_state.set_flag(&"classroom_unlocked", true)
+	_refresh_interactable_visibility()
+	for fuse_id in [&"C07", &"C08", &"C09"]:
+		var fuse = interactables_by_id.get(fuse_id)
+		if fuse == null or not fuse.visible:
+			failures.append("Classroom fuse %s did not become collectible" % fuse_id)
+		else:
+			_collect_evidence(fuse)
+	var fuse_panel = interactables_by_id.get(&"C06")
+	if fuse_panel == null or not fuse_panel.visible:
+		failures.append("fuse panel did not unlock after all three fuses")
+	level_state.complete_classroom_fuses()
+	_refresh_interactable_visibility()
+	var projector = interactables_by_id.get(&"C04")
+	if projector == null or not projector.visible:
+		failures.append("projector did not become usable after fuse solution")
+	else:
+		_handle_container(projector)
+	if not level_state.has_flag(&"projector_revealed"):
+		failures.append("projector interaction did not reveal the projection")
+	if classroom != null:
+		var projector_light := classroom.get_node_or_null(^"Lighting/ProjectorLight") as SpotLight3D
+		var stars := classroom.get_node_or_null(^"Furniture/C05_ProjectorScreen/ProjectionStars") as Node3D
+		if projector_light == null or not projector_light.visible:
+			failures.append("projector light did not activate")
+		if stars == null or not stars.visible:
+			failures.append("projected star evidence did not appear")
+	var cards = interactables_by_id.get(&"C19")
+	if cards == null or not cards.visible:
+		failures.append("name cards were not available")
+	else:
+		_collect_evidence(cards)
+	level_state.complete_classroom_seating()
+	_refresh_interactable_visibility()
+	for reward_id in [&"C22", &"C23", &"C24", &"C25"]:
+		var reward = interactables_by_id.get(reward_id)
+		if reward == null or not reward.visible:
+			failures.append("teacher drawer reward %s did not unlock" % reward_id)
+	var bathroom_key = interactables_by_id.get(&"C23")
+	var dormitory_code = interactables_by_id.get(&"C25")
+	var extinguisher = interactables_by_id.get(&"C29")
+	if bathroom_key != null: _collect_evidence(bathroom_key)
+	if dormitory_code != null: _collect_evidence(dormitory_code)
+	if extinguisher != null: _collect_evidence(extinguisher)
+	for flag in [&"bathroom_unlocked", &"dormitory_unlocked", &"kitchen_fire_extinguished"]:
+		if not level_state.has_flag(flag):
+			failures.append("Classroom progression did not set %s" % flag)
+	if failures.is_empty():
+		print("CLASSROOM_SLICE_SELF_TEST: PASS")
+		get_tree().quit(0)
+	else:
+		for failure in failures:
+			push_error("Classroom slice self-test: %s" % failure)
+		print("CLASSROOM_SLICE_SELF_TEST: FAIL (%d)" % failures.size())
+		get_tree().quit(1)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if code_mode:
 		_handle_code_input(event)
@@ -310,8 +392,9 @@ func _create_environment() -> void:
 	pass
 
 func _build_blockout() -> void:
-	_index_authored_interactables()
 	_add_room_content_scenes()
+	_index_authored_interactables()
+	_apply_level_data_to_interactables()
 	for id in interactables_by_id:
 		_bind_authored_interactable(interactables_by_id[id], id)
 	_refresh_interactable_visibility()
@@ -320,7 +403,7 @@ func _index_authored_interactables() -> void:
 	interactables_by_id.clear()
 	authored_index_errors.clear()
 	for node in get_tree().get_nodes_in_group("ashdown_interactable"):
-		if node == null or not is_instance_valid(node) or not interactable_root.is_ancestor_of(node):
+		if node == null or not is_instance_valid(node):
 			continue
 		var id := StringName(node.get("interaction_id"))
 		if id == &"":
@@ -329,6 +412,29 @@ func _index_authored_interactables() -> void:
 			authored_index_errors.append("duplicate authored interactable ID %s" % id)
 		else:
 			interactables_by_id[id] = node
+
+func _apply_level_data_to_interactables() -> void:
+	for collection_name in ["doors", "dolls", "placements"]:
+		for entry_variant in level_data.get(collection_name, []):
+			var entry: Dictionary = entry_variant
+			var id := StringName(entry.get("id", ""))
+			if id == &"" or not interactables_by_id.has(id):
+				continue
+			var area = interactables_by_id[id]
+			if collection_name == "doors":
+				area.kind = &"door"
+			elif collection_name == "dolls":
+				area.kind = &"doll"
+			elif entry.has("kind"):
+				area.kind = StringName(entry["kind"])
+			area.display_name = String(entry.get("title", entry.get("name", area.display_name)))
+			area.prompt = String(entry.get("prompt", area.prompt))
+			area.observation = String(entry.get("observation", entry.get("initial_line", area.observation)))
+			for key in [&"requirements", &"flag", &"puzzle_id", &"code", &"state"]:
+				if entry.has(String(key)):
+					area.set_meta(key, entry[String(key)])
+				elif area.has_meta(key):
+					area.remove_meta(key)
 
 func _collect_authored_validation_errors() -> Array[String]:
 	var errors := authored_index_errors.duplicate()
@@ -356,6 +462,8 @@ func _spawn_player() -> void:
 		start = {"x": 0.0, "y": 0.05, "z": 14.7, "yaw": 180.0}
 	elif args.has("--arrival-main-hall"):
 		start = {"x": 0.0, "y": 0.05, "z": 6.7, "yaw": 0.0}
+	elif args.has("--classroom-benchmark"):
+		start = {"x": 12.2, "y": 0.05, "z": 2.0, "yaw": 270.0}
 	player.position = Vector3(float(start["x"]), float(start["y"]), float(start["z"]))
 	if player.has_method("set_start_yaw_degrees"):
 		player.set_start_yaw_degrees(float(start.get("yaw", 180.0)))
@@ -401,7 +509,7 @@ func _bind_authored_interactable(area, id: StringName) -> void:
 	if not authored_anchors_by_id.has(id):
 		return
 	var anchor: Node3D = authored_anchors_by_id[id]
-	area.position = interactable_root.to_local(anchor.global_position)
+	area.global_position = anchor.global_position
 	var marker: Node = area.get_node_or_null("Marker")
 	if marker != null:
 		if marker is Node3D:
@@ -622,6 +730,12 @@ func _complete_active_code_puzzle() -> void:
 		"library_shelf":
 			level_state.complete_library_code()
 			_close_code_panel("The shelf slides east. A photograph and inspection code are now reachable.")
+		"classroom_fuses":
+			level_state.complete_classroom_fuses()
+			_close_code_panel("The 5A, 8A, and 13A fuses seat correctly. The projector circuit hums awake.")
+		"classroom_seating":
+			level_state.complete_classroom_seating()
+			_close_code_panel("Six cards settle into two rows. The unlabelled seventh desk remains, and the teacher drawer opens.")
 		"dormitory_music":
 			level_state.complete_dormitory_music()
 			_close_code_panel("The toy trunk opens. Mira's ribbon and Dev's train wheel are now reachable.")
@@ -744,6 +858,30 @@ func _capture_arrival_phase3() -> void:
 	var path := ProjectSettings.globalize_path("res://captures/phase3_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("ARRIVAL_PHASE3_CAPTURE: %s (%s)" % [path, error_string(error)])
+	get_tree().quit(0 if error == OK else 1)
+
+func _capture_classroom_phase4() -> void:
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280, 720)
+	var args := OS.get_cmdline_user_args()
+	var view := "entrance"
+	level_state.set_flag(&"classroom_unlocked", true)
+	if args.has("--classroom-powered"):
+		view = "powered"
+		level_state.start_fire()
+		level_state.complete_classroom_fuses()
+		level_state.set_flag(&"projector_revealed", true)
+		level_state.complete_classroom_seating()
+	_refresh_interactable_visibility()
+	if args.has("--classroom-powered"):
+		await get_tree().create_timer(0.8).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://captures"))
+	var path := ProjectSettings.globalize_path("res://captures/phase4_classroom_%s.png" % view)
+	var error := get_viewport().get_texture().get_image().save_png(path)
+	print("CLASSROOM_PHASE4_CAPTURE: %s (%s)" % [path, error_string(error)])
 	get_tree().quit(0 if error == OK else 1)
 
 func _show_subtitle(text: String) -> void:
