@@ -44,10 +44,3 @@ The Godot executable is not included in the repository.
 - `docs/ASHDOWN_LEVEL.md`: implementation notes.
 - `docs/CREDITS.md`: third-party asset and licence ledger.
 
-## Source Design
-
-The current source of truth is `Ashdown House: Complete Three-Dimensional Pixel-Horror Level Plan.pdf`. The PDF is not committed because it is maintained outside the project folder.
-
-## Status
-
-The next scale pass should lower the player/camera presentation slightly, raise the Library ceiling, and correct shifted furniture before the Library treatment is propagated to other rooms.
